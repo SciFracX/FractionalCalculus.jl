@@ -50,4 +50,4 @@ Trying to find a way to support symbolic differentiation and integration feature
 
 If you are interested in Fractional Calculus and Julia, welcome to raise an issue or file a Pull Request!!
 
-This package is inspired by [JuliaMath/Calculus.jl] and [Numerical Methods in Fractional Calculus by Sean Townsend 2015](http://broncoscholar.library.cpp.edu/bitstream/10211.3/160926/1/TownsendSean_Thesis2015.pdf)
+This package is inspired by [JuliaMath/Calculus.jl](https://github.com/JuliMath/Calculus.jl) and [Numerical Methods in Fractional Calculus by Sean Townsend 2015](http://broncoscholar.library.cpp.edu/bitstream/10211.3/160926/1/TownsendSean_Thesis2015.pdf)
