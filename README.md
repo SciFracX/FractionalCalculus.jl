@@ -1,10 +1,12 @@
 # FractionalCalculus.jl
 
-![Logo](/docs/logo.png)
+<p align="center">
+<img width="250px" src="https://raw.githubusercontent.com/ErikQQY/FractionalCalculus.jl/master/docs/logo.png"/>
+</p>
 
 This package provides support for fractional calculus computing.
 
-## Installation
+## 🎇Installation
 
 If you have already install Julia, you can install FractionalCalculus.jl in REPL using Julia package manager:
 
@@ -19,7 +21,29 @@ Or if you want to experience the latest version of FractionalCalculus.jl, you ca
 git clone https://github.com/ErikQQY/FractionalCalculus.jl
 ```
 
-## Status
+## 🦸Quick start
+
+### Derivative
+
+To compute the fractional derivative in a specific point, for example, compute the semi derivative of $f(x)=x$ in $x=1$ with step size $0.0001$ using **Caputo** sense:
+
+```julia
+fracdiff(x->x, 0.5, 0, 1, 0.0001, Caputo())
+```
+
+This will return a tuple **(result, estimating error)**.
+
+### Integral
+
+To compute the fractional integral in a specific point, for example, compute the semi integral of $f(x)=x$ in $x=1$  with step size $0.0001$ using **Riemann-Liouville** sense:
+
+```julia
+fracint(x->x, 0.5, 0, 1, 0.0001, RL())
+```
+
+This will return a tuple **(result, estimating error)**.
+
+## 📢Status
 
 Right now, FractionalCalculus.jl has only supports for little algorithms:
 
@@ -42,11 +66,11 @@ Fractional Integral:
 - [ ] Atangana-Baleanu fractional integral
 - [ ] ......
 
-## About Symbolic differentiation and integration
+## 🧙About Symbolic differentiation and integration
 
-Trying to find a way to support symbolic differentiation and integration features
+I am trying to find a way to support symbolic differentiation and integration features🤔.
 
-## Contributing
+## 🥂Contributing
 
 If you are interested in Fractional Calculus and Julia, welcome to raise an issue or file a Pull Request!!
 
