@@ -5,9 +5,28 @@ abstract type FracIntAlg end
 
 """
 Riemann-Liouville sense fractional integral algorithms
+
+Note this two algorithms belong to direct compute, precise are ensured, but maybe cause more memory allocation and take more compilation time.
 """
 struct RL <: FracIntAlg end
 struct RL_First_Diff_Known <: FracIntAlg end
+
+"""
+@article{LI20113352,
+title = {Numerical approaches to fractional calculus and fractional ordinary differential equation},
+journal = {Journal of Computational Physics},
+volume = {230},
+number = {9},
+pages = {3352-3368},
+year = {2011},
+issn = {0021-9991},
+doi = {https://doi.org/10.1016/j.jcp.2011.01.030},
+url = {https://www.sciencedirect.com/science/article/pii/S0021999111000556},
+author = {Changpin Li and An Chen and Junjie Ye},
+keywords = {Numerical approach, Fractional calculus, Fractional differential equations, Piecewise interpolation, Simpson method},
+}
+"""
+struct Piecewise <:FracIntAlg end
 
 
 
@@ -54,6 +73,7 @@ function fracint(f, α, start_point, end_point, step_size, ::RL)
     end
 
     temp1 = f(start_point) .* (end_point-start_point) .^α
+    #Use Complex differentiation to obtain the differentiation
     g(τ) = imag(f(τ .+ 1*im*step_size) ./ step_size) .* (end_point-τ) .^α
     temp2 = quadgk(g, start_point, end_point)
     result = (temp1 .+ temp2) ./gamma(α+1)
@@ -82,4 +102,39 @@ function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Fir
     temp2 = quadgk(g, start_point, end_point)
     result = (temp1 .+ temp2) ./ gamma(α+1)
     return result
+end
+
+"""
+By deploying Piecewise interpolation to approximate the original function, with small step_size, this method is fast and take little memory allocation.
+"""
+function fracint(f, α, end_point, step_size, ::Piecewise)
+    end_point > 0 ? nothing : error("Please compute the integral of a positive value")
+    
+    #Support vectorized end point
+    if typeof(end_point) <: AbstractArray
+        ResultArray = Float64[]
+        for (_, value) in enumerate(end_point)
+            append!(ResultArray, fracint(f, α, value, step_size, Piecewise()))
+        end
+        return ResultArray
+    end
+
+    n=end_point/step_size
+    result=0
+
+    for i in range(0, n, step=1)
+        result = result + W(i, n, α)*f(i*step_size)
+    end
+
+    result1 = result*step_size^α/gamma(α+2)
+    return result1
+end
+function W(i, n, α)
+    if i==0
+        return n^α*(α+1-n)+(n-1)^(α+1)
+    elseif i==n 
+        return 1
+    else
+        return (n-i-1)^(α+1)+(n-i+1)^(α+1)-2*(n-i)^(α+1)
+    end
 end

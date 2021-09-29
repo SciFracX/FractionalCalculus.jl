@@ -3,6 +3,9 @@ Base type of fractional differentiation senses, , in FractionalCalculus.jl, all 
 """
 abstract type FracDiffAlg end
 
+"""
+Note these four algorithms belong to direct compute, precise are ensured, but maybe cause more memory allocation and take more compilation time.
+"""
 struct Caputo <: FracDiffAlg end
 struct Caputo_First_Diff_known <: FracDiffAlg end
 struct Caputo_First_Second_Diff_Known <: FracDiffAlg end
@@ -167,4 +170,26 @@ function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_First
     temp2 = quadgk(g, start_point, end_point) ./ gamma(2-α)
     result = temp1 .+ temp2
     return result
+end
+
+function numfracint(f, α, end_point, step_size )
+    n=end_point/step_size
+    result=0
+
+    for i in range(0, n, step=1)
+        result = result + W(i, n, α)*f(i*step_size)
+    end
+
+    result1 = result*step_size^α/gamma(α+2)
+    return result1
+end
+
+function W(i, n, α)
+    if i==0
+        return n^α*(α+1-n)+(n-1)^(α+1)
+    elseif i==n 
+        return 1
+    else
+        return (n-i-1)^(α+1)+(n-i+1)^(α+1)-2*(n-i)^(α+1)
+    end
 end
