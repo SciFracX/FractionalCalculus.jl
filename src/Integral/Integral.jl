@@ -59,7 +59,7 @@ fracdiff(x->x^5, 0.5, 0, 2.5, 1e-8)
 Riemann_Liouville fractional integral using complex step differentiation
 Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which means the value of this derivative is 1.1639316474512205, and the error estimate is 1.0183453796725215e-8
 """
-function fracint(f, α, start_point, end_point, step_size, ::RL)
+function fracint(f::Union{Function, Number}, α, start_point, end_point, step_size, ::RL)
     checks(α, start_point, end_point)
     
     #Support vectorized end point
@@ -107,7 +107,7 @@ end
 """
 By deploying Piecewise interpolation to approximate the original function, with small step_size, this method is fast and take little memory allocation.
 """
-function fracint(f, α, end_point, step_size, ::Piecewise)
+function fracint(f::Function, α, end_point, step_size, ::Piecewise)
     end_point > 0 ? nothing : error("Please compute the integral of a positive value")
     
     #Support vectorized end point

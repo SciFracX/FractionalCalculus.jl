@@ -94,7 +94,7 @@ fracdiff(x->x^5, 0, 0.5, ::GL)
 
 Please refer to https://en.wikipedia.org/wiki/Gr%C3%BCnwald%E2%80%93Letnikov_derivative.
 """
-function fracdiff(f, α, start_point, end_point, ::GL)
+function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL)
     checks(α, start_point, end_point)
 
     #The fractional derivative of a constant is zero
@@ -172,7 +172,7 @@ function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_First
     return result
 end
 
-function numfracint(f, α, end_point, step_size )
+function numfracint(f::Union{Function, Number}, α, end_point, step_size )
     n=end_point/step_size
     result=0
 
