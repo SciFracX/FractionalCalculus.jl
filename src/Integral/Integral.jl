@@ -8,25 +8,19 @@ Riemann-Liouville sense fractional integral algorithms
 
 Note this two algorithms belong to direct compute, precise are ensured, but maybe cause more memory allocation and take more compilation time.
 """
-struct RL <: FracIntAlg end
-struct RL_First_Diff_Known <: FracIntAlg end
+abstract type RL <: FracIntAlg end
+struct RL_Direct <: RL end
+struct RL_Direct_First_Diff_Known <: RL end
 
 """
 @article{LI20113352,
 title = {Numerical approaches to fractional calculus and fractional ordinary differential equation},
-journal = {Journal of Computational Physics},
-volume = {230},
-number = {9},
-pages = {3352-3368},
-year = {2011},
-issn = {0021-9991},
-doi = {https://doi.org/10.1016/j.jcp.2011.01.030},
-url = {https://www.sciencedirect.com/science/article/pii/S0021999111000556},
 author = {Changpin Li and An Chen and Junjie Ye},
-keywords = {Numerical approach, Fractional calculus, Fractional differential equations, Piecewise interpolation, Simpson method},
 }
+
+Using piecewise linear interpolation function to approximate input function and implement summation.
 """
-struct Piecewise <:FracIntAlg end
+struct RL_Piecewise <: RL end
 
 
 
@@ -59,7 +53,7 @@ fracdiff(x->x^5, 0.5, 0, 2.5, 1e-8)
 Riemann_Liouville fractional integral using complex step differentiation
 Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which means the value of this derivative is 1.1639316474512205, and the error estimate is 1.0183453796725215e-8
 """
-function fracint(f::Union{Function, Number}, α, start_point, end_point, step_size, ::RL)
+function fracint(f::Union{Function, Number}, α, start_point, end_point, step_size, ::RL_Direct)
     checks(α, start_point, end_point)
     
     #Support vectorized end point
@@ -67,7 +61,7 @@ function fracint(f::Union{Function, Number}, α, start_point, end_point, step_si
         ResultArray = Float64[]
         for (_, value) in enumerate(end_point)
             #println(fracdiff(f, α, start_point, value, step_size, RL()))
-            append!(ResultArray, fracint(f, α, start_point, value, step_size, RL())[1])
+            append!(ResultArray, fracint(f, α, start_point, value, step_size, RL_Direct())[1])
         end
         return ResultArray
     end
@@ -84,7 +78,7 @@ end
 """
 With first order derivative known, we can directly use it in the computation of α order fraction integral
 """
-function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_First_Diff_Known)
+function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Direct_First_Diff_Known)
     checks(α, start_point, end_point)
     
     #Support vectorized end point
@@ -92,7 +86,7 @@ function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Fir
         ResultArray = Float64[]
         for (_, value) in enumerate(end_point)
             #println(fracdiff(f, α, start_point, value, step_size, RL()))
-            append!(ResultArray, fracint(f, α, start_point, value, step_size, RL_First_Diff_Known())[1])
+            append!(ResultArray, fracint(f, α, start_point, value, step_size, RL_Direct_First_Diff_Known())[1])
         end
         return ResultArray
     end
@@ -107,14 +101,14 @@ end
 """
 By deploying Piecewise interpolation to approximate the original function, with small step_size, this method is fast and take little memory allocation.
 """
-function fracint(f::Function, α, end_point, step_size, ::Piecewise)
+function fracint(f::Function, α, end_point, step_size, ::RL_Piecewise)
     end_point > 0 ? nothing : error("Please compute the integral of a positive value")
     
     #Support vectorized end point
     if typeof(end_point) <: AbstractArray
         ResultArray = Float64[]
         for (_, value) in enumerate(end_point)
-            append!(ResultArray, fracint(f, α, value, step_size, Piecewise()))
+            append!(ResultArray, fracint(f, α, value, step_size, RL_Piecewise()))
         end
         return ResultArray
     end

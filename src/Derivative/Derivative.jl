@@ -2,14 +2,28 @@
 Base type of fractional differentiation senses, , in FractionalCalculus.jl, all of the fractional derivative senses belong to ```FracDiffAlg```
 """
 abstract type FracDiffAlg end
+abstract type Caputo <: FracDiffAlg end
+abstract type GL <: FracDiffAlg end
 
 """
 Note these four algorithms belong to direct compute, precise are ensured, but maybe cause more memory allocation and take more compilation time.
 """
-struct Caputo <: FracDiffAlg end
-struct Caputo_First_Diff_known <: FracDiffAlg end
-struct Caputo_First_Second_Diff_Known <: FracDiffAlg end
-struct GL <: FracDiffAlg end
+struct Caputo_Direct <: Caputo end
+struct Caputo_Direct_First_Diff_known <: Caputo end
+struct Caputo_Direct_First_Second_Diff_Known <: Caputo end
+
+struct GL_Direct <: GL end
+
+
+"""
+@article{LI20113352,
+title = {Numerical approaches to fractional calculus and fractional ordinary differential equation},
+author = {Changpin Li and An Chen and Junjie Ye},
+}
+
+Using piecewise linear interpolation function to approximate input function and combining Caputo derivative then implement summation.
+"""
+struct Caputo_Piecewise <: Caputo end
 
 
 """
@@ -54,7 +68,7 @@ When the input end points is an array, **fracdiff** will compute
 https://en.wikipedia.org/wiki/Fractional_calculus#Caputo_fractional_derivative
 
 """
-function fracdiff(f, α, start_point, end_point, step_size, ::Caputo)
+function fracdiff(f, α, start_point, end_point, step_size, ::Caputo_Direct)
     checks(α, start_point, end_point)
 
     #The fractional derivative of a constant is zero
@@ -67,7 +81,7 @@ function fracdiff(f, α, start_point, end_point, step_size, ::Caputo)
         ResultArray = Float64[]
         for (_, value) in enumerate(end_point)
             #println(fracdiff(f, α, start_point, value, step_size, Caputo()))
-            append!(ResultArray, fracdiff(f, α, start_point, value, step_size, Caputo())[1])
+            append!(ResultArray, fracdiff(f, α, start_point, value, step_size, Caputo_Direct())[1])
         end
         return ResultArray
     end
@@ -94,7 +108,7 @@ fracdiff(x->x^5, 0, 0.5, ::GL)
 
 Please refer to https://en.wikipedia.org/wiki/Gr%C3%BCnwald%E2%80%93Letnikov_derivative.
 """
-function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL)
+function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL_Direct)
     checks(α, start_point, end_point)
 
     #The fractional derivative of a constant is zero
@@ -107,7 +121,7 @@ function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL)
         ResultArray = Float64[]
         for (_, value) in enumerate(end_point)
             #println(fracdiff(f, α, start_point, value, step_size, Caputo()))
-            append!(ResultArray, fracdiff(f, α, start_point, value, GL())[1])
+            append!(ResultArray, fracdiff(f, α, start_point, value, GL_Direct())[1])
         end
         return ResultArray
     end
@@ -125,7 +139,7 @@ If the first order derivative of a function is already known,
 We can use this method to compute the fractional order derivative more precisely.
 
 """
-function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_First_Diff_known)
+function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_Direct_First_Diff_known)
     checks(α, start_point, end_point)
 
     #The fractional derivative of a constant is zero
@@ -138,7 +152,7 @@ function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_First_Diff_
         ResultArray = Float64[]
         for (_, value) in enumerate(end_point)
             #println(fracdiff(f, α, start_point, value, step_size, Caputo()))
-            append!(ResultArray, fracdiff(f, α, start_point, value, Caputo_First_Diff_known())[1])
+            append!(ResultArray, fracdiff(f, α, start_point, value, Caputo_Direct_First_Diff_known())[1])
         end
         return ResultArray
     end
@@ -152,15 +166,14 @@ end
 """
 If the first and second order derivative of a function is already known
 """
-function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_First_Second_Diff_Known)
+function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_Direct_First_Second_Diff_Known)
     checks(α, start_point, end_point)
     
     #Support both Matrix and Vector end points
     if typeof(end_point) <: AbstractArray
         ResultArray = Float64[]
         for (_, value) in enumerate(end_point)
-            #println(fracdiff(f, α, start_point, value, step_size, Caputo()))
-            append!(ResultArray, fracdiff(f, α, start_point, value, step_size, Caputo_First_Second_Diff_Known())[1])
+            append!(ResultArray, fracdiff(f, α, start_point, value, step_size, Caputo_Direct_First_Second_Diff_Known())[1])
         end
         return ResultArray
     end
@@ -172,24 +185,31 @@ function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_First
     return result
 end
 
-function numfracint(f::Union{Function, Number}, α, end_point, step_size )
-    n=end_point/step_size
-    result=0
+"""
+Using the piecewise algorithm to obtain the fractional derivative at a specific point.
+"""
+function fracdiff(f, α, end_point, step_size, ::Caputo_Piecewise)
+    m = floor(α)+1
+
+    result = 0
+    n = end_point/step_size
 
     for i in range(0, n, step=1)
-        result = result + W(i, n, α)*f(i*step_size)
+        result +=W₅(i, n, m, α)*first_order(f, i*step_size, step_size)
     end
 
-    result1 = result*step_size^α/gamma(α+2)
+    result1=result*step_size^(m-α)/gamma(m-α+2)
     return result1
 end
-
-function W(i, n, α)
+function W₅(i, n, m, α)
     if i==0
-        return n^α*(α+1-n)+(n-1)^(α+1)
-    elseif i==n 
+        return n^(m-α)*(m-α+1-n)+(n-1)^(m-α+1)
+    elseif i==n
         return 1
     else
-        return (n-i-1)^(α+1)+(n-i+1)^(α+1)-2*(n-i)^(α+1)
+        (n-i-1)^(m-α+1)+(n-i+1)^(m-α+1)-2*(n-i)^(m-α+1)
     end
+end
+function first_order(f, point, h)
+    return (f(point+h)-f(point-h))/(2*h)
 end
