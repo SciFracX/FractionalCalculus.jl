@@ -37,7 +37,7 @@ function checks(α, start_point, end_point)
         start_point < minimum(end_point) ? nothing : DomainError("Vector domain error! Start point must smaller than end point")
     else
         ErrorException("Please input correct point you wan tto compute")
-    end    
+    end
 end
 
 
@@ -86,6 +86,10 @@ function fracdiff(f, α, start_point, end_point, step_size, ::Caputo_Direct)
         return ResultArray
     end
 
+    if end_point == 0
+        return 0
+    end
+
     #Using complex step differentiation to calculate the first order differentiation
     g(τ) = imag(f(τ+1*im*step_size) ./ step_size) ./ ((end_point-τ) .^α)
     result = quadgk(g, start_point, end_point) ./gamma(1-α)
@@ -126,6 +130,11 @@ function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL_D
     end
 
     checks(α, start_point, end_point)
+
+    if end_point == 0
+        return 0
+    end
+
     g(τ) = (f(end_point)-f(τ)) ./ (end_point - τ) .^ (1+α)
     result = f(end_point)/(gamma(1-α) .* (end_point - start_point) .^ α) .+ quadgk(g, start_point, end_point) .* α ./ gamma(1-α)
     return result
@@ -188,6 +197,24 @@ end
 Using the piecewise algorithm to obtain the fractional derivative at a specific point.
 """
 function fracdiff(f, α, end_point, step_size, ::Caputo_Piecewise)
+
+    if typeof(f) <: Number
+        return 0
+    end
+
+    if end_point == 0
+        return 0
+    end
+
+    #Support both Matrix and Vector end points
+    if typeof(end_point) <: AbstractArray
+        ResultArray = Float64[]
+        for (_, value) in enumerate(end_point)
+            append!(ResultArray, fracdiff(f, α, value, step_size, Caputo_Piecewise()))
+        end
+        return ResultArray
+    end
+
     m = floor(α)+1
 
     result = 0
