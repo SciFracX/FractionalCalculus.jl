@@ -47,7 +47,7 @@ By entering the function, the order, the start point and end point and step size
 # Example: 
 
 ```julia
-fracdiff(x->x^5, 0.5, 0, 2.5, 1e-8)
+fracint(x->x^5, 0.5, 0, 2.5, 1e-8, RL_Direct())
 ```
 
 Riemann_Liouville fractional integral using complex step differentiation

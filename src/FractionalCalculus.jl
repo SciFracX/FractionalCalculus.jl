@@ -12,6 +12,8 @@ export fracdiff, fracint
 #Export fractional derivative releating API
 export Caputo, GL
 export Caputo_Direct, Caputo_Direct_First_Diff_Known, Caputo_Direct_First_Second_Diff_Known
+export Caputo_Piecewise
+export GL_Direct
 
 #Export fractional integral releating API
 export RL

@@ -58,7 +58,7 @@ Using Caputo definition to compute fractional derivative with **complex step dif
 # Example: 
 
 ```julia
-fracdiff(x->x^5, 0.5, 0, 2.5, 0.0001, ::Caputo)
+fracdiff(x->x^5, 0.5, 0, 2.5, 0.0001, Caputo_Direct())
 ```
 
 Returns a tuple (**result**, **error**), which means the value of this derivative is 141.59714979764541, and the error estimate is 1.1532243848672914e-6.
@@ -101,7 +101,7 @@ Using Grunwald-Letnikov definition to compute fractional derivative.
 # Example:
 
 ```julia
-fracdiff(x->x^5, 0, 0.5, ::GL)
+fracdiff(x->x^5, 0, 0.5, GL_Direct())
 ```
 
 > Please note Grunwald-Letnikov sense fracdiff only support 0 < α < 1.
@@ -120,7 +120,6 @@ function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL_D
     if typeof(end_point) <: AbstractArray
         ResultArray = Float64[]
         for (_, value) in enumerate(end_point)
-            #println(fracdiff(f, α, start_point, value, step_size, Caputo()))
             append!(ResultArray, fracdiff(f, α, start_point, value, GL_Direct())[1])
         end
         return ResultArray
