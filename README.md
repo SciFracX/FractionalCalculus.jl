@@ -6,7 +6,7 @@
 
 This package provides support for fractional calculus computing.
 
-## 🎇Installation
+## 🎇 Installation
 
 If you have already install Julia, you can install FractionalCalculus.jl in REPL using Julia package manager:
 
@@ -21,14 +21,14 @@ Or if you want to experience the latest version of FractionalCalculus.jl, you ca
 git clone https://github.com/ErikQQY/FractionalCalculus.jl
 ```
 
-## 🦸Quick start
+## 🦸 Quick start
 
 ### Derivative
 
 To compute the fractional derivative in a specific point, for example, compute the semi derivative of $f(x)=x$ in $x=1$ with step size $0.0001$ using **Caputo** sense:
 
 ```julia
-fracdiff(x->x, 0.5, 0, 1, 0.0001, Caputo())
+fracdiff(x->x, 0.5, 0, 1, 0.0001, Caputo_Direct())
 ```
 
 This will return a tuple **(result, estimating error)**.
@@ -38,12 +38,33 @@ This will return a tuple **(result, estimating error)**.
 To compute the fractional integral in a specific point, for example, compute the semi integral of $f(x)=x$ in $x=1$  with step size $0.0001$ using **Riemann-Liouville** sense:
 
 ```julia
-fracint(x->x, 0.5, 0, 1, 0.0001, RL())
+fracint(x->x, 0.5, 0, 1, 0.0001, RL_Direct())
 ```
 
 This will return a tuple **(result, estimating error)**.
 
-## 📢Status
+## 💻 All algorithms
+
+```
+Current Algorithms
+├── FracDiffAlg
+│   ├── Caputo
+|	|	├── Caputo_Direct
+|	|	├── Caputo_Direct_First_Diff_Known
+|	|	├── Caputo_Direct_First_Second_Diff_Known
+|	|	└── Caputo_Piecewise
+|	|
+│   └── GL
+|	 	└── GL_Direct
+|
+└── FracIntAlg
+    └── RL
+ 		├── RL_Direct
+ 		├── RL_Direct_First_Diff_Known
+ 		└── RL_Piecewise
+```
+
+## 📢 Status
 
 Right now, FractionalCalculus.jl has only supports for little algorithms:
 
@@ -66,11 +87,11 @@ Fractional Integral:
 - [ ] Atangana-Baleanu fractional integral
 - [ ] ......
 
-## 🧙About Symbolic differentiation and integration
+## 🧙 About Symbolic differentiation and integration
 
 I am trying to find a way to support symbolic differentiation and integration features🤔.
 
-## 🥂Contributing
+## 🥂 Contributing
 
 If you are interested in Fractional Calculus and Julia, welcome to raise an issue or file a Pull Request!!
 
