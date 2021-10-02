@@ -49,19 +49,19 @@ This will return a tuple **(result, estimating error)**.
 Current Algorithms
 ├── FracDiffAlg
 │   ├── Caputo
-|	|	├── Caputo_Direct
-|	|	├── Caputo_Direct_First_Diff_Known
-|	|	├── Caputo_Direct_First_Second_Diff_Known
-|	|	└── Caputo_Piecewise
-|	|
+|   |   ├── Caputo_Direct
+|   |   ├── Caputo_Direct_First_Diff_Known
+|   |   ├── Caputo_Direct_First_Second_Diff_Known
+|   |   └── Caputo_Piecewise
+|   |
 │   └── GL
-|	 	└── GL_Direct
+|       └── GL_Direct
 |
 └── FracIntAlg
     └── RL
- 		├── RL_Direct
- 		├── RL_Direct_First_Diff_Known
- 		└── RL_Piecewise
+        ├── RL_Direct
+        ├── RL_Direct_First_Diff_Known
+        └── RL_Piecewise
 ```
 
 ## 📢 Status
