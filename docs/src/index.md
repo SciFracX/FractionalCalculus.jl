@@ -23,6 +23,15 @@ FractionalCalculus now has algorithms for Caputo fractional derivative, Grunwald
 ## Plans
 
 - Symbolic differentiation and integration
+
 - FractionalCalculus.jl website with online experiencing
+
 - Add more visualization of how the fraction derivative and integral are changing based on Makie or Javis or Manim
+
 - Fractional differential equations
+
+
+
+!!! info WIP
+		FractionalCalculus.jl is under heavy construction, some API or docs might change a lot.
+
