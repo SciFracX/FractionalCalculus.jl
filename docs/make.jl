@@ -1,6 +1,8 @@
 using Documenter, FractionalCalculus
 
-makedocs()
+makedocs(
+    sitename = "FractionalCalculus.jl",
+)
 
 deploydocs(
     repo = "github.com/ErikQQY/FractionalCalculus.jl.git";

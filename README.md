@@ -1,7 +1,7 @@
 # FractionalCalculus.jl
 
 <p align="center">
-<img width="250px" src="https://raw.githubusercontent.com/ErikQQY/FractionalCalculus.jl/master/docs/logo.png"/>
+<img width="250px" src="https://raw.githubusercontent.com/ErikQQY/FractionalCalculus.jl/master/docs/assets/logo.png"/>
 </p>
 
 This package provides support for fractional calculus computing.

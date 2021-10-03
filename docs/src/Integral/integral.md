@@ -1,9 +1,9 @@
 # Fractional integral
 
 The most classical fractional integral is Riemann-Liouville fractional integral:
-$$
+```math
 _aD_t^{-\alpha}f(t)=\frac{1}{\Gamma(\alpha)}\int_a^t(t-\tau)^{\alpha-1}f(\tau)d\tau
-$$
+```
 In FractionalCalculus, you can compute the integral of a function with order $\alpha$:
 
 ```julia

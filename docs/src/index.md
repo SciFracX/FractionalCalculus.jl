@@ -1,6 +1,8 @@
 # FractionalCalculus.jl
 
-Hello there! FractionalCalculus.jl is a Julia package aiming at providing support for computing fractional derivative and fractional integral.
+Hello there👋!
+
+FractionalCalculus.jl is a Julia package aiming at providing support for computing fractional derivative and fractional integral.
 
 ## Installation
 
@@ -18,7 +20,7 @@ git clone https://github.com/ErikQQY/FractionalCalculus.jl
 
 ## Features
 
-FractionalCalculus now has algorithms for Caputo fractional derivative, Grunwald-Letnikov fractional derivative and Riemann-Liouville fractional integral support, more algorithms are planned to support to enrich the package ecosystem.
+FractionalCalculus now has algorithms for **Caputo fractional derivative**, **Grunwald-Letnikov fractional derivative** and **Riemann-Liouville fractional integral** support, more algorithms are planned to support to enrich the package ecosystem.
 
 ## Plans
 
@@ -32,6 +34,6 @@ FractionalCalculus now has algorithms for Caputo fractional derivative, Grunwald
 
 
 
-!!! info WIP
+!!! info "WIP"
 		FractionalCalculus.jl is under heavy construction, some API or docs might change a lot.
 
