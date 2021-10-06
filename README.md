@@ -1,8 +1,9 @@
 # FractionalCalculus.jl
 
 <p align="center">
-<img width="250px" src="https://raw.githubusercontent.com/ErikQQY/FractionalCalculus.jl/master/docs/assets/logo.png"/>
+<img width="250px" src="https://raw.githubusercontent.com/ErikQQY/FractionalCalculus.jl/master/docs/src/assets/logo.png"/>
 </p>
+
 FractionalCalculus.jl provides support for fractional calculus computing.
 
 ## 🎇 Installation
