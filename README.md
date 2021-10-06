@@ -66,8 +66,7 @@ Current Algorithms
         ├── RL_Direct
         ├── RL_Direct_First_Diff_Known
         ├── RL_Piecewise
-        ├── RLInt_Approx
-        └── RL_LinearInterp
+        └── RLInt_Approx
 ```
 
 ## 📢 Status

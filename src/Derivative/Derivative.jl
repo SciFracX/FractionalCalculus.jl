@@ -1,5 +1,5 @@
 """
-Base type of fractional differentiation senses, , in FractionalCalculus.jl, all of the fractional derivative senses belong to ```FracDiffAlg```
+Base type of fractional differentiation senses, in FractionalCalculus.jl, all of the fractional derivative algorithms belong to ```FracDiffAlg```
 """
 abstract type FracDiffAlg end
 abstract type Caputo <: FracDiffAlg end
@@ -7,7 +7,7 @@ abstract type GL <: FracDiffAlg end
 abstract type RLDiff <: FracDiffAlg end
 
 """
-Note these four algorithms belong to direct compute, precise are ensured, but maybe cause more memory allocation and take more compilation time.
+Note these four algorithms belong to direct computing, precise are ensured, but maybe cause more memory allocation and take more compilation time.
 """
 struct Caputo_Direct <: Caputo end
 struct Caputo_Direct_First_Diff_known <: Caputo end
