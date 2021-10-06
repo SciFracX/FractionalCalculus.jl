@@ -3,8 +3,7 @@
 <p align="center">
 <img width="250px" src="https://raw.githubusercontent.com/ErikQQY/FractionalCalculus.jl/master/docs/assets/logo.png"/>
 </p>
-
-This package provides support for fractional calculus computing.
+FractionalCalculus.jl provides support for fractional calculus computing. You can compute the fractional derivative or integral at a point or at a vectorized collection of points.
 
 ## 🎇 Installation
 
@@ -25,20 +24,22 @@ git clone https://github.com/ErikQQY/FractionalCalculus.jl
 
 ### Derivative
 
-To compute the fractional derivative in a specific point, for example, compute the semi derivative of $f(x)=x$ in $x=1$ with step size $0.0001$ using **Caputo** sense:
+To compute the fractional derivative in a specific point, for example, compute the semi derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" /> in <img src="https://latex.codecogs.com/gif.latex?x=0.2" /> with step size **0.0001** using **Caputo** sense:
 
 ```julia
-fracdiff(x->x, 0.5, 0, 1, 0.0001, Caputo_Direct())
+Julia> fracdiff(x->x, 0.2, 0, 1, 0.0001, Caputo_Direct())
+(1.0736712699679294, 1.4251042482525302e-8)
 ```
 
 This will return a tuple **(result, estimating error)**.
 
 ### Integral
 
-To compute the fractional integral in a specific point, for example, compute the semi integral of $f(x)=x$ in $x=1$  with step size $0.0001$ using **Riemann-Liouville** sense:
+To compute the fractional integral in a specific point, for example, compute the semi integral of <img src="https://latex.codecogs.com/gif.latex?f(x)=x " /> in <img src="https://latex.codecogs.com/gif.latex?x=0.5" />  with step size **0.0001**​ using **Riemann-Liouville** sense:
 
 ```julia
-fracint(x->x, 0.5, 0, 1, 0.0001, RL_Direct())
+julia> fracint(x->x, 0.5, 0, 1, 0.0001, RL_Direct())
+(0.7522527785271369, 8.022170098417246e-9)
 ```
 
 This will return a tuple **(result, estimating error)**.
@@ -54,14 +55,19 @@ Current Algorithms
 |   |   ├── Caputo_Direct_First_Second_Diff_Known
 |   |   └── Caputo_Piecewise
 |   |
-│   └── GL
-|       └── GL_Direct
+│   ├── GL
+|   |   └── GL_Direct
+|   |
+|   └── RLDiff
+|       └── RLDiff_Approx
 |
 └── FracIntAlg
-    └── RL
+    └── RLInt
         ├── RL_Direct
         ├── RL_Direct_First_Diff_Known
-        └── RL_Piecewise
+        ├── RL_Piecewise
+        ├── RLInt_Approx
+        └── RL_LinearInterp
 ```
 
 ## 📢 Status
@@ -73,7 +79,7 @@ Fractional Derivative:
 - [x] Caputo fractional derivative
 - [x] Grunwald-Letnikov fractional derivative
 - [ ] Caputo-Fabrizio fractional derivative
-- [ ] Riemann-Liouville fractional derivative 
+- [x] Riemann-Liouville fractional derivative 
 - [ ] Atangana-Baleanu fractional derivative
 - [ ] Riesz fractional derivative
 - [ ] Marchaud fractional derivative

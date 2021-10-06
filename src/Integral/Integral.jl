@@ -8,9 +8,9 @@ Riemann-Liouville sense fractional integral algorithms
 
 Note this two algorithms belong to direct compute, precise are ensured, but maybe cause more memory allocation and take more compilation time.
 """
-abstract type RL <: FracIntAlg end
-struct RL_Direct <: RL end
-struct RL_Direct_First_Diff_Known <: RL end
+abstract type RLInt <: FracIntAlg end
+struct RL_Direct <: RLInt end
+struct RL_Direct_First_Diff_Known <: RLInt end
 
 """
 @article{LI20113352,
@@ -20,12 +20,21 @@ author = {Changpin Li and An Chen and Junjie Ye},
 
 Using piecewise linear interpolation function to approximate input function and implement summation.
 """
-struct RL_Piecewise <: RL end
-
+struct RL_Piecewise <: RLInt end
 
 
 """
-Check if the format of margins is correct
+@book{oldham_spanier_1984,
+title={The fractional calculus: Theory and applications of differentiation and integration to arbitrary order},
+author={Oldham, Keith B. and Spanier, Jerome},
+year={1984}}
+"""
+struct RLInt_Approx <: RLInt end
+
+struct RL_LinearInterp <: RLInt end
+
+"""
+Check if the format of nargins is correct
 """
 function checks(α, start_point, end_point)
     α % 1 != 0 ? nothing : error("Decimal number only!")
@@ -131,4 +140,73 @@ function W(i, n, α)
     else
         return (n-i-1)^(α+1)+(n-i+1)^(α+1)-2*(n-i)^(α+1)
     end
+end
+
+
+"""
+Note this algorithms demand α must be negative!!
+"""
+function fracint(f, α, end_point, step_size, ::RLInt_Approx)
+        
+    if typeof(f) <: Number
+        return 0
+    end
+
+    if end_point == 0
+        return 0
+    end
+
+    #Support both Matrix and Vector end points
+    if typeof(end_point) <: AbstractArray
+        ResultArray = Float64[]
+        for (_, value) in enumerate(end_point)
+            append!(ResultArray, fracint(f, α, value, step_size, RL_Approx()))
+        end
+        return ResultArray
+    end
+
+    α = -α
+    n = end_point/step_size
+    result=0
+
+    for i in range(0, n-1, step=1)
+        result += (f(end_point-i*end_point/n)+f(end_point-(i+1)*end_point/n))/2*((i+1)^(-α)-i^(-α))
+    end
+
+    result1=result*end_point^(-α)*n^α/gamma(1-α)
+    return result1
+end
+
+"""
+RL_LinearInterp is more complex but more precise
+"""
+function fracint(f, α, end_point, step_size, ::RL_LinearInterp)
+        
+    if typeof(f) <: Number
+        return 0
+    end
+
+    if end_point == 0
+        return 0
+    end
+
+    #Support both Matrix and Vector end points
+    if typeof(end_point) <: AbstractArray
+        ResultArray = Float64[]
+        for (_, value) in enumerate(end_point)
+            append!(ResultArray, fracint(f, α, value, step_size, RL_LinearInterp()))
+        end
+        return ResultArray
+    end
+
+    α = -α
+    n = end_point/step_size
+    result = 0
+    
+    for i in range(0, n-1, step=1)
+        result+=((i+1)*f(end_point-i*end_point/n)-i*f(end_point-(i+1)*end_point/n))/(-α)*((i+1)^(-α)-i^(-α))+(f(end_point-(i+1)*end_point/n)-f(end_point-i*end_point/n))/(1-α)*((i+1)^(1-α)-i^(1-α))
+    end
+
+    result1=result*end_point^(-α)*n^α/gamma(-α)
+    return result1
 end

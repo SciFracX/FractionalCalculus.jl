@@ -4,6 +4,7 @@ Base type of fractional differentiation senses, , in FractionalCalculus.jl, all 
 abstract type FracDiffAlg end
 abstract type Caputo <: FracDiffAlg end
 abstract type GL <: FracDiffAlg end
+abstract type RLDiff <: FracDiffAlg end
 
 """
 Note these four algorithms belong to direct compute, precise are ensured, but maybe cause more memory allocation and take more compilation time.
@@ -27,7 +28,20 @@ struct Caputo_Piecewise <: Caputo end
 
 
 """
-Check if the format of margins is correct
+@book{oldham_spanier_1984,
+title={The fractional calculus: Theory and applications of differentiation and integration to arbitrary order},
+author={Oldham, Keith B. and Spanier, Jerome},
+year={1984}} 
+"""
+struct GL_Nomenclature <: GL end
+
+struct GL_Lagrange3Interp <: GL end
+
+struct RLDiff_Approx <: RLDiff end
+
+
+"""
+Check if the format of nargins is correct
 """
 function checks(α, start_point, end_point)
     α % 1 != 0 ? nothing : error("α must be a decimal number")
@@ -36,7 +50,7 @@ function checks(α, start_point, end_point)
     elseif typeof(end_point) <: AbstractArray
         start_point < minimum(end_point) ? nothing : DomainError("Vector domain error! Start point must smaller than end point")
     else
-        ErrorException("Please input correct point you wan tto compute")
+        ErrorException("Please input correct point you want to compute")
     end
 end
 
@@ -238,4 +252,100 @@ function W₅(i, n, m, α)
 end
 function first_order(f, point, h)
     return (f(point+h)-f(point-h))/(2*h)
+end
+
+#TODO: Use the improved alg!! This algorithm is not accurate
+#This algorithm is not good, still more to do
+function fracdiff(f, α, end_point, step_size, ::GL_Nomenclature)
+    
+    if typeof(f) <: Number
+        return 0
+    end
+
+    if end_point == 0
+        return 0
+    end
+
+    #Support both Matrix and Vector end points
+    if typeof(end_point) <: AbstractArray
+        ResultArray = Float64[]
+        for (_, value) in enumerate(end_point)
+            append!(ResultArray, fracdiff(f, α, value, step_size, GL_Nomenclature()))
+        end
+        return ResultArray
+    end
+
+    result = 0
+    n = end_point/step_size
+
+    for i in range(0, n-1, step=1)
+        result+=gamma(i-α)/gamma(i+1)*f(end_point-i*end_point/n)
+    end
+    result1=result*end_point^(-α)*n^α/gamma(-α)
+    return result1
+end
+
+#TODO: This algorithm is same with the above one, not accurate!!!
+#This algorithm is not good, still more to do
+function fracdiff(f, α, end_point, step_size, ::GL_Lagrange3Interp)
+        
+    if typeof(f) <: Number
+        return 0
+    end
+
+    if end_point == 0
+        return 0
+    end
+
+    #Support both Matrix and Vector end points
+    if typeof(end_point) <: AbstractArray
+        ResultArray = Float64[]
+        for (_, value) in enumerate(end_point)
+            append!(ResultArray, fracdiff(f, α, value, step_size, GL_Lagrange3Interp()))
+        end
+        return ResultArray
+    end
+
+    n = end_point/step_size
+    result=0
+
+    for i in range(0, n-1, step=1)
+        result += gamma(i-α)/gamma(i+1)*(f(end_point-i*end_point/n)+1/4*α*(f(end_point-(i-1)*end_point/n)-f(end_point-(i+1)*end_point/n))+1/8*α^2*(f(end_point-(i-1)*end_point/n)-2*f(end_point-i*end_point/n)+f(end_point-(i+1)*end_point/n)))
+    end
+
+    result1 = result*end_point^(-α)*n^α/gamma(-α)
+    return result1
+end
+
+"""
+The RLDiff_Approx algorithm only support for 0 < α < 1
+"""
+function fracdiff(f, α, end_point, step_size, ::RLDiff_Approx)
+        
+    if typeof(f) <: Number
+        return 0
+    end
+
+    if end_point == 0
+        return 0
+    end
+
+    #Support both Matrix and Vector end points
+    if typeof(end_point) <: AbstractArray
+        ResultArray = Float64[]
+        for (_, value) in enumerate(end_point)
+            append!(ResultArray, fracdiff(f, α, value, step_size, RLDiff_Approx()))
+        end
+        return ResultArray
+    end
+
+    result = 0
+    n = end_point/step_size
+
+    for i in range(0, n-1, step=1)
+        result+=(f(end_point-i*end_point/n)-f(end_point-(i+1)*end_point/n))*((i+1)^(1-α)-i^(1-α))
+    end
+
+    result1=((1-α)*f(0)/n^α+result)*end_point^(-α)*n^α/gamma(2-α)
+    return result1
 end
