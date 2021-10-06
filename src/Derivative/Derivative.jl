@@ -231,15 +231,15 @@ function fracdiff(f, α, end_point, step_size, ::Caputo_Piecewise)
 
     m = floor(α)+1
 
-    result = 0
+    summation = 0
     n = end_point/step_size
 
     for i in range(0, n, step=1)
-        result +=W₅(i, n, m, α)*first_order(f, i*step_size, step_size)
+        summation +=W₅(i, n, m, α)*first_order(f, i*step_size, step_size)
     end
 
-    result1=result*step_size^(m-α)/gamma(m-α+2)
-    return result1
+    result=summation*step_size^(m-α)/gamma(m-α+2)
+    return result
 end
 function W₅(i, n, m, α)
     if i==0
@@ -275,14 +275,14 @@ function fracdiff(f, α, end_point, step_size, ::GL_Nomenclature)
         return ResultArray
     end
 
-    result = 0
+    summation = 0
     n = end_point/step_size
 
     for i in range(0, n-1, step=1)
-        result+=gamma(i-α)/gamma(i+1)*f(end_point-i*end_point/n)
+        summation+=gamma(i-α)/gamma(i+1)*f(end_point-i*end_point/n)
     end
-    result1=result*end_point^(-α)*n^α/gamma(-α)
-    return result1
+    result=summation*end_point^(-α)*n^α/gamma(-α)
+    return result
 end
 
 #TODO: This algorithm is same with the above one, not accurate!!!
@@ -307,14 +307,14 @@ function fracdiff(f, α, end_point, step_size, ::GL_Lagrange3Interp)
     end
 
     n = end_point/step_size
-    result=0
+    summation=0
 
     for i in range(0, n-1, step=1)
-        result += gamma(i-α)/gamma(i+1)*(f(end_point-i*end_point/n)+1/4*α*(f(end_point-(i-1)*end_point/n)-f(end_point-(i+1)*end_point/n))+1/8*α^2*(f(end_point-(i-1)*end_point/n)-2*f(end_point-i*end_point/n)+f(end_point-(i+1)*end_point/n)))
+        summation += gamma(i-α)/gamma(i+1)*(f(end_point-i*end_point/n)+1/4*α*(f(end_point-(i-1)*end_point/n)-f(end_point-(i+1)*end_point/n))+1/8*α^2*(f(end_point-(i-1)*end_point/n)-2*f(end_point-i*end_point/n)+f(end_point-(i+1)*end_point/n)))
     end
 
-    result1 = result*end_point^(-α)*n^α/gamma(-α)
-    return result1
+    result = summation*end_point^(-α)*n^α/gamma(-α)
+    return result
 end
 
 """
@@ -339,13 +339,13 @@ function fracdiff(f, α, end_point, step_size, ::RLDiff_Approx)
         return ResultArray
     end
 
-    result = 0
+    summation = 0
     n = end_point/step_size
 
     for i in range(0, n-1, step=1)
-        result+=(f(end_point-i*end_point/n)-f(end_point-(i+1)*end_point/n))*((i+1)^(1-α)-i^(1-α))
+        summation+=(f(end_point-i*end_point/n)-f(end_point-(i+1)*end_point/n))*((i+1)^(1-α)-i^(1-α))
     end
 
-    result1=((1-α)*f(0)/n^α+result)*end_point^(-α)*n^α/gamma(2-α)
-    return result1
+    result=((1-α)*f(0)/n^α+summation)*end_point^(-α)*n^α/gamma(2-α)
+    return result
 end
