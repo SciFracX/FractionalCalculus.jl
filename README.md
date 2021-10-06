@@ -3,7 +3,7 @@
 <p align="center">
 <img width="250px" src="https://raw.githubusercontent.com/ErikQQY/FractionalCalculus.jl/master/docs/assets/logo.png"/>
 </p>
-FractionalCalculus.jl provides support for fractional calculus computing. You can compute the fractional derivative or integral at a point or at a vectorized collection of points.
+FractionalCalculus.jl provides support for fractional calculus computing.
 
 ## 🎇 Installation
 
@@ -24,7 +24,7 @@ git clone https://github.com/ErikQQY/FractionalCalculus.jl
 
 ### Derivative
 
-To compute the fractional derivative in a specific point, for example, compute the semi derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" /> in <img src="https://latex.codecogs.com/gif.latex?x=0.2" /> with step size **0.0001** using **Caputo** sense:
+To compute the fractional derivative in a specific point, for example, compute <img src="https://latex.codecogs.com/gif.latex?\alpha=0.2" /> derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" /> in <img src="https://latex.codecogs.com/gif.latex?x=1" /> with step size <img src="https://latex.codecogs.com/gif.latex?h=0.0001" /> using **Caputo** sense:
 
 ```julia
 Julia> fracdiff(x->x, 0.2, 0, 1, 0.0001, Caputo_Direct())
@@ -35,7 +35,7 @@ This will return a tuple **(result, estimating error)**.
 
 ### Integral
 
-To compute the fractional integral in a specific point, for example, compute the semi integral of <img src="https://latex.codecogs.com/gif.latex?f(x)=x " /> in <img src="https://latex.codecogs.com/gif.latex?x=0.5" />  with step size **0.0001**​ using **Riemann-Liouville** sense:
+To compute the fractional integral in a specific point, for example, compute the semi integral of <img src="https://latex.codecogs.com/gif.latex?f(x)=x " /> in <img src="https://latex.codecogs.com/gif.latex?x=1" />  with step size <img src="https://latex.codecogs.com/gif.latex?h=0.0001" /> using **Riemann-Liouville** sense:
 
 ```julia
 julia> fracint(x->x, 0.5, 0, 1, 0.0001, RL_Direct())
