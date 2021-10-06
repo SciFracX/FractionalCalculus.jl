@@ -4,7 +4,7 @@ makedocs(
     modules = [FractionalCalculus],
     sitename = "FractionalCalculus.jl",
     format = Documenter.HTML(
-        assets = ["assets/logo.png"],
+        assets = ["assets/favicon.ico"],
     ),
 )
 
