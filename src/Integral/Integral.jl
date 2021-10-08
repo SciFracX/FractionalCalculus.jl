@@ -9,7 +9,13 @@ Riemann-Liouville sense fractional integral algorithms
 Note this two algorithms belong to direct compute, precise are ensured, but maybe cause more memory allocation and take more compilation time.
 """
 abstract type RLInt <: FracIntAlg end
+
+"""
+"""
 struct RL_Direct <: RLInt end
+
+"""
+"""
 struct RL_Direct_First_Diff_Known <: RLInt end
 
 """
@@ -17,8 +23,16 @@ struct RL_Direct_First_Diff_Known <: RLInt end
 title = {Numerical approaches to fractional calculus and fractional ordinary differential equation},
 author = {Changpin Li and An Chen and Junjie Ye},
 }
+"""
 
-Using piecewise linear interpolation function to approximate input function and implement summation.
+"""
+Using piecewise linear interpolation:
+
+    ```math
+    y_n(t)=\frac{t-t_{i+1}}{t_i-t_{i+1}}y(t_i)+\frac{t-t_i}{t_{i+1}-t_i}y(t_{i+1})
+    ```
+
+Constitute the original function with the interpolation and implement the summation.
 """
 struct RL_Piecewise <: RLInt end
 
@@ -28,6 +42,10 @@ struct RL_Piecewise <: RLInt end
 title={The fractional calculus: Theory and applications of differentiation and integration to arbitrary order},
 author={Oldham, Keith B. and Spanier, Jerome},
 year={1984}}
+"""
+
+"""
+
 """
 struct RLInt_Approx <: RLInt end
 

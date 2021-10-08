@@ -1,9 +1,21 @@
 """
-Base type of fractional differentiation senses, in FractionalCalculus.jl, all of the fractional derivative algorithms belong to ```FracDiffAlg```
+Base type of fractional differentiation algorithms, in FractionalCalculus.jl, all of the fractional derivative algorithms belong to ```FracDiffAlg```
 """
 abstract type FracDiffAlg end
+
+"""
+Caputo sense fractional derivative algorithms, please refer to [Caputo derivative](https://en.wikipedia.org/wiki/Fractional_calculus#Caputo_fractional_derivative) for more details.
+"""
 abstract type Caputo <: FracDiffAlg end
+
+"""
+Grünwald–Letnikov sense fractional derivative algorithms, please refer to [Grünwald–Letnikov derivative](https://en.wikipedia.org/wiki/Gr%C3%BCnwald%E2%80%93Letnikov_derivative) for more details
+"""
 abstract type GL <: FracDiffAlg end
+
+"""
+Riemann-Liouville sense fractional derivative algorithms, please refer to [Riemann-Liouville derivative](https://en.wikipedia.org/wiki/Fractional_calculus#Riemann%E2%80%93Liouville_fractional_derivative)
+"""
 abstract type RLDiff <: FracDiffAlg end
 
 """
@@ -21,7 +33,9 @@ struct GL_Direct <: GL end
 title = {Numerical approaches to fractional calculus and fractional ordinary differential equation},
 author = {Changpin Li and An Chen and Junjie Ye},
 }
+"""
 
+"""
 Using piecewise linear interpolation function to approximate input function and combining Caputo derivative then implement summation.
 """
 struct Caputo_Piecewise <: Caputo end
@@ -33,15 +47,23 @@ title={The fractional calculus: Theory and applications of differentiation and i
 author={Oldham, Keith B. and Spanier, Jerome},
 year={1984}} 
 """
+
+"""
+
+"""
 struct GL_Nomenclature <: GL end
 
+"""
+"""
 struct GL_Lagrange3Interp <: GL end
 
+"""
+"""
 struct RLDiff_Approx <: RLDiff end
 
 
 """
-Check if the format of nargins is correct
+Check if the format of nargins is correct.
 """
 function checks(α, start_point, end_point)
     α % 1 != 0 ? nothing : error("α must be a decimal number")
@@ -56,7 +78,13 @@ end
 
 
 """
-    fracdiff(f::Function, α, start_point, end_point, ::FracDiffAlg)
+    fracdiff(f::Function, α, start_point, end_point, FracDiffAlg())
+
+# Example
+
+```julia
+julia> fracdiff(Function, Order, Start_Point, End_Point, AlgType)
+```
 
 Compute the α-order fractional derivative of f from start point to end point with specific algorithm.
 """
@@ -72,15 +100,14 @@ Using Caputo definition to compute fractional derivative with **complex step dif
 # Example: 
 
 ```julia
-fracdiff(x->x^5, 0.5, 0, 2.5, 0.0001, Caputo_Direct())
+julia> fracdiff(x->x^5, 0.5, 0, 2.5, 0.0001, Caputo_Direct())
 ```
 
 Returns a tuple (**result**, **error**), which means the value of this derivative is 141.59714979764541, and the error estimate is 1.1532243848672914e-6.
 
 When the input end points is an array, **fracdiff** will compute 
 
-https://en.wikipedia.org/wiki/Fractional_calculus#Caputo_fractional_derivative
-
+Refer to [Caputo derivative](https://en.wikipedia.org/wiki/Fractional_calculus#Caputo_fractional_derivative)
 """
 function fracdiff(f, α, start_point, end_point, step_size, ::Caputo_Direct)
     checks(α, start_point, end_point)
@@ -112,19 +139,19 @@ end
 
 
 """
-    fracdiff(f, α, start_point, end_point, ::GL)
+    fracdiff(f, α, start_point, end_point, GL_Direct())
 
 Using Grunwald-Letnikov definition to compute fractional derivative.
 
 # Example:
 
 ```julia
-fracdiff(x->x^5, 0, 0.5, GL_Direct())
+julia> fracdiff(x->x^5, 0, 0.5, GL_Direct())
 ```
 
 > Please note Grunwald-Letnikov sense fracdiff only support 0 < α < 1.
 
-Please refer to https://en.wikipedia.org/wiki/Gr%C3%BCnwald%E2%80%93Letnikov_derivative.
+Please refer to [Grünwald–Letnikov derivative](https://en.wikipedia.org/wiki/Gr%C3%BCnwald%E2%80%93Letnikov_derivative).
 """
 function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL_Direct)
     checks(α, start_point, end_point)
@@ -156,10 +183,20 @@ end
 
 
 """
-If the first order derivative of a function is already known,
+    fracdiff(fd, α, start_point, end_point, Caputo_Direct_First_Diff_known())
 
-We can use this method to compute the fractional order derivative more precisely.
+If the first order derivative of a function is already known, we can use this method to compute the fractional order derivative more precisely.
 
+The inout function should be the first order derivative of a function
+
+# Example
+
+```julia
+julia> fracdiff(x->5*x^4, 0.5, 0, 2.5, Caputo_Direct_First_Diff_known())
+```
+Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
+
+Compared with **Caputo_Direct** method, this method don't need to specify step size, more precision are guaranteed.
 """
 function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_Direct_First_Diff_known)
     checks(α, start_point, end_point)
@@ -186,7 +223,19 @@ end
 
 
 """
-If the first and second order derivative of a function is already known
+    fracdiff(fd1, fd2, α, start_point, end_point, Caputo_Direct_First_Second_Diff_Known)
+
+If the first and second order derivative of a function is already known, we can use this method to compute the fractional order derivative more precisely.
+
+
+# Example
+
+```julia
+julia> fracdiff(x->5*x^4, x->20*x^3, 0.5, 0, 2.5, Caputo_Direct_First_Second_Diff_known())
+```
+Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
+    
+Compared with **Caputo_Direct** method, this method don't need to specify step size, more precision are guaranteed.
 """
 function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_Direct_First_Second_Diff_Known)
     checks(α, start_point, end_point)
@@ -208,7 +257,19 @@ function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_Direc
 end
 
 """
-Using the piecewise algorithm to obtain the fractional derivative at a specific point.
+    fracdiff(f, α, end_point, step_size, Caputo_Piecewise())
+
+Using the **piecewise algorithm** to obtain the fractional derivative at a specific point.
+
+# Example
+
+```julia
+julia> fracdiff(x->x^5, 0.5, 2.5, Caputo_Piecewise())
+```
+
+Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
+
+Using **Caputo**
 """
 function fracdiff(f, α, end_point, step_size, ::Caputo_Piecewise)
 
