@@ -11,6 +11,7 @@ Note this two algorithms belong to direct compute, precise are ensured, but mayb
 abstract type RLInt <: FracIntAlg end
 
 """
+
 """
 struct RL_Direct <: RLInt end
 
@@ -28,9 +29,9 @@ author = {Changpin Li and An Chen and Junjie Ye},
 """
 Using piecewise linear interpolation:
 
-    ```math
-    y_n(t)=\frac{t-t_{i+1}}{t_i-t_{i+1}}y(t_i)+\frac{t-t_i}{t_{i+1}-t_i}y(t_{i+1})
-    ```
+```math
+    y_n(t)=\\frac{t-t_{i+1}}{t_i-t_{i+1}}y(t_i)+\\frac{t-t_i}{t_{i+1}-t_i}y(t_{i+1})
+```
 
 Constitute the original function with the interpolation and implement the summation.
 """
@@ -45,10 +46,13 @@ year={1984}}
 """
 
 """
-
+Using the **Staircase approximation** to approximate the original function and implement the summation.
 """
 struct RLInt_Approx <: RLInt end
 
+"""
+Deploying the [Linear Interpolation](https://en.wikipedia.org/wiki/Linear_interpolation) between ``f_{j+1}`` and ``f_j``, **RL_LinearInterp** method is more precise than **RLInt_Approx**.
+"""
 struct RL_LinearInterp <: RLInt end
 
 """
