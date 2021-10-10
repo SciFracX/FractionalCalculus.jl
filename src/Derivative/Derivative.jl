@@ -20,6 +20,14 @@ abstract type RLDiff <: FracDiffAlg end
 
 """
 Note these four algorithms belong to direct computing, precise are ensured, but maybe cause more memory allocation and take more compilation time.
+
+Using the direct mathematic expression:
+
+```math
+^CD_t^α=\\frac{1}{\\Gamma(n-α)}\\int_0^t\\frac{f^{(n)}(τ)}{(t-τ)^{α+1-n}}
+```
+
+As for the derivative inside the integral, we use the **Complex Step Differentiation** to obtain a more accurate value.
 """
 struct Caputo_Direct <: Caputo end
 struct Caputo_Direct_First_Diff_known <: Caputo end
@@ -37,6 +45,9 @@ author = {Changpin Li and An Chen and Junjie Ye},
 
 """
 Using piecewise linear interpolation function to approximate input function and combining Caputo derivative then implement summation.
+
+
+
 """
 struct Caputo_Piecewise <: Caputo end
 
@@ -82,7 +93,7 @@ end
 
 # Example
 
-```julia
+```julia-repl
 julia> fracdiff(Function, Order, Start_Point, End_Point, AlgType)
 ```
 
@@ -99,7 +110,7 @@ Using Caputo definition to compute fractional derivative with **complex step dif
 
 # Example: 
 
-```julia
+```julia-repl
 julia> fracdiff(x->x^5, 0.5, 0, 2.5, 0.0001, Caputo_Direct())
 ```
 
@@ -145,7 +156,7 @@ Using Grunwald-Letnikov definition to compute fractional derivative.
 
 # Example:
 
-```julia
+```julia-repl
 julia> fracdiff(x->x^5, 0, 0.5, GL_Direct())
 ```
 
@@ -191,7 +202,7 @@ The inout function should be the first order derivative of a function
 
 # Example
 
-```julia
+```julia-repl
 julia> fracdiff(x->5*x^4, 0.5, 0, 2.5, Caputo_Direct_First_Diff_known())
 ```
 Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
@@ -230,7 +241,7 @@ If the first and second order derivative of a function is already known, we can 
 
 # Example
 
-```julia
+```julia-repl
 julia> fracdiff(x->5*x^4, x->20*x^3, 0.5, 0, 2.5, Caputo_Direct_First_Second_Diff_known())
 ```
 Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
@@ -263,7 +274,7 @@ Using the **piecewise algorithm** to obtain the fractional derivative at a speci
 
 # Example
 
-```julia
+```julia-repl
 julia> fracdiff(x->x^5, 0.5, 2.5, Caputo_Piecewise())
 ```
 
@@ -379,7 +390,17 @@ function fracdiff(f, α, end_point, step_size, ::GL_Lagrange3Interp)
 end
 
 """
-The RLDiff_Approx algorithm only support for 0 < α < 1
+    fracdiff(f, α, end_point, step_size, RLDiff_Approx())
+
+Using approximation to obtain fractional derivative value.
+
+```julia-repl
+julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiff_Approx())
+```
+
+!!! warning
+The RLDiff_Approx algorithm only support for 0 < α < 1.
+
 """
 function fracdiff(f, α, end_point, step_size, ::RLDiff_Approx)
         

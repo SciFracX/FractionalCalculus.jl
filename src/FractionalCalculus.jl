@@ -14,7 +14,7 @@ export Caputo, GL, RLDiff
 export Caputo_Direct, Caputo_Direct_First_Diff_Known, Caputo_Direct_First_Second_Diff_Known
 export Caputo_Piecewise
 export GL_Direct
-export GL_Nomenclature, GL_Lagrange3Interp
+#export GL_Nomenclature, GL_Lagrange3Interp
 export RLDiff_Approx
 
 #Export fractional integral releating API

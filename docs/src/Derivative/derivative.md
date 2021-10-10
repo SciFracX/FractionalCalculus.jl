@@ -1,16 +1,18 @@
 # Fractional derivative
 
-To get start with fractional derivative, you need to know the fractional derivative is defined via integral
-```math
-D^{\alpha}_{t}f(t)=\frac{1}{\Gamma(n-\alpha)}\int^t_0
-```
+To get start with fractional derivative, you need to know that unlike Newtonian derivatives, fractional derivative is defined via integral.
+
+In **FractionalCalculus.jl**, let's see, if you want to calculate the $0.4$ order fractional derivative of $f(x)=x$ at a $x=1$ with step size $0.0001$, simply typing these:
 
 
 ```julia
-fracdiff(x->x, 0.5, 0, 1, Caputo())
+fracdiff(x->x, 0.4, 1, 0.0001, Caputo_Piecewise())
 ```
 
+
+
 There many types of definitions of fractional derivative, Caputo is one of these useful definitions. The Caputo fractional derivative is first be proposed in [Michele Caputo's Paper](https://doi.org/10.1111/j.1365-246X.1967.tb02303.x), 
+
 ```math
 ^CD_t^\alpha f(t) = \frac{1}{\Gamma(n-\alpha)}\int_0^t\frac{f^{(n)}(\tau)d\tau}{(t-\tau)^{\alpha+1-n}}, n=\lceil{\alpha}\rceil
 ```

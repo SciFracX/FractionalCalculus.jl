@@ -11,11 +11,18 @@ Note this two algorithms belong to direct compute, precise are ensured, but mayb
 abstract type RLInt <: FracIntAlg end
 
 """
+Using the direct mathematic expression:
 
+```math
+(J^αf)(t)=\\frac{1}{\\Gamma(α)} \\int_0^t(t-τ)^{α-1}f(τ)dτ
+```
+
+By using [QuadGK](https://github.com/JuliaMath/QuadGK.jl) calculate the integration and obtain the value.
 """
 struct RL_Direct <: RLInt end
 
 """
+
 """
 struct RL_Direct_First_Diff_Known <: RLInt end
 
@@ -77,8 +84,8 @@ By entering the function, the order, the start point and end point and step size
 
 # Example: 
 
-```julia
-fracint(x->x^5, 0.5, 0, 2.5, 1e-8, RL_Direct())
+```julia-repl
+julia> fracint(x->x^5, 0.5, 0, 2.5, 1e-8, RL_Direct())
 ```
 
 Riemann_Liouville fractional integral using complex step differentiation
@@ -107,6 +114,14 @@ end
 
 
 """
+    fracint(f, fd, α, start_point, end_point, RL_Direct_First_Diff_Known())
+
+# Example
+
+```julia-repl
+julia> fracint(x->x^5, x->5*x^4, 0.5, 0, 2.5, RL_Direct_First_Diff_Known())
+```
+
 With first order derivative known, we can directly use it in the computation of α order fraction integral
 """
 function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Direct_First_Diff_Known)
@@ -130,6 +145,14 @@ function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Dir
 end
 
 """
+    fracint(f, α, end_point, step_size, RL_Piecewise())
+
+# Example
+
+```julia-repl
+julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_Piecewise())
+```
+
 By deploying Piecewise interpolation to approximate the original function, with small step_size, this method is fast and take little memory allocation.
 """
 function fracint(f::Function, α, end_point, step_size, ::RL_Piecewise)
@@ -166,7 +189,7 @@ end
 
 
 """
-Note this algorithms demand α must be negative!!
+    fracint()
 """
 function fracint(f, α, end_point, step_size, ::RLInt_Approx)
         
@@ -200,6 +223,12 @@ function fracint(f, α, end_point, step_size, ::RLInt_Approx)
 end
 
 """
+    fracint(f, α, end_point, step_size, RL_LinearInterp())
+
+# Example
+
+
+
 RL_LinearInterp is more complex but more precise
 """
 function fracint(f, α, end_point, step_size, ::RL_LinearInterp)

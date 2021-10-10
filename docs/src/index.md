@@ -32,7 +32,11 @@ FractionalCalculus now has algorithms for **Caputo fractional derivative**, **Gr
 
 - Fractional differential equations
 
+## Contributing
 
+## Please note
+
+**FractionalCalculus.jl** is built upon the hard work of numerous scientific researchers, I sincerely appreciate what they have done to help the development of science and technology.
 
 !!! info "WIP"
 		FractionalCalculus.jl is under heavy construction, some API or docs might change a lot.
