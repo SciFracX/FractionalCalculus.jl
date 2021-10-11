@@ -6,16 +6,16 @@ FractionalCalculus.jl is a Julia package aiming at providing support for computi
 
 ## Installation
 
-To install FractionalCalculus, run the following command in Julia REPL:
+To install FractionalCalculus, please open Julia REPL and press`]` key to use package mode and then type the following command:
 
 ```julia
-] add FractionalCalculus
+pkg> add FractionalCalculus
 ```
 
-Or if you want to experience the latest version of FractionalCalculus.jl, you can directly clone this repo:
+Or if you want to experience the latest version of FractionalCalculus.jl:
 
-```bash
-git clone https://github.com/ErikQQY/FractionalCalculus.jl
+```julia
+pkg> add FractionalCalculus#master
 ```
 
 ## Features
@@ -34,9 +34,11 @@ FractionalCalculus now has algorithms for **Caputo fractional derivative**, **Gr
 
 ## Contributing
 
-## Please note
+The development of FractionalCalculus.jl is on GitHub, please report bugs or send pull requests to help FractionalCalculus.jl grow.
 
-**FractionalCalculus.jl** is built upon the hard work of numerous scientific researchers, I sincerely appreciate what they have done to help the development of science and technology.
+## Acknowledge
+
+**FractionalCalculus.jl** is built upon the hard work of many scientific researchers, I sincerely appreciate what they have done to help the development of science and technology.
 
 !!! info "WIP"
 		FractionalCalculus.jl is under heavy construction, some API or docs might change a lot.

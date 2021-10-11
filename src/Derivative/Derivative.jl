@@ -19,7 +19,13 @@ Riemann-Liouville sense fractional derivative algorithms, please refer to [Riema
 abstract type RLDiff <: FracDiffAlg end
 
 """
-Note these four algorithms belong to direct computing, precise are ensured, but maybe cause more memory allocation and take more compilation time.
+"""
+#abstract type Lubich <:
+
+
+
+"""
+Note *Caputo Direct* algorithms belong to direct computing, precise are ensured, but maybe cause more memory allocation and take more compilation time.
 
 Using the direct mathematic expression:
 
@@ -30,9 +36,18 @@ Using the direct mathematic expression:
 As for the derivative inside the integral, we use the **Complex Step Differentiation** to obtain a more accurate value.
 """
 struct Caputo_Direct <: Caputo end
+
+"""
+
+"""
 struct Caputo_Direct_First_Diff_known <: Caputo end
+
+"""
+"""
 struct Caputo_Direct_First_Second_Diff_Known <: Caputo end
 
+"""
+"""
 struct GL_Direct <: GL end
 
 
@@ -73,6 +88,14 @@ struct GL_Lagrange3Interp <: GL end
 struct RLDiff_Approx <: RLDiff end
 
 
+
+"""
+"""
+
+"""
+"""
+struct GL_Finite_Difference <: GL end
+
 """
 Check if the format of nargins is correct.
 """
@@ -89,9 +112,11 @@ end
 
 
 """
+# FracDiffAlg
+
     fracdiff(f::Function, α, start_point, end_point, FracDiffAlg())
 
-# Example
+### Example
 
 ```julia-repl
 julia> fracdiff(Function, Order, Start_Point, End_Point, AlgType)
@@ -104,11 +129,11 @@ end
 
 
 """
+# Caputo sense fractional derivative.
+
     fracdiff(f::Function, α, start_point, end_point, step_size ::Caputo)
 
-Using Caputo definition to compute fractional derivative with **complex step differentiation**.
-
-# Example: 
+### Example: 
 
 ```julia-repl
 julia> fracdiff(x->x^5, 0.5, 0, 2.5, 0.0001, Caputo_Direct())
@@ -150,11 +175,11 @@ end
 
 
 """
+# Grünwald–Letnikov sense fractional dervivative.
+
     fracdiff(f, α, start_point, end_point, GL_Direct())
 
-Using Grunwald-Letnikov definition to compute fractional derivative.
-
-# Example:
+### Example:
 
 ```julia-repl
 julia> fracdiff(x->x^5, 0, 0.5, GL_Direct())
@@ -162,7 +187,7 @@ julia> fracdiff(x->x^5, 0, 0.5, GL_Direct())
 
 > Please note Grunwald-Letnikov sense fracdiff only support 0 < α < 1.
 
-Please refer to [Grünwald–Letnikov derivative](https://en.wikipedia.org/wiki/Gr%C3%BCnwald%E2%80%93Letnikov_derivative).
+Please refer to [Grünwald–Letnikov derivative](https://en.wikipedia.org/wiki/Gr%C3%BCnwald%E2%80%93Letnikov_derivative) for more details.
 """
 function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL_Direct)
     checks(α, start_point, end_point)
@@ -194,13 +219,15 @@ end
 
 
 """
+# Caputo sense fractional derivative with first derivative known.
+
     fracdiff(fd, α, start_point, end_point, Caputo_Direct_First_Diff_known())
 
 If the first order derivative of a function is already known, we can use this method to compute the fractional order derivative more precisely.
 
 The inout function should be the first order derivative of a function
 
-# Example
+### Example
 
 ```julia-repl
 julia> fracdiff(x->5*x^4, 0.5, 0, 2.5, Caputo_Direct_First_Diff_known())
@@ -234,12 +261,14 @@ end
 
 
 """
+# Caputo sense fractional derivative with first and second derivative known.
+
     fracdiff(fd1, fd2, α, start_point, end_point, Caputo_Direct_First_Second_Diff_Known)
 
 If the first and second order derivative of a function is already known, we can use this method to compute the fractional order derivative more precisely.
 
 
-# Example
+### Example
 
 ```julia-repl
 julia> fracdiff(x->5*x^4, x->20*x^3, 0.5, 0, 2.5, Caputo_Direct_First_Second_Diff_known())
@@ -268,11 +297,13 @@ function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_Direc
 end
 
 """
+# Caputo sense Piecewise algorithm
+
     fracdiff(f, α, end_point, step_size, Caputo_Piecewise())
 
 Using the **piecewise algorithm** to obtain the fractional derivative at a specific point.
 
-# Example
+### Example
 
 ```julia-repl
 julia> fracdiff(x->x^5, 0.5, 2.5, Caputo_Piecewise())
@@ -280,7 +311,6 @@ julia> fracdiff(x->x^5, 0.5, 2.5, Caputo_Piecewise())
 
 Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
 
-Using **Caputo**
 """
 function fracdiff(f, α, end_point, step_size, ::Caputo_Piecewise)
 
@@ -390,16 +420,20 @@ function fracdiff(f, α, end_point, step_size, ::GL_Lagrange3Interp)
 end
 
 """
+# Riemann Liouville sense derivative approximation
+
     fracdiff(f, α, end_point, step_size, RLDiff_Approx())
 
 Using approximation to obtain fractional derivative value.
+
+### Example
 
 ```julia-repl
 julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiff_Approx())
 ```
 
 !!! warning
-The RLDiff_Approx algorithm only support for 0 < α < 1.
+    The RLDiff_Approx algorithm only support for 0 < α < 1.
 
 """
 function fracdiff(f, α, end_point, step_size, ::RLDiff_Approx)
@@ -430,4 +464,18 @@ function fracdiff(f, α, end_point, step_size, ::RLDiff_Approx)
 
     result=((1-α)*f(0)/n^α+summation)*end_point^(-α)*n^α/gamma(2-α)
     return result
+end
+
+function fracdiff(f, α, end_point, step_size, ::GL_Finite_Difference)
+
+
+    n = end_point/step_size
+    result=0
+
+    for i in range(0, n, step=1)
+        result+=(-1)^i*gamma(α+1)/(gamma(i+1)*gamma(α-i+1))*f(end_point-i*step_size)
+    end
+
+    result1=result/step_size^α
+    return result1
 end

@@ -5,6 +5,33 @@
 </p>
 
 
+<p align="center">
+  <a href="https://github.com/ErikQQY/FractionalCalculus.jl/actions?query=workflow%3ACI">
+    <img alt="building" src="https://github.com/ErikQQY/FractionalCalculus.jl/workflows/CI/badge.svg">
+  </a>
+  <a href="https://codecov.io/gh/ErikQQY/FractionalCalculus.jl">
+    <img alt="codecov" src="https://codecov.io/gh/ErikQQY/FractionalCalculus.jl/branch/master/graph/badge.svg">
+  </a>
+  <a href="https://www.erikqqy.xyz/FractionalCalculus.jl/dev/">
+    <img src="https://img.shields.io/badge/docs-dev-blue.svg" alt="license">
+  </a>
+  <a href="https://github.com/ErikQQY/FractionalCalculus.jl/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/ErikQQY/FractionalCalculus.jl?style=flat-square" alt="license">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/ErikQQY/FractionalCalculus.jl/issues">
+    <img alt="GitHub issues" src="https://img.shields.io/github/issues/ErikQQY/FractionalCalculus.jl?style=flat-square">
+  </a>
+  <a href="#">
+    <img alt="GitHub stars" src="https://img.shields.io/github/stars/ErikQQY/FractionalCalculus.jl?style=flat-square">
+  </a>
+  <a href="https://github.com/ErikQQY/FractionalCalculus.jl/network">
+    <img alt="GitHub forks" src="https://img.shields.io/github/forks/ErikQQY/FractionalCalculus.jl?style=flat-square">
+  </a>
+</p>
+
 FractionalCalculus.jl provides support for fractional calculus computing.
 
 ## 🎇 Installation

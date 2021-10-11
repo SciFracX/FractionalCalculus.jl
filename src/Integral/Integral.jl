@@ -78,18 +78,18 @@ end
 
 
 """
-**fracint** as the general API used to compute fractional integral.
-By entering the function, the order, the start point and end point and step size, and choose the algorithms you want to use
-    fracint(f::Function)
+# Riemann Liouville sense fractional integral
 
-# Example: 
+    fracint(f::Function, α, start_point, end_point, step_size, RL_Direct())
+
+### Example: 
 
 ```julia-repl
 julia> fracint(x->x^5, 0.5, 0, 2.5, 1e-8, RL_Direct())
 ```
 
-Riemann_Liouville fractional integral using complex step differentiation
-Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which means the value of this derivative is 1.1639316474512205, and the error estimate is 1.0183453796725215e-8
+Riemann_Liouville fractional integral using complex step differentiation.
+Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which contains the value of this derivative is 1.1639316474512205, and the error estimate is 1.0183453796725215e-8
 """
 function fracint(f::Union{Function, Number}, α, start_point, end_point, step_size, ::RL_Direct)
     checks(α, start_point, end_point)
@@ -114,9 +114,11 @@ end
 
 
 """
+# Riemann Liouville sense fractional integral with first diff known.
+
     fracint(f, fd, α, start_point, end_point, RL_Direct_First_Diff_Known())
 
-# Example
+### Example
 
 ```julia-repl
 julia> fracint(x->x^5, x->5*x^4, 0.5, 0, 2.5, RL_Direct_First_Diff_Known())
@@ -145,9 +147,11 @@ function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Dir
 end
 
 """
+# Riemann Liouville sense fractional integral using piecewise interpolation.
+
     fracint(f, α, end_point, step_size, RL_Piecewise())
 
-# Example
+### Example
 
 ```julia-repl
 julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_Piecewise())
@@ -189,7 +193,15 @@ end
 
 
 """
-    fracint()
+# Riemann Liouville sense fractional integral approximation.
+
+    fracint(f, α, end_point, step_size, RLInt_Approx())
+
+### Example
+
+```julia-repl
+julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Approx())
+```
 """
 function fracint(f, α, end_point, step_size, ::RLInt_Approx)
         
@@ -223,13 +235,17 @@ function fracint(f, α, end_point, step_size, ::RLInt_Approx)
 end
 
 """
+# Riemann Liouville sense fractional integral using Linear interpolation.
+
     fracint(f, α, end_point, step_size, RL_LinearInterp())
 
-# Example
+### Example
 
+```julia-repl
+julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_LinearInterp())
+```
 
-
-RL_LinearInterp is more complex but more precise
+**RL_LinearInterp** is more complex but more precise.
 """
 function fracint(f, α, end_point, step_size, ::RL_LinearInterp)
         
