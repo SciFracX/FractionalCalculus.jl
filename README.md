@@ -101,7 +101,7 @@ Current Algorithms
 
 Let's see examples here:
 
-Compute the semi-derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" />in the interval <img src="https://latex.codecogs.com/gif.latex?[0.0, 1.0]" />:
+Compute the semi-derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" /> in the interval <img src="https://latex.codecogs.com/gif.latex?[0.00, 1.00]" />:
 
 ![Plot](/docs/src/assets/semiderivativeplot.png)
 
