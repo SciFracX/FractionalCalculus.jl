@@ -107,13 +107,13 @@ We can see the computing retains high precision.
 
 Different order derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" />:
 
-![Different Order](\docs\src\assets\differentorderplot.png)
+![Different Order](/docs/src/assets/differentorderplot.png)
 
 
 
 Also different order of <img src="https://latex.codecogs.com/gif.latex?f(x)=sin(x)" />:
 
-![Different Order of sin](\docs\src\assets\differentordersinplot.png)
+![Different Order of sin](/docs/src/assets/differentordersinplot.png)
 
 ## 📢 Status
 
