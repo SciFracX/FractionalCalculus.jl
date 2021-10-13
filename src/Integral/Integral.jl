@@ -217,7 +217,7 @@ function fracint(f, α, end_point, step_size, ::RLInt_Approx)
     if typeof(end_point) <: AbstractArray
         ResultArray = Float64[]
         for (_, value) in enumerate(end_point)
-            append!(ResultArray, fracint(f, α, value, step_size, RL_Approx()))
+            append!(ResultArray, fracint(f, α, value, step_size, RL_IntApprox()))
         end
         return ResultArray
     end

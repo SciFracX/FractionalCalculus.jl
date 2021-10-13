@@ -16,6 +16,10 @@ makedocs(
         "Fractional Integral" => [
             "Integral/integral.md",
             "Integral/integralapi.md"
+        ],
+        "Example" => [
+            "Example/derivative.md",
+            "Example/integral.md"
         ]
     ]
 )
