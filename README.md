@@ -42,10 +42,10 @@ If you have already install Julia, you can install FractionalCalculus.jl in REPL
 Pkg> add FractionalCalculus
 ```
 
-Or if you want to experience the latest version of FractionalCalculus.jl, you can directly clone this repo:
+Or if you want to experience the latest version of FractionalCalculus.jl:
 
 ```julia
-P
+Pkg> add FractionalCalculus#master
 ```
 
 ## 🦸 Quick start
@@ -99,19 +99,19 @@ Current Algorithms
 
 ## 🖼️ Example
 
-Let's see an example here:
+Let's see examples here:
+
+Compute the semi-derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" />in the interval <img src="https://latex.codecogs.com/gif.latex?[0.0, 1.0]" />:
 
 ![Plot](/docs/src/assets/semiderivativeplot.png)
 
-We can see the computing retains high precision.
+We can see the computing retains high precision⬆️.
 
-Different order derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" />:
+Compute different order derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" />:
 
 ![Different Order](/docs/src/assets/differentorderplot.png)
 
-
-
-Also different order of <img src="https://latex.codecogs.com/gif.latex?f(x)=sin(x)" />:
+Also different order derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=sin(x)" />:
 
 ![Different Order of sin](/docs/src/assets/differentordersinplot.png)
 
@@ -142,8 +142,11 @@ Fractional Integral:
 
 I am trying to find a way to support symbolic differentiation and integration features🤔.
 
+## 📚 Reference
+
+FractionalCalculus.jl is built upon the hard work of many scientific researchers, I sincerely appreciate what they have done to help the development of science and technology.
+
 ## 🥂 Contributing
 
 If you are interested in Fractional Calculus and Julia, welcome to raise an issue or file a Pull Request!!
 
-This package is inspired by [JuliaMath/Calculus.jl](https://github.com/JuliMath/Calculus.jl) and [Numerical Methods in Fractional Calculus by Sean Townsend 2015](http://broncoscholar.library.cpp.edu/bitstream/10211.3/160926/1/TownsendSean_Thesis2015.pdf)
