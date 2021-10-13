@@ -39,14 +39,13 @@ FractionalCalculus.jl provides support for fractional calculus computing.
 If you have already install Julia, you can install FractionalCalculus.jl in REPL using Julia package manager:
 
 ```julia
-import Pkg;
-Pkg.add("FractionalCalculus")
+Pkg> add FractionalCalculus
 ```
 
 Or if you want to experience the latest version of FractionalCalculus.jl, you can directly clone this repo:
 
-```bash
-git clone https://github.com/ErikQQY/FractionalCalculus.jl
+```julia
+P
 ```
 
 ## 🦸 Quick start
@@ -97,6 +96,24 @@ Current Algorithms
         ├── RL_Piecewise
         └── RLInt_Approx
 ```
+
+## 🖼️ Example
+
+Let's see an example here:
+
+![Plot](/docs/src/assets/semiderivativeplot.png)
+
+We can see the computing retains high precision.
+
+Different order derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" />:
+
+![Different Order](\docs\src\assets\differentorderplot.png)
+
+
+
+Also different order of <img src="https://latex.codecogs.com/gif.latex?f(x)=sin(x)" />:
+
+![Different Order of sin](\docs\src\assets\differentordersinplot.png)
 
 ## 📢 Status
 
