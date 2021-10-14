@@ -27,3 +27,8 @@ FractionalCalculus.GL_Direct
 FractionalCalculus.RLDiff_Approx
 ```
 
+```@docs
+FractionalCalculus.@fracdiff
+FractionalCalculus.@semifracdiff
+```
+

@@ -21,3 +21,8 @@ FractionalCalculus.RLInt_Approx
 FractionalCalculus.RL_LinearInterp
 ```
 
+```@docs
+FractionalCalculus.@fracint
+FractionalCalculus.@sfracint
+```
+

@@ -38,15 +38,17 @@ As for the derivative inside the integral, we use the **Complex Step Differentia
 struct Caputo_Direct <: Caputo end
 
 """
-
+With first derivative known, we can direct use the derivative to compute a more accurate result.
 """
 struct Caputo_Direct_First_Diff_known <: Caputo end
 
 """
+With first and second derivative known, we can direct use derivative and second derivative to compute a more accurate result.
 """
 struct Caputo_Direct_First_Second_Diff_Known <: Caputo end
 
 """
+
 """
 struct GL_Direct <: GL end
 
