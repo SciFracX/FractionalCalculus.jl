@@ -96,6 +96,11 @@ struct RLDiff_Approx <: RLDiff end
 """
 struct GL_Finite_Difference <: GL end
 
+
+################################################################
+###                    Type defination done                  ###
+################################################################
+
 """
 Check if the format of nargins is correct.
 """
@@ -478,4 +483,34 @@ function fracdiff(f, α, end_point, step_size, ::GL_Finite_Difference)
 
     result1=result/step_size^α
     return result1
+end
+
+
+## Macros for convenient computing.
+"""
+    @fracdiff(f, α, point)
+
+Return the α-order derivative of **f** at specific point.
+
+```julia-repl
+julia> @fracdiff(x->x, 0.5, 1)
+1.1283791670955188
+```
+"""
+macro fracdiff(f, α, point)
+    return :(fracdiff($f, $α, $point, 0.0001, RLDiff_Approx()))
+end
+
+"""
+    @semifracdiff(f, point)
+
+Return the semi-derivative of **f** at spedific point.
+
+```julia-repl
+julia> @semifracdiff(x->x, 1)
+1.1283791670955188
+```
+"""
+macro semifracdiff(f, point)
+    return :(fracdiff($f, 0.5, $point, 0.0001, RLDiff_Approx()))
 end
