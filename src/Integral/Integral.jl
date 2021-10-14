@@ -217,7 +217,7 @@ function fracint(f, α, end_point, step_size, ::RLInt_Approx)
     if typeof(end_point) <: AbstractArray
         ResultArray = Float64[]
         for (_, value) in enumerate(end_point)
-            append!(ResultArray, fracint(f, α, value, step_size, RL_IntApprox()))
+            append!(ResultArray, fracint(f, α, value, step_size, RLInt_Approx()))
         end
         return ResultArray
     end
@@ -276,4 +276,34 @@ function fracint(f, α, end_point, step_size, ::RL_LinearInterp)
 
     result1=result*end_point^(-α)*n^α/gamma(-α)
     return result1
+end
+
+
+## Macros for convenient computing.
+"""
+    @fracint(f, α, point)
+
+Return the α-order integral of **f** at specific point.
+
+```julia-repl
+julia> @fracint(x->x, 0.5, 1)
+0.7522525439593486
+```
+"""
+macro fracint(f, α, point)
+    return :(fracint($f, $α, $point, 0.0001, RLInt_Approx()))
+end
+
+"""
+    @semifracint(f, point)
+
+Return the semi-integral of **f** at spedific point.
+
+```julia-repl
+julia> @semifracint(x->x, 1)
+0.7522525439593486
+```
+"""
+macro semifracint(f, point)
+    return :(fracint($f, 0.5, $point, 0.0001, RLInt_Approx()))
 end
