@@ -22,7 +22,7 @@ By using [QuadGK](https://github.com/JuliaMath/QuadGK.jl) calculate the integrat
 struct RL_Direct <: RLInt end
 
 """
-
+With first derivative known, we can use the Riemann Liouville sense to obtain the fractional integral more effcient.
 """
 struct RL_Direct_First_Diff_Known <: RLInt end
 

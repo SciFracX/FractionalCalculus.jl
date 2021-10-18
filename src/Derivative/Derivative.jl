@@ -48,7 +48,7 @@ With first and second derivative known, we can direct use derivative and second 
 struct Caputo_Direct_First_Second_Diff_Known <: Caputo end
 
 """
-
+Grunwald Letnikov direct compute method to obtain fractional derivative, precision are guaranteed but cause more memory allocation and compilation time.
 """
 struct GL_Direct <: GL end
 
@@ -86,6 +86,7 @@ struct GL_Nomenclature <: GL end
 struct GL_Lagrange3Interp <: GL end
 
 """
+Riemann Liouville 
 """
 struct RLDiff_Approx <: RLDiff end
 

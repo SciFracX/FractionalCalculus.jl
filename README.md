@@ -101,7 +101,7 @@ Current Algorithms
 
 Let's see examples here:
 
-Compute the semi-derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" /> in the interval <img src="https://latex.codecogs.com/gif.latex?[0.00, 1.00]" />:
+Compute the semi-derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" /> in the interval [0]:
 
 ![Plot](/docs/src/assets/semiderivativeplot.png)
 
@@ -109,11 +109,15 @@ We can see the computing retains high precision⬆️.
 
 Compute different order derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" />:
 
-![Different Order](/docs/src/assets/differentorderplot.png)
+![Different Order](/docs/src/assets/different_order_x_derivative.png)
 
 Also different order derivative of <img src="https://latex.codecogs.com/gif.latex?f(x)=sin(x)" />:
 
-![Different Order of sin](/docs/src/assets/differentordersinplot.png)
+![Different Order of sin](/docs/src/assets/different_order_sin_derivative.png)
+
+And also different order integral of <img src="https://latex.codecogs.com/gif.latex?f(x)=x" />:
+
+![Different Order Of x](/docs/src/assets/different_order_x_integral.png)
 
 ## 📢 Status
 
