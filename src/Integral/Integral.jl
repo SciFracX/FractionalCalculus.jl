@@ -94,6 +94,15 @@ Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which contains the 
 function fracint(f::Union{Function, Number}, α, start_point, end_point, step_size, ::RL_Direct)
     checks(α, start_point, end_point)
     
+    #The fractional integral of number is relating with the end_point.
+    if typeof(f) <: Number
+        if f == 0
+            return 0
+        else
+            return 2*f*sqrt(end_point/pi)
+        end
+    end
+
     #Support vectorized end point
     if typeof(end_point) <: AbstractArray
         ResultArray = Float64[]
@@ -129,6 +138,15 @@ With first order derivative known, we can directly use it in the computation of 
 function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Direct_First_Diff_Known)
     checks(α, start_point, end_point)
     
+    #The fractional integral of number is relating with the end_point.
+    if typeof(f) <: Number
+        if f == 0
+            return 0
+        else
+            return 2*f*sqrt(end_point/pi)
+        end
+    end
+
     #Support vectorized end point
     if typeof(end_point) <: AbstractArray
         ResultArray = Float64[]
@@ -162,6 +180,15 @@ By deploying Piecewise interpolation to approximate the original function, with 
 function fracint(f::Function, α, end_point, step_size, ::RL_Piecewise)
     end_point > 0 ? nothing : error("Please compute the integral of a positive value")
     
+    #The fractional integral of number is relating with the end_point.
+    if typeof(f) <: Number
+        if f == 0
+            return 0
+        else
+            return 2*f*sqrt(end_point/pi)
+        end
+    end
+
     #Support vectorized end point
     if typeof(end_point) <: AbstractArray
         ResultArray = Float64[]
@@ -205,8 +232,13 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Approx())
 """
 function fracint(f, α, end_point, step_size, ::RLInt_Approx)
         
+    #The fractional integral of number is relating with the end_point.
     if typeof(f) <: Number
-        return 0
+        if f == 0
+            return 0
+        else
+            return 2*f*sqrt(end_point/pi)
+        end
     end
 
     if end_point == 0
@@ -249,8 +281,13 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_LinearInterp())
 """
 function fracint(f, α, end_point, step_size, ::RL_LinearInterp)
         
+    #The fractional integral of number is relating with the end_point.
     if typeof(f) <: Number
-        return 0
+        if f == 0
+            return 0
+        else
+            return 2*f*sqrt(end_point/pi)
+        end
     end
 
     if end_point == 0

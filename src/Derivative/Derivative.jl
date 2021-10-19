@@ -153,9 +153,13 @@ Refer to [Caputo derivative](https://en.wikipedia.org/wiki/Fractional_calculus#C
 function fracdiff(f, α, start_point, end_point, step_size, ::Caputo_Direct)
     checks(α, start_point, end_point)
 
-    #The fractional derivative of a constant is zero
+    #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
-        return 0
+        if f == 0 
+            return 0
+        else
+            return f/sqrt(pi*end_point)
+        end
     end
     
     #Support both Matrix and Vector end points
@@ -197,9 +201,13 @@ Please refer to [Grünwald–Letnikov derivative](https://en.wikipedia.org/wiki/
 function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL_Direct)
     checks(α, start_point, end_point)
 
-    #The fractional derivative of a constant is zero
+    #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
-        return 0
+        if f == 0 
+            return 0
+        else
+            return f/sqrt(pi*end_point)
+        end
     end
     
     #Support both Matrix and Vector end points
@@ -244,9 +252,13 @@ Compared with **Caputo_Direct** method, this method don't need to specify step s
 function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_Direct_First_Diff_known)
     checks(α, start_point, end_point)
 
-    #The fractional derivative of a constant is zero
+    #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
-        return 0
+        if f == 0 
+            return 0
+        else
+            return f/sqrt(pi*end_point)
+        end
     end
     
     #Support both Matrix and Vector end points
@@ -319,8 +331,13 @@ Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
 """
 function fracdiff(f, α, end_point, step_size, ::Caputo_Piecewise)
 
+    #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
-        return 0
+        if f == 0 
+            return 0
+        else
+            return f/sqrt(pi*end_point)
+        end
     end
 
     if end_point == 0
@@ -365,8 +382,13 @@ end
 #This algorithm is not good, still more to do
 function fracdiff(f, α, end_point, step_size, ::GL_Nomenclature)
     
+    #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
-        return 0
+        if f == 0 
+            return 0
+        else
+            return f/sqrt(pi*end_point)
+        end
     end
 
     if end_point == 0
@@ -396,8 +418,13 @@ end
 #This algorithm is not good, still more to do
 function fracdiff(f, α, end_point, step_size, ::GL_Lagrange3Interp)
         
+    #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
-        return 0
+        if f == 0 
+            return 0
+        else
+            return f/sqrt(pi*end_point)
+        end
     end
 
     if end_point == 0
@@ -443,8 +470,13 @@ julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiff_Approx())
 """
 function fracdiff(f::Union{Number, Function}, α, end_point, step_size, ::RLDiff_Approx)
         
+    #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
-        return 0
+        if f == 0 
+            return 0
+        else
+            return f/sqrt(pi*end_point)
+        end
     end
 
     if end_point == 0
@@ -473,8 +505,13 @@ end
 
 function fracdiff(f::Union{Number, Function}, α, end_point, step_size, ::GL_Finite_Difference)
 
+    #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
-        return 0
+        if f == 0 
+            return 0
+        else
+            return f/sqrt(pi*end_point)
+        end
     end
 
     n = end_point/step_size
