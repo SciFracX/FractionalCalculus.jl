@@ -25,5 +25,5 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/ErikQQY/FractionalCalculus.jl.git";
+    repo = "github.com/SciFracX/FractionalCalculus.jl.git";
 )

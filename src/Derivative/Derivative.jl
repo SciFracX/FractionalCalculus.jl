@@ -18,9 +18,6 @@ Riemann-Liouville sense fractional derivative algorithms, please refer to [Riema
 """
 abstract type RLDiff <: FracDiffAlg end
 
-"""
-"""
-#abstract type Lubich <:
 
 
 
@@ -444,7 +441,7 @@ julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiff_Approx())
     The RLDiff_Approx algorithm only support for 0 < α < 1.
 
 """
-function fracdiff(f, α, end_point, step_size, ::RLDiff_Approx)
+function fracdiff(f::Union{Number, Function}, α, end_point, step_size, ::RLDiff_Approx)
         
     if typeof(f) <: Number
         return 0
@@ -474,8 +471,11 @@ function fracdiff(f, α, end_point, step_size, ::RLDiff_Approx)
     return result
 end
 
-function fracdiff(f, α, end_point, step_size, ::GL_Finite_Difference)
+function fracdiff(f::Union{Number, Function}, α, end_point, step_size, ::GL_Finite_Difference)
 
+    if typeof(f) <: Number
+        return 0
+    end
 
     n = end_point/step_size
     result=0
@@ -500,7 +500,7 @@ julia> @fracdiff(x->x, 0.5, 1)
 1.1283791670955188
 ```
 """
-macro fracdiff(f, α, point)
+macro fracdiff(f::Union{Number, Function}, α, point)
     return :(fracdiff($f, $α, $point, 0.0001, RLDiff_Approx()))
 end
 
@@ -514,6 +514,6 @@ julia> @semifracdiff(x->x, 1)
 1.1283791670955188
 ```
 """
-macro semifracdiff(f, point)
+macro semifracdiff(f::Union{Number, Function}, point)
     return :(fracdiff($f, 0.5, $point, 0.0001, RLDiff_Approx()))
 end
