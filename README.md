@@ -1,34 +1,34 @@
 # FractionalCalculus.jl
 
 <p align="center">
-<img width="250px" src="https://raw.githubusercontent.com/ErikQQY/FractionalCalculus.jl/master/docs/src/assets/logo.svg"/>
+<img width="250px" src="https://raw.githubusercontent.com/SciFracX/FractionalCalculus.jl/master/docs/src/assets/logo.svg"/>
 </p>
 
 
 <p align="center">
-  <a href="https://github.com/ErikQQY/FractionalCalculus.jl/actions?query=workflow%3ACI">
-    <img alt="building" src="https://github.com/ErikQQY/FractionalCalculus.jl/workflows/CI/badge.svg">
+  <a href="https://github.com/SciFracX/FractionalCalculus.jl/actions?query=workflow%3ACI">
+    <img alt="building" src="https://github.com/SciFracX/FractionalCalculus.jl/workflows/CI/badge.svg">
   </a>
-  <a href="https://codecov.io/gh/ErikQQY/FractionalCalculus.jl">
-    <img alt="codecov" src="https://codecov.io/gh/ErikQQY/FractionalCalculus.jl/branch/master/graph/badge.svg">
+  <a href="https://codecov.io/gh/SciFracX/FractionalCalculus.jl">
+    <img alt="codecov" src="https://codecov.io/gh/SciFracX/FractionalCalculus.jl/branch/master/graph/badge.svg">
   </a>
   <a href="https://www.erikqqy.xyz/FractionalCalculus.jl/dev/">
     <img src="https://img.shields.io/badge/docs-dev-blue.svg" alt="license">
   </a>
-  <a href="https://github.com/ErikQQY/FractionalCalculus.jl/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/ErikQQY/FractionalCalculus.jl?style=flat-square" alt="license">
+  <a href="https://github.com/SciFracX/FractionalCalculus.jl/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/SciFracX/FractionalCalculus.jl?style=flat-square" alt="license">
   </a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/ErikQQY/FractionalCalculus.jl/issues">
-    <img alt="GitHub issues" src="https://img.shields.io/github/issues/ErikQQY/FractionalCalculus.jl?style=flat-square">
+  <a href="https://github.com/SciFracX/FractionalCalculus.jl/issues">
+    <img alt="GitHub issues" src="https://img.shields.io/github/issues/SciFracX/FractionalCalculus.jl?style=flat-square">
   </a>
   <a href="#">
-    <img alt="GitHub stars" src="https://img.shields.io/github/stars/ErikQQY/FractionalCalculus.jl?style=flat-square">
+    <img alt="GitHub stars" src="https://img.shields.io/github/stars/SciFracX/FractionalCalculus.jl?style=flat-square">
   </a>
-  <a href="https://github.com/ErikQQY/FractionalCalculus.jl/network">
-    <img alt="GitHub forks" src="https://img.shields.io/github/forks/ErikQQY/FractionalCalculus.jl?style=flat-square">
+  <a href="https://github.com/SciFracX/FractionalCalculus.jl/network">
+    <img alt="GitHub forks" src="https://img.shields.io/github/forks/SciFracX/FractionalCalculus.jl?style=flat-square">
   </a>
 </p>
 
