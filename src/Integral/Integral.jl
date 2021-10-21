@@ -177,7 +177,7 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_Piecewise())
 
 By deploying Piecewise interpolation to approximate the original function, with small step_size, this method is fast and take little memory allocation.
 """
-function fracint(f::Function, α, end_point, step_size, ::RL_Piecewise)
+function fracint(f::Function, α::Float64, end_point, step_size, ::RL_Piecewise)::Float64
     end_point > 0 ? nothing : error("Please compute the integral of a positive value")
     
     #The fractional integral of number is relating with the end_point.
@@ -230,7 +230,7 @@ end
 julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Approx())
 ```
 """
-function fracint(f, α, end_point, step_size, ::RLInt_Approx)
+function fracint(f::Union{Function, Number}, α::Float64, end_point, step_size, ::RLInt_Approx)::Float64
         
     #The fractional integral of number is relating with the end_point.
     if typeof(f) <: Number
@@ -279,7 +279,7 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_LinearInterp())
 
 **RL_LinearInterp** is more complex but more precise.
 """
-function fracint(f, α, end_point, step_size, ::RL_LinearInterp)
+function fracint(f::Union{Function, Number}, α::Float64, end_point, step_size, ::RL_LinearInterp)::Float64
         
     #The fractional integral of number is relating with the end_point.
     if typeof(f) <: Number
@@ -327,7 +327,7 @@ julia> @fracint(x->x, 0.5, 1)
 0.7522525439593486
 ```
 """
-macro fracint(f, α, point)
+macro fracint(f::Union{Function, Number}, α::Float64, point)
     return :(fracint($f, $α, $point, 0.0001, RLInt_Approx()))
 end
 
@@ -341,6 +341,6 @@ julia> @semifracint(x->x, 1)
 0.7522525439593486
 ```
 """
-macro semifracint(f, point)
+macro semifracint(f::Union{Function, Number}, point)
     return :(fracint($f, 0.5, $point, 0.0001, RLInt_Approx()))
 end

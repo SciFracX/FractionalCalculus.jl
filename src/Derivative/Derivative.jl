@@ -150,7 +150,7 @@ When the input end points is an array, **fracdiff** will compute
 
 Refer to [Caputo derivative](https://en.wikipedia.org/wiki/Fractional_calculus#Caputo_fractional_derivative)
 """
-function fracdiff(f, α, start_point, end_point, step_size, ::Caputo_Direct)
+function fracdiff(f::Union{Function, Number}, α, start_point, end_point, step_size, ::Caputo_Direct)
     checks(α, start_point, end_point)
 
     #The fractional derivative of number is relating with the end_point.
@@ -329,7 +329,7 @@ julia> fracdiff(x->x^5, 0.5, 2.5, Caputo_Piecewise())
 Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
 
 """
-function fracdiff(f, α, end_point, step_size, ::Caputo_Piecewise)
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point, step_size::Float64, ::Caputo_Piecewise)::Float64
 
     #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
@@ -380,7 +380,7 @@ end
 
 #TODO: Use the improved alg!! This algorithm is not accurate
 #This algorithm is not good, still more to do
-function fracdiff(f, α, end_point, step_size, ::GL_Nomenclature)
+function fracdiff(f::Union{Function, Number}, α, end_point, step_size, ::GL_Nomenclature)::Float64
     
     #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
@@ -416,7 +416,7 @@ end
 
 #TODO: This algorithm is same with the above one, not accurate!!!
 #This algorithm is not good, still more to do
-function fracdiff(f, α, end_point, step_size, ::GL_Lagrange3Interp)
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point, step_size, ::GL_Lagrange3Interp)::Float64
         
     #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
@@ -468,7 +468,7 @@ julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiff_Approx())
     The RLDiff_Approx algorithm only support for 0 < α < 1.
 
 """
-function fracdiff(f::Union{Number, Function}, α, end_point, step_size, ::RLDiff_Approx)
+function fracdiff(f::Union{Number, Function}, α, end_point, step_size, ::RLDiff_Approx)::Float64
         
     #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
@@ -503,7 +503,7 @@ function fracdiff(f::Union{Number, Function}, α, end_point, step_size, ::RLDiff
     return result
 end
 
-function fracdiff(f::Union{Number, Function}, α, end_point, step_size, ::GL_Finite_Difference)
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point, step_size, ::GL_Finite_Difference)::Float64
 
     #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
@@ -537,7 +537,7 @@ julia> @fracdiff(x->x, 0.5, 1)
 1.1283791670955188
 ```
 """
-macro fracdiff(f::Union{Number, Function}, α, point)
+macro fracdiff(f::Union{Number, Function}, α::Float64, point)
     return :(fracdiff($f, $α, $point, 0.0001, RLDiff_Approx()))
 end
 
