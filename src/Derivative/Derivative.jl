@@ -161,16 +161,6 @@ function fracdiff(f::Union{Function, Number}, α, start_point, end_point, step_s
             return f/sqrt(pi*end_point)
         end
     end
-    
-    #Support both Matrix and Vector end points
-    if typeof(end_point) <: AbstractArray
-        ResultArray = Float64[]
-        for (_, value) in enumerate(end_point)
-            #println(fracdiff(f, α, start_point, value, step_size, Caputo()))
-            append!(ResultArray, fracdiff(f, α, start_point, value, step_size, Caputo_Direct())[1])
-        end
-        return ResultArray
-    end
 
     if end_point == 0
         return 0
@@ -181,6 +171,15 @@ function fracdiff(f::Union{Function, Number}, α, start_point, end_point, step_s
     result = quadgk(g, start_point, end_point) ./gamma(1-α)
     return result
 end
+
+function fracdiff(f::Union{Number, Function}, α::Float64, start_point, end_point::AbstractArray, step_size, ::Caputo_Direct)::Vector
+    ResultArray = Float64[]
+    for (_, value) in enumerate(end_point)
+        append!(ResultArray, fracdiff(f, α, start_point, value, step_size, Caputo_Direct()))
+    end
+    return ResultArray
+end
+
 
 
 """
@@ -209,15 +208,6 @@ function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL_D
             return f/sqrt(pi*end_point)
         end
     end
-    
-    #Support both Matrix and Vector end points
-    if typeof(end_point) <: AbstractArray
-        ResultArray = Float64[]
-        for (_, value) in enumerate(end_point)
-            append!(ResultArray, fracdiff(f, α, start_point, value, GL_Direct())[1])
-        end
-        return ResultArray
-    end
 
     checks(α, start_point, end_point)
 
@@ -229,6 +219,15 @@ function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL_D
     result = f(end_point)/(gamma(1-α) .* (end_point - start_point) .^ α) .+ quadgk(g, start_point, end_point) .* α ./ gamma(1-α)
     return result
 end
+
+function fracdiff(f::Union{Number, Function}, α::Float64, start_point, end_point::AbstractArray, ::GL_Direct)::Vector
+    ResultArray = Float64[]
+    for (_, value) in enumerate(end_point)
+        append!(ResultArray, fracdiff(f, α, start_point, value, GL_Direct()))
+    end
+    return ResultArray
+end
+
 
 
 """
@@ -260,21 +259,20 @@ function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_Direct_Firs
             return f/sqrt(pi*end_point)
         end
     end
-    
-    #Support both Matrix and Vector end points
-    if typeof(end_point) <: AbstractArray
-        ResultArray = Float64[]
-        for (_, value) in enumerate(end_point)
-            #println(fracdiff(f, α, start_point, value, step_size, Caputo()))
-            append!(ResultArray, fracdiff(f, α, start_point, value, Caputo_Direct_First_Diff_known())[1])
-        end
-        return ResultArray
-    end
 
     g(τ) = (end_point-τ) .^ (-α) * fd(τ)
     result = quadgk(g, start_point, end_point) ./gamma(1-α)    
     return result
 end
+
+function fracdiff(f::Function, α, start_point, end_point::AbstractArray, step_size, ::Caputo_Direct_First_Diff_known)::Vector
+    ResultArray = Float64[]
+    for (_, value) in enumerate(end_point)
+        append!(ResultArray, fracdiff(f, α, start_point, value, step_size, Caputo_Direct_First_Diff_known()))
+    end
+    return ResultArray
+end
+
 
 
 """
@@ -296,15 +294,6 @@ Compared with **Caputo_Direct** method, this method don't need to specify step s
 """
 function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_Direct_First_Second_Diff_Known)
     checks(α, start_point, end_point)
-    
-    #Support both Matrix and Vector end points
-    if typeof(end_point) <: AbstractArray
-        ResultArray = Float64[]
-        for (_, value) in enumerate(end_point)
-            append!(ResultArray, fracdiff(f, α, start_point, value, step_size, Caputo_Direct_First_Second_Diff_Known())[1])
-        end
-        return ResultArray
-    end
 
     temp1 = fd1(start_point) .* (end_point-start_point) .^ (1-α) ./ gamma(2-α)
     g(τ) = fd2(τ) .* ((end_point-τ) .^ (1-α))
@@ -312,6 +301,15 @@ function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_Direc
     result = temp1 .+ temp2
     return result
 end
+
+function fracdiff(f::Function, α::Float64, start_point, end_point::AbstractArray, step_size, ::Caputo_Direct_First_Second_Diff_Known)::Vector
+    ResultArray = Float64[]
+    for (_, value) in enumerate(end_point)
+        append!(ResultArray, fracdiff(f, α, start_point, value, step_size, Caputo_Direct_First_Second_Diff_Known()))
+    end
+    return ResultArray
+end
+
 
 """
 # Caputo sense Piecewise algorithm
@@ -344,15 +342,6 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, step_size:
         return 0
     end
 
-    #Support both Matrix and Vector end points
-    if typeof(end_point) <: AbstractArray
-        ResultArray = Float64[]
-        for (_, value) in enumerate(end_point)
-            append!(ResultArray, fracdiff(f, α, value, step_size, Caputo_Piecewise()))
-        end
-        return ResultArray
-    end
-
     m = floor(α)+1
 
     summation = 0
@@ -378,6 +367,15 @@ function first_order(f, point, h)
     return (f(point+h)-f(point-h))/(2*h)
 end
 
+function fracdiff(f::Union{Number, Function}, α, end_point::AbstractArray, step_size, ::Caputo_Piecewise)::Vector
+    ResultArray = Float64[]
+    for (_, value) in enumerate(end_point)
+        append!(ResultArray, fracdiff(f, α, value, step_size, Caputo_Piecewise()))
+    end
+    return ResultArray
+end
+
+
 #TODO: Use the improved alg!! This algorithm is not accurate
 #This algorithm is not good, still more to do
 function fracdiff(f::Union{Function, Number}, α, end_point, step_size, ::GL_Nomenclature)::Float64
@@ -395,15 +393,6 @@ function fracdiff(f::Union{Function, Number}, α, end_point, step_size, ::GL_Nom
         return 0
     end
 
-    #Support both Matrix and Vector end points
-    if typeof(end_point) <: AbstractArray
-        ResultArray = Float64[]
-        for (_, value) in enumerate(end_point)
-            append!(ResultArray, fracdiff(f, α, value, step_size, GL_Nomenclature()))
-        end
-        return ResultArray
-    end
-
     summation = 0
     n = end_point/step_size
 
@@ -413,6 +402,15 @@ function fracdiff(f::Union{Function, Number}, α, end_point, step_size, ::GL_Nom
     result=summation*end_point^(-α)*n^α/gamma(-α)
     return result
 end
+
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, step_size, ::GL_Nomenclature)::Vector
+    ResultArray = Float64[]
+    for (_, value) in enumerate(end_point)
+        append!(ResultArray, fracdiff(f, α, value, step_size, GL_Nomenclature()))
+    end
+    return ResultArray
+end
+
 
 #TODO: This algorithm is same with the above one, not accurate!!!
 #This algorithm is not good, still more to do
@@ -431,15 +429,6 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, step_size,
         return 0
     end
 
-    #Support both Matrix and Vector end points
-    if typeof(end_point) <: AbstractArray
-        ResultArray = Float64[]
-        for (_, value) in enumerate(end_point)
-            append!(ResultArray, fracdiff(f, α, value, step_size, GL_Lagrange3Interp()))
-        end
-        return ResultArray
-    end
-
     n = end_point/step_size
     summation=0
 
@@ -450,6 +439,15 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, step_size,
     result = summation*end_point^(-α)*n^α/gamma(-α)
     return result
 end
+
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, step_size, ::GL_Lagrange3Interp)::Vector
+    ResultArray = Float64[]
+    for (_, value) in enumerate(end_point)
+        append!(ResultArray, fracdiff(f, α, value, step_size, GL_Lagrange3Interp()))
+    end
+    return ResultArray
+end
+
 
 """
 # Riemann Liouville sense derivative approximation
@@ -483,15 +481,6 @@ function fracdiff(f::Union{Number, Function}, α, end_point, step_size, ::RLDiff
         return 0
     end
 
-    #Support both Matrix and Vector end points
-    if typeof(end_point) <: AbstractArray
-        ResultArray = Float64[]
-        for (_, value) in enumerate(end_point)
-            append!(ResultArray, fracdiff(f, α, value, step_size, RLDiff_Approx()))
-        end
-        return ResultArray
-    end
-
     summation = 0
     n = end_point/step_size
 
@@ -503,7 +492,16 @@ function fracdiff(f::Union{Number, Function}, α, end_point, step_size, ::RLDiff
     return result
 end
 
-function fracdiff(f::Union{Number, Function}, α::Float64, end_point, step_size, ::GL_Finite_Difference)::Float64
+function fracdiff(f::Union{Number, Function}, α, end_point::AbstractArray, step_size, ::RLDiff_Approx)::Vector
+    ResultArray = Float64[]
+    for (_, value) in enumerate(end_point)
+        append!(ResultArray, fracdiff(f, α, value, step_size, RLDiff_Approx()))
+    end
+    return ResultArray
+end
+
+
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point::Real, step_size, ::GL_Finite_Difference)::Float64
 
     #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
@@ -523,6 +521,20 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point, step_size,
 
     result1=result/step_size^α
     return result1
+end
+
+"""
+    fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, step_size, ::GL_Finite_Difference)::Vector
+
+Support computing for vectorized end_points input.
+"""
+function fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, step_size, ::GL_Finite_Difference)::Vector
+    ResultArray = Float64[]
+
+    for (_, value) in enumerate(end_point)
+        append!(ResultArray, fracint(f, α, value, step_size, GL_Finite_Difference()))
+    end
+    return ResultArray    
 end
 
 
