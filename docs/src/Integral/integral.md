@@ -1,6 +1,11 @@
 # Fractional integral
 
+```@contents
+Pages = ["integral.md"]
+```
+
 Fractional integral is defined as follow:
+
 ```math
 _aD_t^{-\alpha}f(t)=\frac{1}{\Gamma(\alpha)}\int_a^t(t-\tau)^{\alpha-1}f(\tau)d\tau
 ```

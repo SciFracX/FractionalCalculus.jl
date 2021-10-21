@@ -4,6 +4,10 @@ Hello there👋!
 
 FractionalCalculus.jl is a Julia package aiming at providing support for computing fractional derivative and fractional integral.
 
+```@contents
+Pages = ["index.md"]
+```
+
 ## Installation
 
 To install FractionalCalculus, please open Julia REPL and press`]` key to use package mode and then type the following command:
