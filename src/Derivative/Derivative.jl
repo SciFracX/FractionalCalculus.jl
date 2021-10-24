@@ -59,11 +59,23 @@ author = {Changpin Li and An Chen and Junjie Ye},
 
 """
 Using piecewise linear interpolation function to approximate input function and combining Caputo derivative then implement summation.
-
+"""
+struct Caputo_Piecewise <: Caputo end
 
 
 """
-struct Caputo_Piecewise <: Caputo end
+@article{10.1093/imanum/17.3.479,
+author = {DIETTELM, KAI},
+title = "{Generalized compound quadrature formulae for finite-part integrals}",
+journal = {IMA Journal of Numerical Analysis},
+doi = {10.1093/imanum/17.3.479},
+}
+"""
+
+"""
+Diethelm's method for computingn Caputo sense fractional derivative using product trapezoidal rule and Richardsin extrapolation
+"""
+struct Diethelm <: Caputo end
 
 
 """
@@ -74,11 +86,12 @@ year={1984}}
 """
 
 """
-
+Using Grünwald–Letnikov Nomenclature method to compute fractional derivative.
 """
 struct GL_Nomenclature <: GL end
 
 """
+Using Lagrange three interpolation method to compute fractional derivative.
 """
 struct GL_Lagrange3Interp <: GL end
 
@@ -89,10 +102,9 @@ struct RLDiff_Approx <: RLDiff end
 
 
 
-"""
-"""
 
 """
+Using Grünwald–Letnikov finite difference method to compute Grünwald–Letnikov sense fractional derivative.
 """
 struct GL_Finite_Difference <: GL end
 
@@ -536,6 +548,37 @@ function fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, step
     end
     return ResultArray    
 end
+
+"""
+# Caputo sense Diethelm computation
+Using 
+
+!!!info Scope
+    0 < α < 1
+"""
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point, step_size, ::Diethelm)
+    N = end_point/step_size
+
+    result=0
+
+    for i in range(0, N, step=1)
+        result+=quadweights(i, N, α)*(f(end_point-i*step_size)-f(0))
+    end
+    return result*step_size^(-α)/gamma(2-α)
+
+end
+function quadweights(n, N, α)
+    if n==0
+        return 1
+    elseif  0<n<N
+        return (n+1)^(1-α)-2*n^(1-α)+(n-1)^(1-α)
+    elseif n==N
+        return (1-α)*N^(-α)-N^(1-α)+(N-1)^(1-α)
+    end
+end
+
+
+
 
 
 ## Macros for convenient computing.
