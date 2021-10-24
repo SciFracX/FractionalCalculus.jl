@@ -81,7 +81,8 @@ Current Algorithms
 |   |   ├── Caputo_Direct
 |   |   ├── Caputo_Direct_First_Diff_Known
 |   |   ├── Caputo_Direct_First_Second_Diff_Known
-|   |   └── Caputo_Piecewise
+|   |   ├── Caputo_Piecewise
+|   |   └── Diethelm
 |   |
 │   ├── GL
 |   |   └── GL_Direct
@@ -94,6 +95,7 @@ Current Algorithms
         ├── RL_Direct
         ├── RL_Direct_First_Diff_Known
         ├── RL_Piecewise
+        ├── RL_Line
         └── RLInt_Approx
 ```
 
