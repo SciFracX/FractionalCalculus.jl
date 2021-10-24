@@ -19,5 +19,5 @@ plot(tspan, examplederivative, title="Different order of derivative", linewidth=
 
 Here, we use Plots.jl to generate the computing result:
 
-![Sin fractional Derivative](../assets/differentordersinplot.png)
+![Sin fractional Derivative](../assets/different_order_sin_derivative.png)
 
