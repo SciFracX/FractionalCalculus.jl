@@ -15,7 +15,7 @@ _aD^\alpha_tf(t)=\frac{d^n}{dt^n}\ _aD^{-(n-\alpha)}_tf(t)=\frac{d^n}{dt^n}\ _aI
 
 ```math
 _tD^\alpha_bf(t)=\frac{d^n}{dt^n}\ _tD^{-(n-\alpha)}_bf(t)=\frac{d^n}{dt^n}\ _tI^{n-\alpha}_bf(t)
-```math
+```
 
 We can use FractionalCalculus.jl to compute fractional derivative:
 
