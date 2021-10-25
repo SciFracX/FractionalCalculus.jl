@@ -80,7 +80,7 @@ end
 """
 # Riemann Liouville sense fractional integral
 
-    fracint(f::Function, α, start_point, end_point, step_size, RL_Direct())
+    fracint(f::Function, α, start_point, end_point, h, RL_Direct())
 
 ### Example: 
 
@@ -91,7 +91,7 @@ julia> fracint(x->x^5, 0.5, 0, 2.5, 1e-8, RL_Direct())
 Riemann_Liouville fractional integral using complex step differentiation.
 Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which contains the value of this derivative is 1.1639316474512205, and the error estimate is 1.0183453796725215e-8
 """
-function fracint(f::Union{Function, Number}, α, start_point, end_point::Real, step_size, ::RL_Direct)
+function fracint(f::Union{Function, Number}, α, start_point, end_point::Real, h, ::RL_Direct)
     checks(α, start_point, end_point)
     
     #The fractional integral of number is relating with the end_point.
@@ -105,17 +105,17 @@ function fracint(f::Union{Function, Number}, α, start_point, end_point::Real, s
 
     temp1 = f(start_point) .* (end_point-start_point) .^α
     #Use Complex differentiation to obtain the differentiation
-    g(τ) = imag(f(τ .+ 1*im*step_size) ./ step_size) .* (end_point-τ) .^α
+    g(τ) = imag(f(τ .+ 1*im*h) ./ h) .* (end_point-τ) .^α
     temp2 = quadgk(g, start_point, end_point)
     result = (temp1 .+ temp2) ./gamma(α+1)
     return result
 end
 
-function fracint(f::Union{Function, Number}, α::Float64, start_point, end_point::AbstractArray, step_size, ::RL_Direct)::Vector
+function fracint(f::Union{Function, Number}, α::Float64, start_point, end_point::AbstractArray, h, ::RL_Direct)::Vector
     ResultArray = Float64[]
 
     for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracint(f, α, start_point, value, step_size, RL_Direct())[1])
+        append!(ResultArray, fracint(f, α, start_point, value, h, RL_Direct())[1])
     end
     return ResultArray
 end
@@ -153,11 +153,11 @@ function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Dir
     return result
 end
 
-function fracint(f::Union{Function, Number}, α::Float64, start_point, end_point::AbstractArray, step_size, ::RL_Direct_First_Diff_Known)::Vector
+function fracint(f::Union{Function, Number}, α::Float64, start_point, end_point::AbstractArray, ::RL_Direct_First_Diff_Known)::Vector
     ResultArray = Float64[]
 
     for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracint(f, α, start_point, value, step_size, RL_Direct_First_Diff_Known())[1])
+        append!(ResultArray, fracint(f, α, start_point, value, RL_Direct_First_Diff_Known())[1])
     end
     return ResultArray
 end
@@ -166,7 +166,7 @@ end
 """
 # Riemann Liouville sense fractional integral using piecewise interpolation.
 
-    fracint(f, α, end_point, step_size, RL_Piecewise())
+    fracint(f, α, end_point, h, RL_Piecewise())
 
 ### Example
 
@@ -174,9 +174,9 @@ end
 julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_Piecewise())
 ```
 
-By deploying Piecewise interpolation to approximate the original function, with small step_size, this method is fast and take little memory allocation.
+By deploying Piecewise interpolation to approximate the original function, with small step size, this method is fast and take little memory allocation.
 """
-function fracint(f::Union{Function, Number}, α::Float64, end_point, step_size, ::RL_Piecewise)::Float64
+function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_Piecewise)::Float64
     end_point > 0 ? nothing : error("Please compute the integral of a positive value")
     
     #The fractional integral of number is relating with the end_point.
@@ -188,14 +188,14 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, step_size, 
         end
     end
 
-    n=end_point/step_size
+    n=end_point/h
     result=0
 
     for i in range(0, n, step=1)
-        result = result + W(i, n, α)*f(i*step_size)
+        result = result + W(i, n, α)*f(i*h)
     end
 
-    result1 = result*step_size^α/gamma(α+2)
+    result1 = result*h^α/gamma(α+2)
     return result1
 end
 function W(i, n, α)
@@ -209,11 +209,11 @@ function W(i, n, α)
 end
 
 
-function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArray, step_size, ::RL_Piecewise)::Vector
+function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArray, h, ::RL_Piecewise)::Vector
     ResultArray = Float64[]
 
     for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracint(f, α, value, step_size, RL_Piecewise())[1])
+        append!(ResultArray, fracint(f, α, value, h, RL_Piecewise())[1])
     end
     return ResultArray
 end
@@ -222,7 +222,7 @@ end
 """
 # Riemann Liouville sense fractional integral approximation.
 
-    fracint(f, α, end_point, step_size, RLInt_Approx())
+    fracint(f, α, end_point, h, RLInt_Approx())
 
 ### Example
 
@@ -230,7 +230,7 @@ end
 julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Approx())
 ```
 """
-function fracint(f::Union{Function, Number}, α::Float64, end_point, step_size, ::RLInt_Approx)::Float64
+function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_Approx)::Float64
         
     #The fractional integral of number is relating with the end_point.
     if typeof(f) <: Number
@@ -246,7 +246,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, step_size, 
     end
 
     α = -α
-    n = end_point/step_size
+    n = end_point/h
     result=0
 
     for i in range(0, n-1, step=1)
@@ -257,11 +257,11 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, step_size, 
     return result1
 end
 
-function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArray, step_size, ::RLInt_Approx)::Vector
+function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArray, h, ::RLInt_Approx)::Vector
     ResultArray = Float64[]
 
     for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracint(f, α, value, step_size, RLInt_Approx())[1])
+        append!(ResultArray, fracint(f, α, value, h, RLInt_Approx())[1])
     end
     return ResultArray
 end
@@ -270,7 +270,7 @@ end
 """
 # Riemann Liouville sense fractional integral using Linear interpolation.
 
-    fracint(f, α, end_point, step_size, RL_LinearInterp())
+    fracint(f, α, end_point, h, RL_LinearInterp())
 
 ### Example
 
@@ -280,7 +280,7 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_LinearInterp())
 
 **RL_LinearInterp** is more complex but more precise.
 """
-function fracint(f::Union{Function, Number}, α::Float64, end_point, step_size, ::RL_LinearInterp)::Float64
+function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_LinearInterp)::Float64
         
     #The fractional integral of number is relating with the end_point.
     if typeof(f) <: Number
@@ -299,13 +299,13 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, step_size, 
     if typeof(end_point) <: AbstractArray
         ResultArray = Float64[]
         for (_, value) in enumerate(end_point)
-            append!(ResultArray, fracint(f, α, value, step_size, RL_LinearInterp()))
+            append!(ResultArray, fracint(f, α, value, h, RL_LinearInterp()))
         end
         return ResultArray
     end
 
     α = -α
-    n = end_point/step_size
+    n = end_point/h
     result = 0
     
     for i in range(0, n-1, step=1)
@@ -316,11 +316,11 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, step_size, 
     return result1
 end
 
-function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArray, step_size, ::RL_LinearInterp)::Vector
+function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArray, h, ::RL_LinearInterp)::Vector
     ResultArray = Float64[]
 
     for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracint(f, α, value, step_size, RL_LinearInterp())[1])
+        append!(ResultArray, fracint(f, α, value, h, RL_LinearInterp())[1])
     end
     return ResultArray
 end
