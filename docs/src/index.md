@@ -46,4 +46,3 @@ The development of FractionalCalculus.jl is on GitHub, please report bugs or sen
 
 !!! info "WIP"
 		FractionalCalculus.jl is under heavy construction, some API or docs might change a lot.
-
