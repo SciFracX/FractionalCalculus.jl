@@ -13,10 +13,10 @@ export fracdiff, fracint
 export Caputo, GL, RLDiff
 export Caputo_Direct, Caputo_Direct_First_Diff_Known, Caputo_Direct_First_Second_Diff_Known
 export Caputo_Piecewise
-export Diethelm
+export Caputo_Diethelm
 export GL_Direct
 
-#Export GL_Nomenclature, GL_Lagrange3Interp
+export GL_Multiplicative_Additive, GL_Lagrange_Three_Point_Interp
 export RLDiff_Approx
 
 #Export fractional integral relating API
