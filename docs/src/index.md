@@ -2,8 +2,6 @@
 CurrentModule = FractionalCalculus
 ```
 
-
-
 # FractionalCalculus.jl
 
 Hello there👋!

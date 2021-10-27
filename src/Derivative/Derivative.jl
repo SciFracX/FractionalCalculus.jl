@@ -97,7 +97,7 @@ struct GL_Lagrange_Three_Point_Interp <: GL end
 
 #RLDiff_LinearInterp maybe??
 """
-Riemann Liouville 
+Using Linear interpolation to approximate fractional derivative in Riemann Liouville  fractional derivative sense.
 """
 struct RLDiff_Approx <: RLDiff end
 
