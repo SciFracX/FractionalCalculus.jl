@@ -37,7 +37,7 @@ struct Caputo_Direct <: Caputo end
 """
 With first derivative known, we can direct use the derivative to compute a more accurate result.
 """
-struct Caputo_Direct_First_Diff_known <: Caputo end
+struct Caputo_Direct_First_Diff_Known <: Caputo end
 
 """
 With first and second derivative known, we can direct use derivative and second derivative to compute a more accurate result.
@@ -73,9 +73,9 @@ doi = {10.1093/imanum/17.3.479},
 """
 
 """
-Diethelm's method for computingn Caputo sense fractional derivative using product trapezoidal rule and Richardsin extrapolation
+Diethelm's method for computingn Caputo sense fractional derivative using [product trapezoidal rule](https://en.wikipedia.org/wiki/Trapezoidal_rule) and [Richardsin extrapolation](https://en.wikipedia.org/wiki/Richardson_extrapolation)
 """
-struct Diethelm <: Caputo end
+struct Caputo_Diethelm <: Caputo end
 
 
 """
@@ -86,15 +86,16 @@ year={1984}}
 """
 
 """
-Using Grünwald–Letnikov Nomenclature method to compute fractional derivative.
+Using Grünwald–Letnikov multiplication-addition-multiplication-addition··· method to compute fractional derivative in Grünwald Letnikov sense.
 """
-struct GL_Nomenclature <: GL end
+struct GL_Multiplicative_Additive <: GL end
 
 """
-Using Lagrange three interpolation method to compute fractional derivative.
+Using Lagrange three points interpolation method to compute fractional derivative in Grünwald Letnikov sense.
 """
-struct GL_Lagrange3Interp <: GL end
+struct GL_Lagrange_Three_Point_Interp <: GL end
 
+#RLDiff_LinearInterp maybe??
 """
 Riemann Liouville 
 """
@@ -245,7 +246,7 @@ end
 """
 # Caputo sense fractional derivative with first derivative known.
 
-    fracdiff(fd, α, start_point, end_point, Caputo_Direct_First_Diff_known())
+    fracdiff(fd, α, start_point, end_point, Caputo_Direct_First_Diff_Known())
 
 If the first order derivative of a function is already known, we can use this method to compute the fractional order derivative more precisely.
 
@@ -254,13 +255,13 @@ The inout function should be the first order derivative of a function
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->5*x^4, 0.5, 0, 2.5, Caputo_Direct_First_Diff_known())
+julia> fracdiff(x->5*x^4, 0.5, 0, 2.5, Caputo_Direct_First_Diff_Known())
 ```
 Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
 
 Compared with **Caputo_Direct** method, this method don't need to specify step size, more precision are guaranteed.
 """
-function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_Direct_First_Diff_known)
+function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_Direct_First_Diff_Known)
     checks(α, start_point, end_point)
 
     #The fractional derivative of number is relating with the end_point.
@@ -277,10 +278,10 @@ function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_Direct_Firs
     return result
 end
 
-function fracdiff(f::Function, α, start_point, end_point::AbstractArray, step_size, ::Caputo_Direct_First_Diff_known)::Vector
+function fracdiff(f::Function, α, start_point, end_point::AbstractArray, step_size, ::Caputo_Direct_First_Diff_Known)::Vector
     ResultArray = Float64[]
     for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracdiff(f, α, start_point, value, step_size, Caputo_Direct_First_Diff_known()))
+        append!(ResultArray, fracdiff(f, α, start_point, value, step_size, Caputo_Direct_First_Diff_Known()))
     end
     return ResultArray
 end
@@ -390,7 +391,24 @@ end
 
 #TODO: Use the improved alg!! This algorithm is not accurate
 #This algorithm is not good, still more to do
-function fracdiff(f::Union{Function, Number}, α, end_point, h, ::GL_Nomenclature)::Float64
+"""
+# Grünwald Letnikov sense derivative approximation
+
+    fracdiff(f, α, end_point, h, GL_Multiplicative_Additive())
+
+Grünwald–Letnikov multiplication-addition-multiplication-addition··· method to approximate fractional derivative.
+
+### Example
+
+```julia-repl
+julia> fracdiff(x->x, 0.5, 1, 0.007, GL_Multiplicative_Additive())
+1.127403405642918
+```
+
+!!! danger "Inaccurate"
+    The `GL_Multiplicative_Additive` method is not accruate, please use it at your own risk.
+"""
+function fracdiff(f::Union{Function, Number}, α, end_point, h, ::GL_Multiplicative_Additive)::Float64
     
     #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
@@ -415,10 +433,10 @@ function fracdiff(f::Union{Function, Number}, α, end_point, h, ::GL_Nomenclatur
     return result
 end
 
-function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::GL_Nomenclature)::Vector
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::GL_Multiplicative_Additive)::Vector
     ResultArray = Float64[]
     for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracdiff(f, α, value, h, GL_Nomenclature()))
+        append!(ResultArray, fracdiff(f, α, value, h, GL_Multiplicative_Additive()))
     end
     return ResultArray
 end
@@ -426,7 +444,24 @@ end
 
 #TODO: This algorithm is same with the above one, not accurate!!!
 #This algorithm is not good, still more to do
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::GL_Lagrange3Interp)::Float64
+"""
+# Grünwald Letnikov sense derivative approximation
+
+    fracdiff(f, α, end_point, h, GL_Lagrange_Three_Point_Interp())
+
+Using Lagrange three poitns interpolation to approximate the fractional derivative.
+
+### Example
+
+```julia-repl
+julia> fracdiff(x->x, 0.5, 1, 0.007, GL_Lagrange_Three_Point_Interp())
+1.1283963376811044
+```
+
+!!! danger "Inaccurate"
+    The `GL_Multiplicative_Additive` method is not accruate, please use it at your own risk.
+"""
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::GL_Lagrange_Three_Point_Interp)::Float64
         
     #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
@@ -452,10 +487,10 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::GL_La
     return result
 end
 
-function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::GL_Lagrange3Interp)::Vector
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::GL_Lagrange_Three_Point_Interp)::Vector
     ResultArray = Float64[]
     for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracdiff(f, α, value, h, GL_Lagrange3Interp()))
+        append!(ResultArray, fracdiff(f, α, value, h, GL_Lagrange_Three_Point_Interp()))
     end
     return ResultArray
 end
@@ -512,7 +547,23 @@ function fracdiff(f::Union{Number, Function}, α, end_point::AbstractArray, h, :
     return ResultArray
 end
 
+"""
+# Grünwald Letnikov sense derivative approximation
 
+    fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, h, ::GL_Finite_Difference)::Vector
+
+Use finite difference method to obtain Grünwald Letnikov sense fractional derivative.
+
+### Example
+
+```julia-repl
+julia> fracdiff(x->x, 0.5, 1, 0.01, GL_Finite_Difference())
+1.1269695801851276
+```
+
+!!! danger "Inaccurate"
+    `GL_Finite_Difference` method is not accruate, please use it at your own risk.
+"""
 function fracdiff(f::Union{Number, Function}, α::Float64, end_point::Real, h, ::GL_Finite_Difference)::Float64
 
     #The fractional derivative of number is relating with the end_point.
@@ -535,11 +586,6 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point::Real, h, :
     return result1
 end
 
-"""
-    fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, h, ::GL_Finite_Difference)::Vector
-
-Support computing for vectorized end_points input.
-"""
 function fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, h, ::GL_Finite_Difference)::Vector
     ResultArray = Float64[]
 
@@ -551,12 +597,22 @@ end
 
 """
 # Caputo sense Diethelm computation
-Using 
+    
+    fracdiff(f, α, end_point, h, Caputo_Diethelm())
 
-!!!info Scope
+Using quadrature weights(derived from product trapezoidal rule) to approximate the derivative.
+
+### Example
+
+```julia-repl
+julia> fracdiff(x->x, 0.5, 1, 0.007, Caputo_Diethelm())
+1.128378318687192
+```
+
+!!!info "Scope"
     0 < α < 1
 """
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Diethelm)
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Diethelm)
     N = end_point/h
 
     result=0
@@ -576,7 +632,6 @@ function quadweights(n, N, α)
         return (1-α)*N^(-α)-N^(1-α)+(N-1)^(1-α)
     end
 end
-
 
 
 

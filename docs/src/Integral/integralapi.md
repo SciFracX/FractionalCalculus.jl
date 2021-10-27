@@ -23,6 +23,6 @@ FractionalCalculus.RL_LinearInterp
 
 ```@docs
 FractionalCalculus.@fracint
-FractionalCalculus.@sfracint
+FractionalCalculus.@semifracint
 ```
 

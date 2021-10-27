@@ -21,9 +21,13 @@ FractionalCalculus.RLDiff
 ```@docs
 FractionalCalculus.Caputo_Direct
 FractionalCalculus.Caputo_Direct_First_Diff_Known
-FractionalCalculus.Caputo_Direct_Second_Diff_Known
+FractionalCalculus.Caputo_Direct__Second_Diff_Known
 FractionalCalculus.Caputo_Piecewise
+FractionalCalculus.Caputo_Diethelm
 FractionalCalculus.GL_Direct
+FractionalCalculus.GL_Finite_Difference
+FractionalCalculus.GL_Multiplicative_Additive
+FractionalCalculus.GL_Lagrange_Three_Point_Interp
 FractionalCalculus.RLDiff_Approx
 ```
 

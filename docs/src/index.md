@@ -1,3 +1,9 @@
+```@meta
+CurrentModule = FractionalC
+```
+
+
+
 # FractionalCalculus.jl
 
 Hello there👋!
@@ -38,7 +44,7 @@ FractionalCalculus now has algorithms for **Caputo fractional derivative**, **Gr
 
 ## Contributing
 
-The development of FractionalCalculus.jl is on GitHub, please report bugs or send pull requests to help FractionalCalculus.jl grow.
+The development of FractionalCalculus.jl is on GitHub, please [report bugs](https://github.com/SciFracX/FractionalCalculus.jl/issues) or [send pull requests](https://github.com/SciFracX/FractionalCalculus.jl/pulls) to help FractionalCalculus.jl grow.
 
 ## Acknowledge
 

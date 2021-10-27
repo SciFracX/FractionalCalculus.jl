@@ -7,7 +7,7 @@ Pages = ["derivative.md"]
 To get start with fractional derivative, you need to know that unlike Newtonian derivatives, fractional derivative is defined via integral.
 
 !!! tip "Non-Local Operators"
-	It is noteworthy that the fractional derivatives are not local operators, which means that we cannot calculate the fractional derivative solely on the basis of function values of $f(x)$ taken from neighborhood of the point $x$ where er work. Instead, we have to take the entire history of $f(x)$ (i.e., all function values f(x) for $0<x<a$) into account.
+	It is noteworthy that the fractional derivatives are not local operators, which means that we cannot calculate the fractional derivative solely on the basis of function values of $f(x)$ taken from neighborhood of the point $x$. Instead, we have to take the entire history of $f(x)$ (i.e., all function values f(x) for $0<x<a$) into account.
 
 ## Riemann Liouville sense derivative
 
