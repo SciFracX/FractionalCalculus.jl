@@ -1,5 +1,5 @@
 ```@meta
-CurrentModule = FractionalC
+CurrentModule = FractionalCalculus
 ```
 
 
