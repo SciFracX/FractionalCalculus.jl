@@ -29,6 +29,7 @@ FractionalCalculus.GL_Finite_Difference
 FractionalCalculus.GL_Multiplicative_Additive
 FractionalCalculus.GL_Lagrange_Three_Point_Interp
 FractionalCalculus.RLDiff_Approx
+FractionalCalculus.RLDiff_Matrix
 ```
 
 ```@docs

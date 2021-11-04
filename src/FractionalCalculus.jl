@@ -19,6 +19,7 @@ export GL_Direct
 
 export GL_Multiplicative_Additive, GL_Lagrange_Three_Point_Interp
 export RLDiff_Approx
+export RLDiff_Matrix
 
 #Export fractional integral relating API
 export RLInt
