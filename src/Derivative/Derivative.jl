@@ -1,3 +1,5 @@
+using LinearAlgebra
+
 """
 Base type of fractional differentiation algorithms, in FractionalCalculus.jl, all of the fractional derivative algorithms belong to ```FracDiffAlg```
 """
@@ -100,7 +102,24 @@ struct GL_Lagrange_Three_Point_Interp <: GL end
 Using Linear interpolation to approximate fractional derivative in Riemann Liouville  fractional derivative sense.
 """
 struct RLDiff_Approx <: RLDiff end
+struct RLDiff_Approx_2 <: RLDiff end
+struct RLDiff_Approx_3 <: RLDiff end
+struct RLDiff_Approx_Any <: RLDiff end
 
+
+"""
+@article{2009,
+title={Matrix approach to discrete fractional calculus II: Partial fractional differential equations},
+DOI={10.1016/j.jcp.2009.01.014},
+author={Podlubny, Igor and Chechkin, Aleksei and Skovranek, Tomas and Chen, YangQuan and Vinagre Jara, Blas M.},
+}
+
+"""
+
+"""
+Using [Triangular Strip Matrix](https://en.wikipedia.org/wiki/Triangle_strip) to discrete the derivative.
+"""
+struct RLDiff_Matrix <: RLDiff end
 
 
 
@@ -547,6 +566,85 @@ function fracdiff(f::Union{Number, Function}, α, end_point::AbstractArray, h, :
     return ResultArray
 end
 
+function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx_2)::Float64
+        
+    #The fractional derivative of number is relating with the end_point.
+    if typeof(f) <: Number
+        if f == 0 
+            return 0
+        else
+            return f/sqrt(pi*end_point)
+        end
+    end
+
+    if end_point == 0
+        return 0
+    end
+
+    summation = 0
+    n = end_point/h
+
+    for i in range(0, n-1, step=1)
+        summation+=(f(end_point-(i-1)*h) - 2*f(end_point-i*h) + f(end_point-(i+1)*h))*((i+1)^(2-α)-i^(2-α))
+    end
+
+    result=((1-α)*(2-α)*f(0)/n^α + (2-α)*(f(h)-f(0))/n^(α-1) + summation)*end_point^(-α)*n^α/gamma(3-α)
+    return result
+end
+
+function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx_3)::Float64
+        
+    #The fractional derivative of number is relating with the end_point.
+    if typeof(f) <: Number
+        if f == 0 
+            return 0
+        else
+            return f/sqrt(pi*end_point)
+        end
+    end
+
+    if end_point == 0
+        return 0
+    end
+
+    summation = 0
+    n = end_point/h
+
+    for i in range(0, n-1, step=1)
+        summation+=(f(end_point-i*end_point/n)-f(end_point-(i+1)*end_point/n))*((i+1)^(1-α)-i^(1-α))
+    end
+
+    result=((1-α)*f(0)/n^α+summation)*end_point^(-α)*n^α/gamma(2-α)
+    return result
+end
+
+function fracdiff(f, α, end_point, ::RLDiff_Approx_Any)
+    leftsummation = 0
+    rightsummation = 0
+    diffgen = 0
+
+    n=end_point/h
+
+    #TODO:
+    for i in range(0, n-1, step=1)
+        rightsummation+=1
+    end
+
+    
+end
+
+"""
+https://en.wikipedia.org/wiki/Numerical_differentiation#Higher_derivatives
+"""
+function diffgen(f, k, n, h, end_point)
+    
+    summation=0
+
+    for i in range(0, k, step=1)
+        summation+=(-1)^(k+n)*binomial(n, k)*f(end_point)
+    end
+end
+
 """
 # Grünwald Letnikov sense derivative approximation
 
@@ -633,6 +731,58 @@ function quadweights(n, N, α)
     end
 end
 
+function nderivative(f, n, end_point, h)
+    temp = 0
+
+    for k in range(0, n, step=1)
+        temp+=(-1)^(k+n)*binomial(n, k)*f(end_point+k*h)
+    end
+    return h^(-n)*temp
+end
+
+"""
+"""
+function fracdiff(f, α, end_point, h, ::RLDiff_Matrix)
+    N=Int64(end_point/h+1)
+    tspan=collect(0:h:end_point)
+    return B(N, α, h)*f.(tspan)
+end
+
+"""
+    eliminator(n, row)
+
+Compute the eliminator matrix Sₖ by omiting n-th row
+"""
+function eliminator(n, row)
+    temp = zeros(n, n)+I
+    return temp[Not(row), :]
+end
+
+"""
+Generating elements in Matrix.
+"""
+function omega(n, p)
+    omega = zeros(n+1)
+
+    omega[1]=1
+    for i in range(1, n, step=1)
+        omega[i+1]=(1-(p+1)/i)*omega[i]
+    end
+    
+    return omega
+
+end
+
+function B(N, p, h)
+    result=zeros(N, N)
+    temp=omega(N, p)
+
+    for i in range(1, N, step=1)
+        result[i, 1:i]=reverse(temp[1:i])
+    end
+
+    return h^(-p)*result
+end
 
 
 

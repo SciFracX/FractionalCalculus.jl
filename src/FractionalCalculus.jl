@@ -2,6 +2,7 @@ module FractionalCalculus
 
 using QuadGK
 using SpecialFunctions: gamma
+using LinearAlgebra, InvertedIndices
 
 include("./Derivative/Derivative.jl")
 include("./Integral/Integral.jl")
