@@ -87,15 +87,20 @@ struct RLInt_Matrix <: RLInt end
 """
 Check if the format of nargins is correct
 """
-function checks(α, start_point, end_point)
+function checks(f, α, start_point, end_point)
     α % 1 != 0 ? nothing : error("Decimal number only!")
-    if typeof(end_point) <: Number
+    if isa(end_point, Number)
         start_point < end_point ? nothing : DomainError("Domain error! Start point must smaller than end point")
-    elseif typeof(end_point) <: AbstractArray
+    elseif isa(end_point, AbstractArray)
         start_point < minimum(end_point) ? nothing : DomainError("Vector domain error! Start point must smaller than end point")
     else
         ErrorException("Please input correct point you wan tto compute")
-    end   
+    end
+
+    #The fractional integral of number is relating with the end_point.
+    if isa(f, Number)
+        f == 0 ? 0 : 2*f*sqrt(end_point/pi)
+    end
 end
 
 
@@ -114,17 +119,8 @@ Riemann_Liouville fractional integral using complex step differentiation.
 Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which contains the value of this derivative is 1.1639316474512205, and the error estimate is 1.0183453796725215e-8
 """
 function fracint(f::Union{Function, Number}, α, start_point, end_point::Real, h, ::RL_Direct)
-    checks(α, start_point, end_point)
+    checks(f, α, start_point, end_point)
     
-    #The fractional integral of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0
-            return 0
-        else
-            return 2*f*sqrt(end_point/pi)
-        end
-    end
-
     temp1 = f(start_point) .* (end_point-start_point) .^α
     #Use Complex differentiation to obtain the differentiation
     g(τ) = imag(f(τ .+ 1*im*h) ./ h) .* (end_point-τ) .^α
@@ -157,7 +153,7 @@ julia> fracint(x->x^5, x->5*x^4, 0.5, 0, 2.5, RL_Direct_First_Diff_Known())
 With first order derivative known, we can directly use it in the computation of α order fraction integral
 """
 function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Direct_First_Diff_Known)
-    checks(α, start_point, end_point)
+    checks(f, α, start_point, end_point)
     
     #The fractional integral of number is relating with the end_point.
     if typeof(f) <: Number
@@ -199,17 +195,9 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_Piecewise())
 By deploying Piecewise interpolation to approximate the original function, with small step size, this method is fast and take little memory allocation.
 """
 function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_Piecewise)::Float64
-    end_point > 0 ? nothing : error("Please compute the integral of a positive value")
-    
-    #The fractional integral of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0
-            return 0
-        else
-            return 2*f*sqrt(end_point/pi)
-        end
-    end
+    checks(f, α, 0, end_point)
 
+    #Init
     n=end_point/h
     result=0
 
@@ -253,19 +241,7 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Approx())
 ```
 """
 function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_Approx)::Float64
-        
-    #The fractional integral of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0
-            return 0
-        else
-            return 2*f*sqrt(end_point/pi)
-        end
-    end
-
-    if end_point == 0
-        return 0
-    end
+    checks(f, α, 0, end_point)
 
     α = -α
     n = end_point/h
@@ -302,29 +278,9 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_LinearInterp())
 
 **RL_LinearInterp** is more complex but more precise.
 """
-function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_LinearInterp)::Float64
+function fracint(f::Union{Function, Number}, α::Float64, end_point::Number, h, ::RL_LinearInterp)::Float64
         
-    #The fractional integral of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0
-            return 0
-        else
-            return 2*f*sqrt(end_point/pi)
-        end
-    end
-
-    if end_point == 0
-        return 0
-    end
-
-    #Support both Matrix and Vector end points
-    if typeof(end_point) <: AbstractArray
-        ResultArray = Float64[]
-        for (_, value) in enumerate(end_point)
-            append!(ResultArray, fracint(f, α, value, h, RL_LinearInterp()))
-        end
-        return ResultArray
-    end
+    checks(f, α, 0, end_point)
 
     α = -α
     n = end_point/h

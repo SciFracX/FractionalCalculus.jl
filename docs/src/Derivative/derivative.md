@@ -7,7 +7,7 @@ Pages = ["derivative.md"]
 To get start with fractional derivative, you need to know that unlike Newtonian derivatives, fractional derivative is defined via integral.
 
 !!! tip "Non-Local Operators"
-	It is noteworthy that the fractional derivatives are not local operators, which means that we cannot calculate the fractional derivative solely on the basis of function values of $f(x)$ taken from neighborhood of the point $x$. Instead, we have to take the entire history of $f(x)$ (i.e., all function values f(x) for $0<x<a$) into account.
+	It is noteworthy that the fractional derivatives are not local operators, which means that we cannot calculate the fractional derivative solely on the basis of function values of $f(x)$ taken from neighborhood of the point $x$. Instead, we have to take the entire history of $f(x)$ (i.e., all function values $f(x)$ for $0<x<a$) into account.
 
 ## Riemann Liouville sense derivative
 
@@ -23,7 +23,7 @@ _tD^\alpha_bf(t)=\frac{d^n}{dt^n}\ _tD^{-(n-\alpha)}_bf(t)=\frac{d^n}{dt^n}\ _tI
 We can use FractionalCalculus.jl to compute fractional derivative:
 
 ```julia-repl
-fracdiff(x->x, 0.5, 1, 0.0001, RLDiff_Approx())
+julia> fracdiff(x->x, 0.5, 1, 0.0001, RLDiff_Approx())
 ```
 
 ## Caputo sense derivative
@@ -32,7 +32,7 @@ In **FractionalCalculus.jl**, let's see, if you want to calculate the $0.4$ orde
 
 
 ```julia-repl
-fracdiff(x->x, 0.4, 1, 0.0001, Caputo_Piecewise())
+julia>fracdiff(x->x, 0.4, 1, 0.0001, Caputo_Piecewise())
 ```
 
 There many types of definitions of fractional derivative, Caputo is one of these useful definitions. The Caputo fractional derivative is first be proposed in [Michele Caputo's Paper](https://doi.org/10.1111/j.1365-246X.1967.tb02303.x), 

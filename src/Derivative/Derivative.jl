@@ -136,14 +136,22 @@ struct GL_Finite_Difference <: GL end
 """
 Check if the format of nargins is correct.
 """
-function checks(α, start_point, end_point)
+function checks(f, α, start_point, end_point)
     α % 1 != 0 ? nothing : error("α must be a decimal number")
-    if typeof(end_point) <: Number
+    if isa(end_point, Number)
         start_point < end_point ? nothing : DomainError("Domain error! Start point must smaller than end point")
-    elseif typeof(end_point) <: AbstractArray
+    elseif isa(end_point, AbstractArray)
         start_point < minimum(end_point) ? nothing : DomainError("Vector domain error! Start point must smaller than end point")
     else
         ErrorException("Please input correct point you want to compute")
+    end
+
+    end_point == 0 ? 0 : nothing
+
+    
+    #The fractional derivative of number is relating with the end_point.
+    if isa(f, Number)
+        f == 0 ? 0 : f/sqrt(pi*end_point)
     end
 end
 
@@ -183,20 +191,7 @@ When the input end points is an array, **fracdiff** will compute
 Refer to [Caputo derivative](https://en.wikipedia.org/wiki/Fractional_calculus#Caputo_fractional_derivative)
 """
 function fracdiff(f::Union{Function, Number}, α, start_point, end_point, h, ::Caputo_Direct)
-    checks(α, start_point, end_point)
-
-    #The fractional derivative of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0 
-            return 0
-        else
-            return f/sqrt(pi*end_point)
-        end
-    end
-
-    if end_point == 0
-        return 0
-    end
+    checks(f, α, start_point, end_point)
 
     #Using complex step differentiation to calculate the first order differentiation
     g(τ) = imag(f(τ+1*im*h) ./ h) ./ ((end_point-τ) .^α)
@@ -230,22 +225,7 @@ julia> fracdiff(x->x^5, 0, 0.5, GL_Direct())
 Please refer to [Grünwald–Letnikov derivative](https://en.wikipedia.org/wiki/Gr%C3%BCnwald%E2%80%93Letnikov_derivative) for more details.
 """
 function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL_Direct)
-    checks(α, start_point, end_point)
-
-    #The fractional derivative of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0 
-            return 0
-        else
-            return f/sqrt(pi*end_point)
-        end
-    end
-
-    checks(α, start_point, end_point)
-
-    if end_point == 0
-        return 0
-    end
+    checks(f, α, start_point, end_point)
 
     g(τ) = (f(end_point)-f(τ)) ./ (end_point - τ) .^ (1+α)
     result = f(end_point)/(gamma(1-α) .* (end_point - start_point) .^ α) .+ quadgk(g, start_point, end_point) .* α ./ gamma(1-α)
@@ -281,16 +261,6 @@ Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
 Compared with **Caputo_Direct** method, this method don't need to specify step size, more precision are guaranteed.
 """
 function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_Direct_First_Diff_Known)
-    checks(α, start_point, end_point)
-
-    #The fractional derivative of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0 
-            return 0
-        else
-            return f/sqrt(pi*end_point)
-        end
-    end
 
     g(τ) = (end_point-τ) .^ (-α) * fd(τ)
     result = quadgk(g, start_point, end_point) ./gamma(1-α)    
@@ -325,7 +295,6 @@ Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
 Compared with **Caputo_Direct** method, this method don't need to specify step size, more precision are guaranteed.
 """
 function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_Direct_First_Second_Diff_Known)
-    checks(α, start_point, end_point)
 
     temp1 = fd1(start_point) .* (end_point-start_point) .^ (1-α) ./ gamma(2-α)
     g(τ) = fd2(τ) .* ((end_point-τ) .^ (1-α))
@@ -360,24 +329,12 @@ Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
 
 """
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::Caputo_Piecewise)::Float64
-
-    #The fractional derivative of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0 
-            return 0
-        else
-            return f/sqrt(pi*end_point)
-        end
-    end
-
-    if end_point == 0
-        return 0
-    end
+    checks(f, α, 0, end_point)
 
     m = floor(α)+1
 
     summation = 0
-    n = end_point/h
+    n = Int64(end_point/h)
 
     for i in range(0, n, step=1)
         summation +=W₅(i, n, m, α)*first_order(f, i*h, h)
@@ -428,22 +385,10 @@ julia> fracdiff(x->x, 0.5, 1, 0.007, GL_Multiplicative_Additive())
     The `GL_Multiplicative_Additive` method is not accruate, please use it at your own risk.
 """
 function fracdiff(f::Union{Function, Number}, α, end_point, h, ::GL_Multiplicative_Additive)::Float64
-    
-    #The fractional derivative of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0 
-            return 0
-        else
-            return f/sqrt(pi*end_point)
-        end
-    end
-
-    if end_point == 0
-        return 0
-    end
+    checks(f, α, 0, end_point)
 
     summation = 0
-    n = end_point/h
+    n = Int64(end_point/h)
 
     for i in range(0, n-1, step=1)
         summation+=gamma(i-α)/gamma(i+1)*f(end_point-i*end_point/n)
@@ -481,19 +426,7 @@ julia> fracdiff(x->x, 0.5, 1, 0.007, GL_Lagrange_Three_Point_Interp())
     The `GL_Multiplicative_Additive` method is not accruate, please use it at your own risk.
 """
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::GL_Lagrange_Three_Point_Interp)::Float64
-        
-    #The fractional derivative of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0 
-            return 0
-        else
-            return f/sqrt(pi*end_point)
-        end
-    end
-
-    if end_point == 0
-        return 0
-    end
+    checks(f, α, 0, end_point)
 
     n = end_point/h
     summation=0
@@ -533,19 +466,7 @@ julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiff_Approx())
 
 """
 function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx)::Float64
-        
-    #The fractional derivative of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0 
-            return 0
-        else
-            return f/sqrt(pi*end_point)
-        end
-    end
-
-    if end_point == 0
-        return 0
-    end
+    checks(f, α, 0, end_point)
 
     summation = 0
     n = end_point/h
@@ -567,7 +488,7 @@ function fracdiff(f::Union{Number, Function}, α, end_point::AbstractArray, h, :
 end
 
 function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx_2)::Float64
-        
+    
     #The fractional derivative of number is relating with the end_point.
     if typeof(f) <: Number
         if f == 0 
@@ -663,15 +584,7 @@ julia> fracdiff(x->x, 0.5, 1, 0.01, GL_Finite_Difference())
     `GL_Finite_Difference` method is not accruate, please use it at your own risk.
 """
 function fracdiff(f::Union{Number, Function}, α::Float64, end_point::Real, h, ::GL_Finite_Difference)::Float64
-
-    #The fractional derivative of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0 
-            return 0
-        else
-            return f/sqrt(pi*end_point)
-        end
-    end
+    checks(f, α, 0, end_point)
 
     n = end_point/h
     result=0
@@ -680,7 +593,7 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point::Real, h, :
         result+=(-1)^i*gamma(α+1)/(gamma(i+1)*gamma(α-i+1))*f(end_point-i*h)
     end
 
-    result1=result/h^α
+    result1=result*h^(-α)
     return result1
 end
 
@@ -711,6 +624,8 @@ julia> fracdiff(x->x, 0.5, 1, 0.007, Caputo_Diethelm())
     0 < α < 1
 """
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Diethelm)
+    checks(f, α, 0, end_point)
+
     N = end_point/h
 
     result=0
@@ -722,15 +637,14 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caput
 
 end
 function quadweights(n, N, α)
-    if n==0
+    if n == 0
         return 1
-    elseif  0<n<N
+    elseif  0 < n < N
         return (n+1)^(1-α)-2*n^(1-α)+(n-1)^(1-α)
-    elseif n==N
+    elseif n == N
         return (1-α)*N^(-α)-N^(1-α)+(N-1)^(1-α)
     end
 end
-
 function nderivative(f, n, end_point, h)
     temp = 0
 
@@ -766,19 +680,13 @@ function fracdiff(f, α, end_point, h, ::RLDiff_Matrix)
     return B(N, α, h)*f.(tspan)
 end
 
-"""
-    eliminator(n, row)
-
-Compute the eliminator matrix Sₖ by omiting n-th row
-"""
+#Compute the eliminator matrix Sₖ by omiting n-th row
 function eliminator(n, row)
     temp = zeros(n, n)+I
     return temp[Not(row), :]
 end
 
-"""
-Generating elements in Matrix.
-"""
+#Generate elements in Matrix.
 function omega(n, p)
     omega = zeros(n+1)
 
@@ -790,7 +698,6 @@ function omega(n, p)
     return omega
 
 end
-
 function B(N, p, h)
     result=zeros(N, N)
     temp=omega(N, p)

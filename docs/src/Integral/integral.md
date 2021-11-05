@@ -11,8 +11,8 @@ _aD_t^{-\alpha}f(t)=\frac{1}{\Gamma(\alpha)}\int_a^t(t-\tau)^{\alpha-1}f(\tau)d\
 ```
 In FractionalCalculus, you can compute the integral of a function with order $\alpha$:
 
-```julia
-fracint(x->x, 0.5, 0, 1, 0.0001, RL_Direct())
+```julia-repl
+julia> fracint(x->x, 0.5, 0, 1, 0.0001, RL_Direct())
 ```
 
 A tuple contains result and estimating error will return
@@ -28,7 +28,7 @@ julia> fracint(x->x, 0.5, 0, 1, 0.0001, RL_())
 
 FractionalCalculus.jl support many algorithms to calculate fractional integral, here, I want to highlight the **Triangular Strip Matrix** method proposed by [Prof Igor](http://people.tuke.sk/igor.podlubny/index.html) to discrete fractional derivative.
 
-```julia
+```julia-repl
 julia> fracdiff(f, α, end_point, h, RLInt_Matrix())
 ```
 
