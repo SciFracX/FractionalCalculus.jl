@@ -82,21 +82,25 @@ Current Algorithms
 |   |   ├── Caputo_Direct_First_Diff_Known
 |   |   ├── Caputo_Direct_First_Second_Diff_Known
 |   |   ├── Caputo_Piecewise
-|   |   └── Diethelm
+|   |   └── Caputo_Diethelm
 |   |
-│   ├── GL
-|   |   └── GL_Direct
+│   ├── Grünwald Letnikov
+|   |   ├── GL_Direct
+|   |   ├── GL_Multiplicative_Additive
+|   |   └── GL_Lagrange_Three_Point_Interp
 |   |
-|   └── RLDiff
-|       └── RLDiff_Approx
+|   └── Riemann Liouville
+|       ├── RLDiff_Approx
+|       └── RLDiff_Matrix
 |
 └── FracIntAlg
-    └── RLInt
+    └── Riemann Liouville
         ├── RL_Direct
         ├── RL_Direct_First_Diff_Known
         ├── RL_Piecewise
-        ├── RL_Line
-        └── RLInt_Approx
+        ├── RL_LinearInterp
+        ├── RLInt_Approx
+        └── RLInt_Matrix
 ```
 
 ## 🖼️ Example

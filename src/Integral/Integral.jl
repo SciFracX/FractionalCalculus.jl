@@ -363,9 +363,9 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Matrix())
 !!! info
     Triangular Strip Matrix method returns the derivative in the interval ``[0, T]`` in ```Vector```
 
-    !!! tip
+!!! tip
     With the advancing Triangular Strip Matrix method, you can not only compute fractional integrals, integer order, higher order integral is also supported!!
-Try to set ``\alpha`` as an integer, arbitrary integer of course! I promise you would enjoy it😏
+Try to set α as an integer, arbitrary integer of course! I promise you would enjoy it😏
 
 """
 function fracint(f, α, end_point, h, ::RLInt_Matrix)
