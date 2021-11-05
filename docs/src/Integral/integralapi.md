@@ -19,6 +19,7 @@ FractionalCalculus.RL_Direct_First_Diff_Known
 FractionalCalculus.RL_Piecewise
 FractionalCalculus.RLInt_Approx
 FractionalCalculus.RL_LinearInterp
+FractionalCalculus.RLInt_Matrix
 ```
 
 ```@docs

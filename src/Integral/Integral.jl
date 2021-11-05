@@ -62,6 +62,28 @@ Deploying the [Linear Interpolation](https://en.wikipedia.org/wiki/Linear_interp
 """
 struct RL_LinearInterp <: RLInt end
 
+
+"""
+@article{2009,
+title={Matrix approach to discrete fractional calculus II: Partial fractional differential equations},
+DOI={10.1016/j.jcp.2009.01.014},
+author={Podlubny, Igor and Chechkin, Aleksei and Skovranek, Tomas and Chen, YangQuan and Vinagre Jara, Blas M.},
+}
+
+"""
+
+"""
+Using [Triangular Strip Matrix](https://en.wikipedia.org/wiki/Triangle_strip) to discrete the integral.
+"""
+struct RLInt_Matrix <: RLInt end
+
+
+####################################
+###     Type defination done     ###
+####################################
+
+
+
 """
 Check if the format of nargins is correct
 """
@@ -324,6 +346,42 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArr
     end
     return ResultArray
 end
+
+"""
+# Riemann Liouville sense integral using Triangular Strip Matrix to discrete and compute.
+
+    fracint(f, α, end_point, h, RLInt_Matrix())
+
+Using Triangular Strip Matrix to approximate fractional integral.
+"""
+function fracint(f, α, end_point, h, ::RLInt_Matrix)
+    N=Int64(end_point/h+1)
+    tspan=collect(0:h:end_point)
+    return J(N, α, h)*f.(tspan)
+end
+
+function omega(n, p)
+    omega = zeros(n+1)
+
+    omega[1]=1
+    for i in range(1, n, step=1)
+        omega[i+1]=(1-(p+1)/i)*omega[i]
+    end
+    
+    return omega
+
+end
+function J(N, p, h)
+    result=zeros(N, N)
+    temp=omega(N, -p)
+
+    for i in range(1, N, step=1)
+        result[i, 1:i]=reverse(temp[1:i])
+    end
+
+    return h^p*result
+end
+
 
 
 

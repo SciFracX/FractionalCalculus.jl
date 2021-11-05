@@ -741,6 +741,11 @@ function nderivative(f, n, end_point, h)
 end
 
 """
+# Riemann Liouville sense derivative using Triangular Strip Matrix to discrete and compute.
+
+    fracdiff(f, α, end_point, h, RLDiff_Matrix())
+
+Using Triangular Strip Matrix to approximate fractional derivative.
 """
 function fracdiff(f, α, end_point, h, ::RLDiff_Matrix)
     N=Int64(end_point/h+1)
