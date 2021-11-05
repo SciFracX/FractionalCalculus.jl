@@ -22,7 +22,7 @@ _tD^\alpha_bf(t)=\frac{d^n}{dt^n}\ _tD^{-(n-\alpha)}_bf(t)=\frac{d^n}{dt^n}\ _tI
 
 We can use FractionalCalculus.jl to compute fractional derivative:
 
-```julia
+```julia-repl
 fracdiff(x->x, 0.5, 1, 0.0001, RLDiff_Approx())
 ```
 
@@ -31,7 +31,7 @@ fracdiff(x->x, 0.5, 1, 0.0001, RLDiff_Approx())
 In **FractionalCalculus.jl**, let's see, if you want to calculate the $0.4$ order fractional derivative of $f(x)=x$ at a $x=1$ with step size $0.0001$, simply typing these:
 
 
-```julia
+```julia-repl
 fracdiff(x->x, 0.4, 1, 0.0001, Caputo_Piecewise())
 ```
 
@@ -51,7 +51,7 @@ D^\alpha f(t)=\displaystyle \lim_{h\rightarrow0}\frac{1}{h^\alpha}\sum_{0\leq m\
 
 FractionalCalculus.jl support many algorithms to calculate fractional derivative, here, I want to highlight the **Triangular Strip Matrix** method proposed by [Prof Igor](http://people.tuke.sk/igor.podlubny/index.html) to discrete fractional derivative.
 
-```julia
+```julia-repl
 julia> fracdiff(f, α, end_point, h, RLDiff_Matrix())
 ```
 
