@@ -2,7 +2,7 @@ name = "FractionalCalculus"
 uuid = "638fb199-4bb2-4014-80c8-6dc0d90f156b"
 license = "MIT"
 authors = ["Qingyu Qu <erikqqy123@gmail.com>"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
