@@ -746,6 +746,18 @@ end
     fracdiff(f, α, end_point, h, RLDiff_Matrix())
 
 Using Triangular Strip Matrix to approximate fractional derivative.
+
+### Example
+
+```julia-repl
+julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLInt_Matrix())
+```
+
+!!! info
+    Triangular Strip Matrix method returns the derivative in the interval ``[0, T]`` in ```Vector```
+
+!!! tip
+    With the advancing Triangular Strip Matrix method, you can not only compute fractional derivatives, integer order, higher order derivative is also supported
 """
 function fracdiff(f, α, end_point, h, ::RLDiff_Matrix)
     N=Int64(end_point/h+1)
