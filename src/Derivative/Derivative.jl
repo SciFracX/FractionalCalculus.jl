@@ -1,4 +1,11 @@
-using LinearAlgebra
+# The structure of the fractional derivative:
+# (1) Type definition.
+# (2) Checks function to ensure the input parameters are correct and handle some special cases, for example, 0 end point case.
+# (3) Multiple dispatch for fracdiff of different algorithms, the first is used to compute the value of a specific point, the second is used to compute the fractional derivative of a Vector.
+# (4) Fractional derivative macros for convenient computing.
+
+using QuadGK, SpecialFunctions
+using LinearAlgebra, InvertedIndices
 
 """
 Base type of fractional differentiation algorithms, in FractionalCalculus.jl, all of the fractional derivative algorithms belong to ```FracDiffAlg```
@@ -124,7 +131,7 @@ struct RLDiff_Matrix <: RLDiff end
 
 
 """
-Using Grünwald–Letnikov finite difference method to compute Grünwald–Letnikov sense fractional derivative.
+Using **Grünwald–Letnikov finite difference method** to compute Grünwald–Letnikov sense fractional derivative.
 """
 struct GL_Finite_Difference <: GL end
 
@@ -136,7 +143,7 @@ struct GL_Finite_Difference <: GL end
 """
 Check if the format of nargins is correct.
 """
-function checks(f, α, start_point, end_point)
+function checks(f::Union{Function, Number}, α::Float64, start_point::Float64, end_point::Float64)
     α % 1 != 0 ? nothing : error("α must be a decimal number")
     if isa(end_point, Number)
         start_point < end_point ? nothing : DomainError("Domain error! Start point must smaller than end point")
@@ -147,13 +154,14 @@ function checks(f, α, start_point, end_point)
     end
 
     end_point == 0 ? 0 : nothing
-
-    
-    #The fractional derivative of number is relating with the end_point.
-    if isa(f, Number)
-        f == 0 ? 0 : f/sqrt(pi*end_point)
-    end
 end
+
+function checks(f::Number, α::Float64, start_point::Float64, end_point::Float64)
+    f = f == 0 ? 0 : f/sqrt(pi*end_point)
+
+end
+
+
 
 
 """
@@ -169,7 +177,8 @@ julia> fracdiff(Function, Order, Start_Point, End_Point, AlgType)
 
 Compute the α-order fractional derivative of f from start point to end point with specific algorithm.
 """
-function fracdiff(f, α, start_point, end_point, ::FracDiffAlg)
+function fracdiff(f, α, end_point, h)
+    return fracdiff(f, α, end_point, h, RLDiff_Approx())
 end
 
 
@@ -190,7 +199,7 @@ When the input end points is an array, **fracdiff** will compute
 
 Refer to [Caputo derivative](https://en.wikipedia.org/wiki/Fractional_calculus#Caputo_fractional_derivative)
 """
-function fracdiff(f::Union{Function, Number}, α, start_point, end_point, h, ::Caputo_Direct)
+function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_point, h::Float64, ::Caputo_Direct)
     checks(f, α, start_point, end_point)
 
     #Using complex step differentiation to calculate the first order differentiation
@@ -199,7 +208,7 @@ function fracdiff(f::Union{Function, Number}, α, start_point, end_point, h, ::C
     return result
 end
 
-function fracdiff(f::Union{Number, Function}, α::Float64, start_point, end_point::AbstractArray, h, ::Caputo_Direct)::Vector
+function fracdiff(f::Union{Number, Function}, α::Float64, start_point, end_point::AbstractArray, h::Float64, ::Caputo_Direct)::Vector
     ResultArray = Float64[]
     for (_, value) in enumerate(end_point)
         append!(ResultArray, fracdiff(f, α, start_point, value, h, Caputo_Direct()))
@@ -224,7 +233,7 @@ julia> fracdiff(x->x^5, 0, 0.5, GL_Direct())
 
 Please refer to [Grünwald–Letnikov derivative](https://en.wikipedia.org/wiki/Gr%C3%BCnwald%E2%80%93Letnikov_derivative) for more details.
 """
-function fracdiff(f::Union{Function, Number}, α, start_point, end_point, ::GL_Direct)
+function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_point, ::GL_Direct)
     checks(f, α, start_point, end_point)
 
     g(τ) = (f(end_point)-f(τ)) ./ (end_point - τ) .^ (1+α)
@@ -471,7 +480,7 @@ function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx)
     summation = 0
     n = end_point/h
 
-    for i in range(0, n-1, step=1)
+    @fastmath @inbounds @simd for i in range(0, n-1, step=1)
         summation+=(f(end_point-i*end_point/n)-f(end_point-(i+1)*end_point/n))*((i+1)^(1-α)-i^(1-α))
     end
 
@@ -589,7 +598,7 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point::Real, h, :
     n = end_point/h
     result=0
 
-    for i in range(0, n, step=1)
+    @fastmath @simd for i in range(0, n, step=1)
         result+=(-1)^i*gamma(α+1)/(gamma(i+1)*gamma(α-i+1))*f(end_point-i*h)
     end
 
@@ -630,7 +639,7 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caput
 
     result=0
 
-    for i in range(0, N, step=1)
+    @fastmath @inbounds @simd for i in range(0, N, step=1)
         result+=quadweights(i, N, α)*(f(end_point-i*h)-f(0))
     end
     return result*h^(-α)/gamma(2-α)
@@ -648,8 +657,8 @@ end
 function nderivative(f, n, end_point, h)
     temp = 0
 
-    for k in range(0, n, step=1)
-        temp+=(-1)^(k+n)*binomial(n, k)*f(end_point+k*h)
+    @fastmath @inbounds @simd for k in range(0, n, step=1)
+        temp += (-1)^(k+n)*binomial(n, k)*f(end_point+k*h)
     end
     return h^(-n)*temp
 end
@@ -674,16 +683,16 @@ julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLInt_Matrix())
     With the advancing Triangular Strip Matrix method, you can not only compute fractional derivatives, integer order, higher order derivative is also supported!!
 Try to set α as an integer, arbitrary integer of course! I promise you would enjoy it😏
 """
-function fracdiff(f, α, end_point, h, ::RLDiff_Matrix)
+function fracdiff(f, α, end_point, h::Float64, ::RLDiff_Matrix)
     N=Int64(end_point/h+1)
-    tspan=collect(0:h:end_point)
+    @views tspan=collect(0:h:end_point)
     return B(N, α, h)*f.(tspan)
 end
 
 #Compute the eliminator matrix Sₖ by omiting n-th row
 function eliminator(n, row)
     temp = zeros(n, n)+I
-    return temp[Not(row), :]
+    return @views temp[Not(row), :]
 end
 
 #Generate elements in Matrix.
@@ -691,25 +700,23 @@ function omega(n, p)
     omega = zeros(n+1)
 
     omega[1]=1
-    for i in range(1, n, step=1)
+    @fastmath @inbounds @simd for i in range(1, n, step=1)
         omega[i+1]=(1-(p+1)/i)*omega[i]
     end
     
     return omega
 
 end
-function B(N, p, h)
+function B(N, p, h::Float64)
     result=zeros(N, N)
     temp=omega(N, p)
 
-    for i in range(1, N, step=1)
-        result[i, 1:i]=reverse(temp[1:i])
+    @inbounds @simd for i in range(1, N, step=1)
+        @views result[i, 1:i]=reverse(temp[1:i])
     end
 
     return h^(-p)*result
 end
-
-
 
 ## Macros for convenient computing.
 """
