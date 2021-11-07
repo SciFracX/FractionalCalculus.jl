@@ -1,6 +1,6 @@
 # Arbitrary Order Fractional Derivative
 
-While most of the algorithms only support for limit scope, we also provide arbitrary order fractional derivative, thanks to the outstanding work of [Prof Igor](http://people.tuke.sk/igor.podlubny/index.html) for ```Triangular Strip Matrices```.
+While most of the algorithms only support for limit scope, we also provide arbitrary order fractional derivative, thanks to the outstanding work of [Prof Igor Podlubny](http://people.tuke.sk/igor.podlubny/index.html) for ```Triangular Strip Matrices```.
 
 In FractionalCalculus.jl, you can compute arbitrary fractional derivative using the specific algorithm ```RLDiff_Matrix```:
 
@@ -8,7 +8,7 @@ In FractionalCalculus.jl, you can compute arbitrary fractional derivative using 
 julia> fracdiff(f, α, end_point, h, RLDiff_Matrix())
 ```
 
-For example, we want to calculate the $3.6$ order fractional deriavtive of $f(x)=x^5$ in $x=1$:
+For example, we want to calculate the $3.6$ order fractional deriavtive of $f(x)=x^5$ in interval $[0, 6]$:
 
 ```julia-repl
 julia> fracdiff(x->x^5, 3.6, 1, 0.001, RLDiff_Matrix())
