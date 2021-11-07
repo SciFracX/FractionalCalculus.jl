@@ -495,7 +495,7 @@ function fracdiff(f::Union{Number, Function}, α, end_point::AbstractArray, h, :
     end
     return ResultArray
 end
-
+#TODO: Add arbitrary order based on Riemann Liouville approximation
 function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx_2)::Float64
     
     #The fractional derivative of number is relating with the end_point.
