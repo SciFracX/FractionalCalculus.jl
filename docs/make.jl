@@ -17,6 +17,7 @@ makedocs(
             "Integral/integral.md",
             "Integral/integralapi.md"
         ],
+        "Arbitrary Order Derivative" => "Derivative/arbitrary_order_derivative.md",
         "Example" => [
             "Example/derivative.md",
             "Example/integral.md"
