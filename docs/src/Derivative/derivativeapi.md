@@ -16,6 +16,7 @@ FractionalCalculus.FracDiffAlg
 FractionalCalculus.Caputo
 FractionalCalculus.GL
 FractionalCalculus.RLDiff
+FractionalCalculus.Hadamard
 ```
 
 ```@docs
@@ -30,6 +31,9 @@ FractionalCalculus.GL_Multiplicative_Additive
 FractionalCalculus.GL_Lagrange_Three_Point_Interp
 FractionalCalculus.RLDiff_Approx
 FractionalCalculus.RLDiff_Matrix
+FractionalCalculus.Hadamard_LRect
+FractionalCalculus.Hadamard_RRect
+FractionalCalculus.Hadamard_Trap
 ```
 
 ```@docs

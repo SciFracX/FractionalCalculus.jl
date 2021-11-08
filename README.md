@@ -142,7 +142,7 @@ Fractional Derivative:
 - [ ] Atangana-Baleanu fractional derivative
 - [ ] Riesz fractional derivative
 - [ ] Marchaud fractional derivative
-- [ ] Hadamard  fractional derivative
+- [x] Hadamard  fractional derivative
 - [ ] Weyl  fractional derivative
 - [ ] ......
 
