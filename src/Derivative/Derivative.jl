@@ -119,10 +119,6 @@ struct GL_Lagrange_Three_Point_Interp <: GL end
 Using Linear interpolation to approximate fractional derivative in Riemann Liouville  fractional derivative sense.
 """
 struct RLDiff_Approx <: RLDiff end
-struct RLDiff_Approx_2 <: RLDiff end
-struct RLDiff_Approx_3 <: RLDiff end
-struct RLDiff_Approx_Any <: RLDiff end
-
 
 """
 @article{2009,
@@ -201,7 +197,6 @@ end
 
 function checks(f::Number, α::Float64, start_point::Float64, end_point::Float64)
     f = f == 0 ? 0 : f/sqrt(pi*end_point)
-
 end
 
 
@@ -380,7 +375,7 @@ julia> fracdiff(x->x^5, 0.5, 2.5, 0.001, Caputo_Piecewise())
 Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
 
 """
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::Caputo_Piecewise)::Float64
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::Caputo_Piecewise)
     checks(f, α, 0, end_point)
 
     m = floor(α)+1
@@ -517,7 +512,7 @@ julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiff_Approx())
     The RLDiff_Approx algorithm only support for 0 < α < 1.
 
 """
-function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx)::Float64
+function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx)
     #checks(f, α, 0, end_point)
 
     summation = 0
@@ -538,85 +533,7 @@ function fracdiff(f::Union{Number, Function}, α, end_point::AbstractArray, h, :
     end
     return ResultArray
 end
-#TODO: Add arbitrary order based on Riemann Liouville approximation
-function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx_2)::Float64
-    
-    #The fractional derivative of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0 
-            return 0
-        else
-            return f/sqrt(pi*end_point)
-        end
-    end
 
-    if end_point == 0
-        return 0
-    end
-
-    summation = 0
-    n = end_point/h
-
-    for i in range(0, n-1, step=1)
-        summation+=(f(end_point-(i-1)*h) - 2*f(end_point-i*h) + f(end_point-(i+1)*h))*((i+1)^(2-α)-i^(2-α))
-    end
-
-    result=((1-α)*(2-α)*f(0)/n^α + (2-α)*(f(h)-f(0))/n^(α-1) + summation)*end_point^(-α)*n^α/gamma(3-α)
-    return result
-end
-
-function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx_3)::Float64
-        
-    #The fractional derivative of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0 
-            return 0
-        else
-            return f/sqrt(pi*end_point)
-        end
-    end
-
-    if end_point == 0
-        return 0
-    end
-
-    summation = 0
-    n = end_point/h
-
-    for i in range(0, n-1, step=1)
-        summation+=(f(end_point-i*end_point/n)-f(end_point-(i+1)*end_point/n))*((i+1)^(1-α)-i^(1-α))
-    end
-
-    result=((1-α)*f(0)/n^α+summation)*end_point^(-α)*n^α/gamma(2-α)
-    return result
-end
-
-function fracdiff(f, α, end_point, ::RLDiff_Approx_Any)
-    leftsummation = 0
-    rightsummation = 0
-    diffgen = 0
-
-    n=end_point/h
-
-    #TODO:
-    for i in range(0, n-1, step=1)
-        rightsummation+=1
-    end
-
-    
-end
-
-"""
-https://en.wikipedia.org/wiki/Numerical_differentiation#Higher_derivatives
-"""
-function diffgen(f, k, n, h, end_point)
-    
-    summation=0
-
-    for i in range(0, k, step=1)
-        summation+=(-1)^(k+n)*binomial(n, k)*f(end_point)
-    end
-end
 
 """
 # Grünwald Letnikov sense derivative approximation

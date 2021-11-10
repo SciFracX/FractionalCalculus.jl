@@ -21,3 +21,6 @@ Here, we use Plots.jl to generate the computing result:
 
 ![Sin fractional Derivative](../assets/different_order_sin_derivative.png)
 
+Also want to see different order derivative of a function? No problem!!
+
+![Different Order](../assets/3dexample.png)

@@ -58,4 +58,3 @@ julia> fracdiff(f, α, end_point, h, RLDiff_Matrix())
 With this advancing algorithms, we can not only compute the fractional derivative, but also the integer derivative! Or more precisely, arbitrary order!!!!🙌 Higher order derivative is also a piece of cake!!!!!!🎉
 
 Try to set $\alpha$ as an integer, arbitrary integer of course! I promise you would enjoy it😏
-
