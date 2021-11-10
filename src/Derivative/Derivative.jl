@@ -1,7 +1,7 @@
 # The structure of the fractional derivative:
 # (1) Type definition.
 # (2) Checks function to ensure the input parameters are correct and handle some special cases, for example, 0 end point case.
-# (3) Multiple dispatch for fracdiff of different algorithms, the first is used to compute the value of a specific point, the second is used to compute the fractional derivative of a Vector.
+# (3) Multiple dispatch for fracdiff of different algorithms, the first is used to compute the value of a specific point, the second is used to compute the fractional derivative of a Vector, other functions are auxillary functions to help with the coefficients.
 # (4) Fractional derivative macros for convenient computing.
 
 using QuadGK, SpecialFunctions
@@ -31,6 +31,11 @@ abstract type RLDiff <: FracDiffAlg end
 Hadamard sense fractional derivative algorithms.
 """
 abstract type Hadamard <: FracDiffAlg end
+
+"""
+Riesz sense fractional derivative algorithms.
+"""
+abstract type Riesz <: FracDiffAlg end
 
 
 
@@ -167,6 +172,12 @@ struct Hadamard_RRect <: Hadamard end
 Using finite part integral of **trapezoidal formula** to compute the fractional hadamard derivative.
 """
 struct Hadamard_Trap <: Hadamard end
+
+
+"""
+Using the Triangular Strip Matrices to compute the fractional derivative Riesz derivative.
+"""
+struct Riesz_Symmetric <: Riesz end
 
 ################################################################
 ###                    Type defination done                  ###
@@ -749,6 +760,17 @@ function B(N, p, h::Float64)
 
     return h^(-p)*result
 end
+# Multiple dispatch for not assigning step size *h*.
+function B(N, p)
+    result=zeros(N, N)
+    temp=omega(N, p)
+
+    @inbounds @simd for i in range(1, N, step=1)
+        @views result[i, 1:i]=reverse(temp[1:i])
+    end
+
+    return result
+end
 
 
 """
@@ -816,6 +838,31 @@ function fracdiff(f, α, x₀, x, h, ::Hadamard_Trap)
 
     return result
 end
+
+"""
+    fracdiff(f, α, end_point, h, Riesz_Symmetric())
+
+Compute fractional derivative of Riesz sense using Triangular Strip Matrix algorithm.
+"""
+function fracdiff(f, α, end_point, h, ::Riesz_Symmetric)
+    N=Int(end_point/h)
+
+    mat=RieszMatrix(α, N+1, h)
+    return mat*f.(collect(0:h:end_point))
+end
+function RieszMatrix(α, N, h)
+    caputo=B(N+1, α)
+    caputo=caputo[2:(N+1), 1:N]
+    result=1/2*(caputo+caputo')
+    result=h^(-α)*result
+
+    return result
+end
+
+
+
+
+
 
 ## Macros for convenient computing.
 """

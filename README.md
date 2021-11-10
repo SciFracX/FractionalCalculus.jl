@@ -140,7 +140,7 @@ Fractional Derivative:
 - [ ] Caputo-Fabrizio fractional derivative
 - [x] Riemann-Liouville fractional derivative 
 - [ ] Atangana-Baleanu fractional derivative
-- [ ] Riesz fractional derivative
+- [x] Riesz fractional derivative
 - [ ] Marchaud fractional derivative
 - [x] Hadamard  fractional derivative
 - [ ] Weyl  fractional derivative

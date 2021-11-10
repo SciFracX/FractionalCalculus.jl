@@ -30,6 +30,9 @@ export RLDiff_Matrix
 # Hadamard sense fractional derivative
 export Hadamard_LRect, Hadamard_RRect, Hadamard_Trap
 
+# Riesz sense fractional derivative
+export Riesz_Symmetric
+
 #Export fractional integral relating API
 export RLInt
 export RL_Direct, RL_Direct_First_Diff_Known, RL_Piecewise
