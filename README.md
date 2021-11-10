@@ -89,9 +89,17 @@ Current Algorithms
 |   |   ├── GL_Multiplicative_Additive
 |   |   └── GL_Lagrange_Three_Point_Interp
 |   |
-|   └── Riemann Liouville
-|       ├── RLDiff_Approx
-|       └── RLDiff_Matrix
+|   ├── Riemann Liouville
+|   |    ├── RLDiff_Approx
+|   |    └── RLDiff_Matrix
+|   | 
+|   ├── Hadamard
+|   |    ├── Hadamard_LRect
+|   |    ├── Hadamard_RRect
+|   |    └── Hadamard_Trap
+|   |
+|   └── Riesz
+|        └── Riesz_Symmetric
 |
 └── FracIntAlg
     └── Riemann Liouville
