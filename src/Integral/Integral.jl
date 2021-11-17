@@ -119,7 +119,7 @@ Riemann_Liouville fractional integral using complex step differentiation.
 Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which contains the value of this derivative is 1.1639316474512205, and the error estimate is 1.0183453796725215e-8
 """
 function fracint(f::Union{Function, Number}, α, start_point, end_point::Real, h, ::RL_Direct)
-    checks(f, α, start_point, end_point)
+    #checks(f, α, start_point, end_point)
     
     temp1 = f(start_point) .* (end_point-start_point) .^α
     #Use Complex differentiation to obtain the differentiation
@@ -153,7 +153,7 @@ julia> fracint(x->x^5, x->5*x^4, 0.5, 0, 2.5, RL_Direct_First_Diff_Known())
 With first order derivative known, we can directly use it in the computation of α order fraction integral
 """
 function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Direct_First_Diff_Known)
-    checks(f, α, start_point, end_point)
+    #checks(f, α, start_point, end_point)
     
     #The fractional integral of number is relating with the end_point.
     if typeof(f) <: Number
@@ -195,7 +195,7 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_Piecewise())
 By deploying Piecewise interpolation to approximate the original function, with small step size, this method is fast and take little memory allocation.
 """
 function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_Piecewise)::Float64
-    checks(f, α, 0, end_point)
+    #checks(f, α, 0, end_point)
 
     #Init
     n=end_point/h
@@ -241,7 +241,7 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Approx())
 ```
 """
 function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_Approx)::Float64
-    checks(f, α, 0, end_point)
+    #checks(f, α, 0, end_point)
 
     α = -α
     n = end_point/h
@@ -280,7 +280,7 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_LinearInterp())
 """
 function fracint(f::Union{Function, Number}, α::Float64, end_point::Number, h, ::RL_LinearInterp)::Float64
         
-    checks(f, α, 0, end_point)
+    #checks(f, α, 0, end_point)
 
     α = -α
     n = end_point/h

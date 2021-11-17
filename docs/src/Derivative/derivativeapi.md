@@ -17,6 +17,7 @@ FractionalCalculus.Caputo
 FractionalCalculus.GL
 FractionalCalculus.RLDiff
 FractionalCalculus.Hadamard
+FractionalCalculus.Riesz
 ```
 
 ```@docs
@@ -34,6 +35,7 @@ FractionalCalculus.RLDiff_Matrix
 FractionalCalculus.Hadamard_LRect
 FractionalCalculus.Hadamard_RRect
 FractionalCalculus.Hadamard_Trap
+FractionalCalculus.Riesz_Symmetric
 ```
 
 ```@docs

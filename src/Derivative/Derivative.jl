@@ -135,12 +135,6 @@ Using [Triangular Strip Matrix](https://en.wikipedia.org/wiki/Triangle_strip) to
 struct RLDiff_Matrix <: RLDiff end
 
 
-"""
-An algorithms based on FFT
-"""
-struct RL_FFT <: RLDiff end
-
-
 
 """
 Using **Grünwald–Letnikov finite difference method** to compute Grünwald–Letnikov sense fractional derivative.
@@ -782,11 +776,6 @@ function RieszMatrix(α, N, h)
     return result
 end
 
-
-function fracdiff(f, α, end_point, h, ::RL_FFT)
-    N=Int64(end_point/h)
-    
-end
 
 
 
