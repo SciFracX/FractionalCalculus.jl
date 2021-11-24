@@ -4,7 +4,7 @@
 # (3) Multiple dispatch for fracdiff of different algorithms, the first is used to compute the value of a specific point, the second is used to compute the fractional derivative of a Vector, other functions are auxillary functions to help with the coefficients.
 # (4) Fractional derivative macros for convenient computing.
 
-using QuadGK, SpecialFunctions
+using QuadGK, SpecialFunctions, SpecialMatrices
 using LinearAlgebra, InvertedIndices
 
 """
@@ -778,7 +778,40 @@ end
 
 
 
+"""
+P-th precision polynomial generate function
 
+```math
+g_p(z)=\\sum_{k=1}^p \\frac{1}{k}(1-z)^k
+```
+"""
+function genfun(p)
+    a=collect(1:p+1)
+    A=Vandermonde(a)'
+    return (1 .-a')*inv(A')
+end
+
+"""
+"""
+function getvec(α, n, g)
+    p=length(g)-1
+    b=1+α
+    g0=g[1]
+    w=zeros(1, n)
+    w[1]=g[1]^α
+
+    for m=2:p
+        M=m-1
+        dA=b/M
+        w[m]=-collect((g[2:m].*collect(((1-dA):-dA:(1-p*dA)))))*w[M:-1:1]'/g0
+    end
+
+    for k=p+1:n
+        M=k-1
+        dA=b/M
+        w[k]=-collect(g[2:(p+1)].*collect((1-dA):-dA:(1-b)))*w[M:-1:1]'/g0
+    end
+end
 
 
 ## Macros for convenient computing.
