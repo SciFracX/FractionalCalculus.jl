@@ -78,6 +78,19 @@ Using [Triangular Strip Matrix](https://en.wikipedia.org/wiki/Triangle_strip) to
 struct RLInt_Matrix <: RLInt end
 
 
+"""
+@inproceedings{Li2015NumericalMF,
+  title={Numerical Methods for Fractional Calculus},
+  author={Changpin Li and Fanhai Zeng},
+  year={2015}
+}
+
+Using fractional Simpson's formula to discrete fractional integral.
+"""
+
+struct RLInt_Simpson <: RLInt end
+
+
 ####################################
 ###     Type defination done     ###
 ####################################
@@ -352,6 +365,41 @@ function J(N, p, h::Float64)
 end
 
 
+"""
+# Riemann Liouville sense integral using fractional Simpson's formula to approximate.
+
+
+"""
+function fracint(f, α, point, h, ::RLInt_Simpson)
+    N=floor(point/h)
+    N=Int64(N)
+    temp1=0
+    temp2=0
+
+    for i in range(0, N, step=1)
+        temp1 += h^α/gamma(α+3)*ccoeff(i, N, α)*f(i*h)
+    end
+
+    for k in range(0, N-1, step=1)
+        temp2 += 4*h^α/gamma(α+3)*hccoeff(k, N, α)*f((k+0.5)*h)
+    end
+
+    return temp1+temp2
+end
+
+function ccoeff(k, n, α)
+    if k==0
+        return 4*((n+1)^(2+α)-n^(2+α))-(α+2)*(3*(n+1)^(1+α)+n^(1+α))+(α+2)*(α+1)*(n+1)^α
+    elseif 1 ≤ k ≤ n-1
+        return -(α+2)*((n+1-k)^(1+α)+6*(n-k)^(1+α)+(n-k-1)^(1+α))+4*((n+1-k)^(2+α)-(n-1-k)^(2+α))
+    elseif k==n
+        return 2-α
+    end
+end
+
+function hccoeff(k, n, α)
+    return ((α+2)*((n+1-k)^(1+α)+(n-k)^(1+α))-2*((n+1-k)^(2+α)-(n-k)^(2+α)))
+end
 
 
 ## Macros for convenient computing.
