@@ -108,7 +108,8 @@ Current Algorithms
         ├── RL_Piecewise
         ├── RL_LinearInterp
         ├── RLInt_Approx
-        └── RLInt_Matrix
+        ├── RLInt_Matrix
+        └── RLInt_Simpson
 ```
 
 ## 🖼️ Example
