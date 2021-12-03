@@ -109,7 +109,9 @@ Current Algorithms
         ├── RL_LinearInterp
         ├── RLInt_Approx
         ├── RLInt_Matrix
-        └── RLInt_Simpson
+        ├── RLInt_Simpson
+        ├── RLInt_Trapezoidal
+        └── RLInt_Rectangular
 ```
 
 ## 🖼️ Example

@@ -93,6 +93,9 @@ struct RLInt_Simpson <: RLInt end
 
 struct RLInt_Trapezoidal <: RLInt end
 
+
+struct RLInt_Rectangular <: RLInt end
+
 ####################################
 ###     Type defination done     ###
 ####################################
@@ -425,6 +428,21 @@ function trapezoidalcoeff(k, n, α)
     end
 end
 
+
+function fracint(f, α, point, h, ::RLInt_Rectangular)
+    N=Int64(floor(point/h))
+    result = 0
+
+    for i in range(0, N-1, step=1)
+        result += rectcoeff(N-i-1, α)*f(i*h)
+    end
+
+    return h^α/gamma(α+1)*result
+end
+
+function rectcoeff(k, α)
+    return (k+1)^α-k^α
+end
 
 
 ## Macros for convenient computing.
