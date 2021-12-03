@@ -28,17 +28,20 @@ pkg> add FractionalCalculus#master
 
 ## Features
 
-FractionalCalculus now has algorithms for **Caputo fractional derivative**, **Grunwald-Letnikov fractional derivative** and **Riemann-Liouville fractional integral** support, more algorithms are planned to support to enrich the package ecosystem.
+* Feature-Rich. FractionalCalculus now has algorithms for **Caputo fractional derivative**, **Grunwald-Letnikov fractional derivative** and **Riemann-Liouville fractional integral** support, more algorithms are planned to support to enrich the package ecosystem.
+
+* Easy to Use. FractionalCalculus.jl is quite easy to use, with only a few API but equiped a lot algorithms.
+
+
+!!! tip "Fractional Differential Equations"
+	Want to solve fractional differential equations with performant and effcient algorithms? Please see [FractionalDiffEq.jl](https://github.com/SciFracX/FractionalDiffEq.jl)
+
 
 ## Plans
 
 - Symbolic differentiation and integration
 
-- FractionalCalculus.jl website with online experiencing
-
 - Add more visualization of how the fraction derivative and integral are changing based on Makie or Javis or Manim
-
-- Fractional differential equations
 
 ## Contributing
 

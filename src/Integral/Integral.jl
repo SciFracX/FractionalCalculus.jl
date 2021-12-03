@@ -91,6 +91,8 @@ Using fractional Simpson's formula to discrete fractional integral.
 struct RLInt_Simpson <: RLInt end
 
 
+struct RLInt_Trapezoidal <: RLInt end
+
 ####################################
 ###     Type defination done     ###
 ####################################
@@ -400,6 +402,29 @@ end
 function hccoeff(k, n, α)
     return ((α+2)*((n+1-k)^(1+α)+(n-k)^(1+α))-2*((n+1-k)^(2+α)-(n-k)^(2+α)))
 end
+
+
+function fracint(f, α, point, h, ::RLInt_Trapezoidal)
+    N=Int64(floor(point/h))
+    result = 0
+
+    for i in range(0, N, step=1)
+        result += trapezoidalcoeff(i, N, α)*f(i*h)
+    end
+
+    return h^α/gamma(α+2)*result
+end
+
+function trapezoidalcoeff(k, n, α)
+    if k == 0
+        return (n-1)^(α+1)-(n-1-α)*n^α
+    elseif 1 ≤ k ≤ n-1
+        return (n-k+1)^(α+1)+(n-1-k)^(α+1)-2*(n-k)^(α+1)
+    else
+        return 1
+    end
+end
+
 
 
 ## Macros for convenient computing.

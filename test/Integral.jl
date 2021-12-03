@@ -19,3 +19,7 @@ end
 @testset "Test Simpson Fractional Integral" begin
     @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-7, RLInt_Simpson()), 1.163931646862977; atol = 1e-3)
 end
+
+@testset "Test Trapezoidal Fractional Integral" begin
+    @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-4, RLInt_Trapezoidal()), 1.163931646862977; atol = 1e-4)
+end
