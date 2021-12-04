@@ -96,6 +96,8 @@ struct RLInt_Trapezoidal <: RLInt end
 
 struct RLInt_Rectangular <: RLInt end
 
+struct RLInt_Cubic_Spline_Interp <: RLInt end
+
 ####################################
 ###     Type defination done     ###
 ####################################
@@ -228,11 +230,11 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_Pie
 end
 function W(i, n, α)
     if i==0
-        return n^α*(α+1-n)+(n-1)^(α+1)
+        return n^α*(α+1-n) + (n-1)^(α+1)
     elseif i==n 
         return 1
     else
-        return (n-i-1)^(α+1)+(n-i+1)^(α+1)-2*(n-i)^(α+1)
+        return (n-i-1)^(α+1) + (n-i+1)^(α+1) - 2*(n-i)^(α+1)
     end
 end
 
@@ -443,6 +445,53 @@ end
 function rectcoeff(k, α)
     return (k+1)^α-k^α
 end
+
+function first_order(f, point, h)
+    return (f(point+h)-f(point-h))/(2*h)
+end
+
+"""
+
+Error estimate is ``O(h^4)``
+
+!!! warning "Set h as 0.001 or bigger"
+    For some reason, in the **RLInt_Cubic_Spline_Interp** method, set **h** as 0.001 would get better result.
+"""
+function fracint(f, α, point, h, ::RLInt_Cubic_Spline_Interp)
+    N=Int64(floor(point/h))
+    result=0
+
+    for j in range(0, N, step=1)
+        result += ecoeff(j, N, α)*f(j*h) + h*tecoeff(j, N, α)*first_order(f, j*h, h)
+    end
+
+    return h^α/gamma(α+4)*result
+end
+
+function ecoeff(j, n, α)
+    if j == 0
+        return -6*(n-1)^(2+α)*(1+2*n+α)+n^α*(12*n^3-6*(3+α)*n^2+(1+α)*(2+α)*(3+α))
+    elseif j == n
+        return 6*(1+α)
+    else
+        return 6*(4*(n-j)^(3+α) + (n-j-1)^(2+α)*(2*j-2*n-1-α) + (1+n-j)^(2+α)*(2*j-2*n+1+α))
+    end
+end
+
+function tecoeff(j, n, α)
+    if j == 0
+        return -2*(n-1)^(2+α)*(3*n+α) + n^(1+α)*(6*n^2-4*(3+α)*n + (2+α)*(3+α))
+    elseif j == n
+        return -2*α
+    else
+        return 2*(n-j-1)^(α+2)*(3*j-3*n-α)-2*(n-j+1)^(α+2)*(3*j-3*n+α) - (n-j)^(α+2)*(24+8α)
+    end
+end
+
+function first_order(f, point, h)
+    return imag(f(point+im*h))/h
+end
+
 
 
 ## Macros for convenient computing.

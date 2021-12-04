@@ -373,7 +373,6 @@ julia> fracdiff(x->x^5, 0.5, 2.5, 0.001, Caputo_Piecewise())
 ```
 
 Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
-
 """
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::Caputo_Piecewise)
     checks(f, α, 0, end_point)

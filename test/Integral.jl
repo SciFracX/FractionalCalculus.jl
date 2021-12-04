@@ -27,3 +27,8 @@ end
 @testset "Test Rectangular Fractional Integral" begin
     @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-7, RLInt_Rectangular()), 1.163931646862977; atol = 1e-4)
 end
+
+@testset "Test Cubic Spline Interpolation Fractional Integral" begin
+    @test isapprox(fracint(x->x^4, 0.5, 1.23, 0.001, RLInt_Cubic_Spline_Interp()), 1.163931646862977; atol = 1e-5)
+    @test isapprox(fracint(sin, 0.5, 0.97, 0.01, RLInt_Cubic_Spline_Interp()), 0.6442601778843754; atol = 1e-6)
+end

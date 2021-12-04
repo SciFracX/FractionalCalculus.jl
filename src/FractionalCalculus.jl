@@ -37,5 +37,5 @@ export Riesz_Symmetric
 export RLInt
 export RL_Direct, RL_Direct_First_Diff_Known, RL_Piecewise
 export RLInt_Approx, RL_LinearInterp, RLInt_Matrix
-export RLInt_Simpson, RLInt_Trapezoidal, RLInt_Rectangular
+export RLInt_Simpson, RLInt_Trapezoidal, RLInt_Rectangular, RLInt_Cubic_Spline_Interp
 end
