@@ -111,7 +111,8 @@ Current Algorithms
         ├── RLInt_Matrix
         ├── RLInt_Simpson
         ├── RLInt_Trapezoidal
-        └── RLInt_Rectangular
+        ├── RLInt_Rectangular
+        └── RLInt_Cubic_Spline_Interp
 ```
 
 ## 🖼️ Example
