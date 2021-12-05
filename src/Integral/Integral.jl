@@ -96,6 +96,9 @@ struct RLInt_Trapezoidal <: RLInt end
 
 struct RLInt_Rectangular <: RLInt end
 
+"""
+Numerical Methods for Fractional Calculus Page 34
+"""
 struct RLInt_Cubic_Spline_Interp <: RLInt end
 
 ####################################
@@ -383,11 +386,11 @@ function fracint(f, α, point, h, ::RLInt_Simpson)
     temp1=0
     temp2=0
 
-    for i in range(0, N, step=1)
+    @fastmath @inbounds @simd for i in range(0, N, step=1)
         temp1 += h^α/gamma(α+3)*ccoeff(i, N, α)*f(i*h)
     end
 
-    for k in range(0, N-1, step=1)
+    @fastmath @inbounds @simd for k in range(0, N-1, step=1)
         temp2 += 4*h^α/gamma(α+3)*hccoeff(k, N, α)*f((k+0.5)*h)
     end
 
@@ -413,7 +416,7 @@ function fracint(f, α, point, h, ::RLInt_Trapezoidal)
     N=Int64(floor(point/h))
     result = 0
 
-    for i in range(0, N, step=1)
+    @fastmath @inbounds @simd for i in range(0, N, step=1)
         result += trapezoidalcoeff(i, N, α)*f(i*h)
     end
 
@@ -435,7 +438,7 @@ function fracint(f, α, point, h, ::RLInt_Rectangular)
     N=Int64(floor(point/h))
     result = 0
 
-    for i in range(0, N-1, step=1)
+    @fastmath @inbounds @simd for i in range(0, N-1, step=1)
         result += rectcoeff(N-i-1, α)*f(i*h)
     end
 
@@ -461,7 +464,7 @@ function fracint(f, α, point, h, ::RLInt_Cubic_Spline_Interp)
     N=Int64(floor(point/h))
     result=0
 
-    for j in range(0, N, step=1)
+    @fastmath @inbounds @simd for j in range(0, N, step=1)
         result += ecoeff(j, N, α)*f(j*h) + h*tecoeff(j, N, α)*first_order(f, j*h, h)
     end
 
@@ -487,7 +490,7 @@ function tecoeff(j, n, α)
         return 2*(n-j-1)^(α+2)*(3*j-3*n-α)-2*(n-j+1)^(α+2)*(3*j-3*n+α) - (n-j)^(α+2)*(24+8α)
     end
 end
-
+# Deploy Complex Step Differentiation to compute the first order derivative.
 function first_order(f, point, h)
     return imag(f(point+im*h))/h
 end

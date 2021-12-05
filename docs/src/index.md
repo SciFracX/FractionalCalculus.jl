@@ -12,6 +12,9 @@ FractionalCalculus.jl is a Julia package aiming at providing support for computi
 Pages = ["index.md"]
 ```
 
+!!! tip "Star Us"
+	If you think **FractionalCalculus.jl** is useful and powerful, please [star us in GitHub](httpd://github.com/SciFracX/FractionalCalculus.jl), it means a lot to us!
+
 ## Installation
 
 To install FractionalCalculus, please open Julia REPL and press`]` key to use package mode and then type the following command:

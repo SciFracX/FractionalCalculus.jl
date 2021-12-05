@@ -374,7 +374,7 @@ julia> fracdiff(x->x^5, 0.5, 2.5, 0.001, Caputo_Piecewise())
 
 Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
 """
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::Caputo_Piecewise)
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Piecewise)
     checks(f, α, 0, end_point)
 
     m = floor(α)+1
@@ -402,7 +402,7 @@ function first_order(f, point, h)
     return (f(point+h)-f(point-h))/(2*h)
 end
 
-function fracdiff(f::Union{Number, Function}, α, end_point::AbstractArray, h, ::Caputo_Piecewise)::Vector
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::Caputo_Piecewise)::Vector
     ResultArray = Float64[]
     for (_, value) in enumerate(end_point)
         append!(ResultArray, fracdiff(f, α, value, h, Caputo_Piecewise()))
