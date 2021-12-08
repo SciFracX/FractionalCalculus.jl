@@ -42,3 +42,8 @@ end
     @test isapprox(fracdiff(log, 0.5, 1, 2, 1/4000000, Hadamard_Trap()), 0.9391460; atol=1e-4)
     @test isapprox(fracdiff(log, 0.3, 1, 2, 1/4000000, Hadamard_Trap()), 0.8514935; atol=1e-4)
 end
+
+@testset "Test macros" begin
+    @test isapprox(@fracdiff(x->x, 0.5, 1), 1.1283791670955126; atol=1e-4)
+    @test isapprox(@fracdiff(x->x^5, 0.5, 3.2), 4.300306216488329e2; atol=1e-2)
+end

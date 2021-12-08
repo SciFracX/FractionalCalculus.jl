@@ -202,23 +202,6 @@ end
 
 
 
-"""
-# FracDiffAlg
-
-    fracdiff(f::Function, α, start_point, end_point, FracDiffAlg())
-
-### Example
-
-```julia-repl
-julia> fracdiff(Function, Order, Start_Point, End_Point, AlgType)
-```
-
-Compute the α-order fractional derivative of f from start point to end point with specific algorithm.
-"""
-function fracdiff(f, α, end_point, h)
-    return fracdiff(f, α, end_point, h, RLDiff_Approx())
-end
-
 
 """
 # Caputo sense fractional derivative.
@@ -824,7 +807,7 @@ julia> @fracdiff(x->x, 0.5, 1)
 1.1283791670955188
 ```
 """
-macro fracdiff(f::Union{Number, Function}, α::Float64, point)
+macro fracdiff(f, α, point)
     return :(fracdiff($f, $α, $point, 0.0001, RLDiff_Approx()))
 end
 
