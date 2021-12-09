@@ -271,7 +271,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_
     result=0
 
     for i ∈ 0:n-1
-        result += (f(end_point - i*h)+f(end_point - (i+1)*h))/2*((i+1)^(-α) - i^(-α))
+        result += (f(end_point - i*h) + f(end_point - (i+1)*h))/2*((i+1)^(-α) - i^(-α))
     end
 
     result1 = result*end_point^(-α)*n^α/gamma(1-α)
@@ -347,7 +347,7 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Matrix())
 Try to set α as an integer, arbitrary integer of course! I promise you would enjoy it😏
 """
 function fracint(f, α::Number, end_point, h::Float64, ::RLInt_Matrix)
-    N = Int64(end_point/h+1)
+    N = Int64(floor(end_point/h+1))
     tspan = collect(0:h:end_point)
     return J(N, α, h)*f.(tspan)
 end

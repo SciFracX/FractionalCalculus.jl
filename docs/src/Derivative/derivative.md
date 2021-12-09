@@ -54,6 +54,20 @@ D^\alpha f(t)=\displaystyle \lim_{h\rightarrow0}\frac{1}{h^\alpha}\sum_{0\leq m\
 
 ## Riesz sense derivative
 
+The Riesz sense symmetric fractional derivative is defined by **Caputo** derivative:
+
+```math
+
+\frac{d^\beta \phi(x)}{d|x|^\mu} =
+ D_{R}^{\beta} \phi(x) = 
+ \frac{1}{2}
+ \Bigl(  \, \,
+ _{a}D_{x}^{\beta} \phi(x) + \, 
+ _{x}D_{b}^{\beta} \phi(x)
+ \Bigr)
+
+ ```
+
 ## Hadamard sense derivative
 
 ## Highlight on some algorithms
