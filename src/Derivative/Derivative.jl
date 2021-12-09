@@ -182,19 +182,6 @@ struct Riesz_Symmetric <: Riesz end
 """
 Check if the format of nargins is correct.
 """
-function checks(f::Union{Function, Number}, α::Float64, start_point::Float64, end_point::Float64)
-    α % 1 != 0 ? nothing : error("α must be a decimal number")
-    if isa(end_point, Number)
-        start_point < end_point ? nothing : DomainError("Domain error! Start point must smaller than end point")
-    elseif isa(end_point, AbstractArray)
-        start_point < minimum(end_point) ? nothing : DomainError("Vector domain error! Start point must smaller than end point")
-    else
-        ErrorException("Please input correct point you want to compute")
-    end
-
-    end_point == 0 ? 0 : nothing
-end
-
 function checks(f::Number, α::Float64, start_point::Float64, end_point::Float64)
     f = f == 0 ? 0 : f/sqrt(pi*end_point)
 end
@@ -221,7 +208,7 @@ When the input end points is an array, **fracdiff** will compute
 Refer to [Caputo derivative](https://en.wikipedia.org/wiki/Fractional_calculus#Caputo_fractional_derivative)
 """
 function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_point, h::Float64, ::Caputo_Direct)
-    checks(f, α, start_point, end_point)
+    #checks(f, α, start_point, end_point)
 
     #Using complex step differentiation to calculate the first order differentiation
     g(τ) = imag(f(τ+1*im*h) ./ h) ./ ((end_point-τ) .^α)
@@ -255,7 +242,7 @@ julia> fracdiff(x->x^5, 0, 0.5, GL_Direct())
 Please refer to [Grünwald–Letnikov derivative](https://en.wikipedia.org/wiki/Gr%C3%BCnwald%E2%80%93Letnikov_derivative) for more details.
 """
 function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_point, ::GL_Direct)
-    checks(f, α, start_point, end_point)
+    #checks(f, α, start_point, end_point)
 
     g(τ) = (f(end_point)-f(τ)) ./ (end_point - τ) .^ (1+α)
     result = f(end_point)/(gamma(1-α) .* (end_point - start_point) .^ α) .+ quadgk(g, start_point, end_point) .* α ./ gamma(1-α)
@@ -358,14 +345,13 @@ julia> fracdiff(x->x^5, 0.5, 2.5, 0.001, Caputo_Piecewise())
 Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
 """
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Piecewise)
-    checks(f, α, 0, end_point)
 
     m = floor(α)+1
 
     summation = 0
-    n = Int64(end_point/h)
+    n = Int64(floor(end_point/h))
 
-    for i in range(0, n, step=1)
+    @fastmath @inbounds @simd for i ∈ 0:n
         summation +=W₅(i, n, m, α)*first_order(f, i*h, h)
     end
 
@@ -414,15 +400,15 @@ julia> fracdiff(x->x, 0.5, 1, 0.007, GL_Multiplicative_Additive())
     The `GL_Multiplicative_Additive` method is not accruate, please use it at your own risk.
 """
 function fracdiff(f::Union{Function, Number}, α, end_point, h, ::GL_Multiplicative_Additive)::Float64
-    checks(f, α, 0, end_point)
 
     summation = 0
-    n = Int64(end_point/h)
+    n = Int64(floor(end_point/h))
 
-    for i in range(0, n-1, step=1)
-        summation+=gamma(i-α)/gamma(i+1)*f(end_point-i*end_point/n)
+    for i ∈ 0:n-1
+        summation += gamma(i-α)/gamma(i+1)*f(end_point-i*h)
     end
-    result=summation*end_point^(-α)*n^α/gamma(-α)
+    result = summation*end_point^(-α)*n^α/gamma(-α)
+
     return result
 end
 
@@ -455,16 +441,17 @@ julia> fracdiff(x->x, 0.5, 1, 0.007, GL_Lagrange_Three_Point_Interp())
     The `GL_Multiplicative_Additive` method is not accruate, please use it at your own risk.
 """
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::GL_Lagrange_Three_Point_Interp)::Float64
-    checks(f, α, 0, end_point)
+    #checks(f, α, 0, end_point)
 
-    n = end_point/h
+    n = Int64(floor(end_point/h))
     summation=0
 
-    for i in range(0, n-1, step=1)
-        summation += gamma(i-α)/gamma(i+1)*(f(end_point-i*end_point/n)+1/4*α*(f(end_point-(i-1)*end_point/n)-f(end_point-(i+1)*end_point/n))+1/8*α^2*(f(end_point-(i-1)*end_point/n)-2*f(end_point-i*end_point/n)+f(end_point-(i+1)*end_point/n)))
+    for i ∈ 0:n-1
+        summation += gamma(i-α)/gamma(i+1)*(f(end_point-i*h)+1/4*α*(f(end_point-(i-1)*h)-f(end_point-(i+1)*h))+1/8*α^2*(f(end_point-(i-1)*h)-2*f(end_point-i*h)+f(end_point-(i+1)*h)))
     end
 
     result = summation*end_point^(-α)*n^α/gamma(-α)
+
     return result
 end
 
@@ -498,13 +485,13 @@ function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx)
     #checks(f, α, 0, end_point)
 
     summation = 0
-    n = end_point/h
+    n = Int64(floor(end_point/h))
 
-    @fastmath @inbounds @simd for i in range(0, n-1, step=1)
-        summation+=(f(end_point-i*end_point/n)-f(end_point-(i+1)*end_point/n))*((i+1)^(1-α)-i^(1-α))
+    @fastmath @inbounds @simd for i ∈ 0:n-1
+        summation += (f(end_point-i*h) - f(end_point-(i+1)*h))*((i+1)^(1-α) - i^(1-α))
     end
 
-    result=((1-α)*f(0)/n^α+summation)*end_point^(-α)*n^α/gamma(2-α)
+    result = ((1-α)*f(0)/n^α+summation)*end_point^(-α)*n^α/gamma(2-α)
     return result
 end
 
@@ -535,16 +522,15 @@ julia> fracdiff(x->x, 0.5, 1, 0.01, GL_Finite_Difference())
     `GL_Finite_Difference` method is not accruate, please use it at your own risk.
 """
 function fracdiff(f::Union{Number, Function}, α::Float64, end_point::Real, h, ::GL_Finite_Difference)::Float64
-    checks(f, α, 0, end_point)
 
-    n = end_point/h
+    n = Int64(floor(end_point/h))
     result=0
 
-    @fastmath @simd for i in range(0, n, step=1)
-        result+=(-1)^i*gamma(α+1)/(gamma(i+1)*gamma(α-i+1))*f(end_point-i*h)
+    @fastmath @simd for i ∈ 0:n
+        result += (-1)^i/(gamma(i+1)*gamma(α-i+1))*f(end_point-i*h)
     end
 
-    result1=result*h^(-α)
+    result1=result*h^(-α)*gamma(α+1)
     return result1
 end
 
@@ -575,17 +561,17 @@ julia> fracdiff(x->x, 0.5, 1, 0.007, Caputo_Diethelm())
     0 < α < 1
 """
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Diethelm)
-    checks(f, α, 0, end_point)
+    #checks(f, α, 0, end_point)
 
-    N = end_point/h
+    N = Int64(floor(end_point/h))
 
-    result=0
+    result = 0
 
-    @fastmath @inbounds @simd for i in range(0, N, step=1)
-        result+=quadweights(i, N, α)*(f(end_point-i*h)-f(0))
+    @fastmath @inbounds @simd for i ∈ 0:N
+        result += quadweights(i, N, α)*(f(end_point-i*h)-f(0))
     end
-    return result*h^(-α)/gamma(2-α)
 
+    return result*h^(-α)/gamma(2-α)
 end
 function quadweights(n, N, α)
     if n == 0
@@ -596,14 +582,8 @@ function quadweights(n, N, α)
         return (1-α)*N^(-α)-N^(1-α)+(N-1)^(1-α)
     end
 end
-function nderivative(f, n, end_point, h)
-    temp = 0
 
-    @fastmath @inbounds @simd for k in range(0, n, step=1)
-        temp += (-1)^(k+n)*binomial(n, k)*f(end_point+k*h)
-    end
-    return h^(-n)*temp
-end
+
 
 """
 # Riemann Liouville sense derivative using Triangular Strip Matrix to discrete and compute.
@@ -626,14 +606,14 @@ julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLInt_Matrix())
 Try to set α as an integer, arbitrary integer of course! I promise you would enjoy it😏
 """
 function fracdiff(f, α, end_point, h::Float64, ::RLDiff_Matrix)
-    N=Int64(end_point/h+1)
-    @views tspan=collect(0:h:end_point)
+    N = Int64(end_point/h+1)
+    @views tspan = collect(0:h:end_point)
     return B(N, α, h)*f.(tspan)
 end
 
 #Compute the eliminator matrix Sₖ by omiting n-th row
 function eliminator(n, row)
-    temp = zeros(n, n)+I
+    temp = zeros(n, n) + I
     return @views temp[Not(row), :]
 end
 
@@ -642,18 +622,17 @@ function omega(n, p)
     omega = zeros(n+1)
 
     omega[1]=1
-    @fastmath @inbounds @simd for i in range(1, n, step=1)
+    @fastmath @inbounds @simd for i ∈ 1:n
         omega[i+1]=(1-(p+1)/i)*omega[i]
     end
     
     return omega
-
 end
 function B(N, p, h::Float64)
-    result=zeros(N, N)
-    temp=omega(N, p)
+    result = zeros(N, N)
+    temp = omega(N, p)
 
-    @inbounds @simd for i in range(1, N, step=1)
+    @inbounds @simd for i ∈ 1:N
         @views result[i, 1:i]=reverse(temp[1:i])
     end
 
@@ -664,7 +643,7 @@ function B(N, p)
     result=zeros(N, N)
     temp=omega(N, p)
 
-    @inbounds @simd for i in range(1, N, step=1)
+    @inbounds @simd for i ∈ 1:N
         @views result[i, 1:i]=reverse(temp[1:i])
     end
 
@@ -678,11 +657,11 @@ end
 Compute Hadamard sense using left rectangular formula.
 """
 function fracdiff(f, α, x₀, x, h, ::Hadamard_LRect)
-    N=Int64((x-x₀)/h)
-    result=0
+    N = Int64((x-x₀)/h)
+    result = 0
 
-    for i in range(0, N-1, step=1)
-        result+=LRectCoeff(i, N, h, α, x₀)*f(x₀+i*h)
+    for i ∈ 0:N-1
+        result += LRectCoeff(i, N, h, α, x₀)*f(x₀+i*h)
     end
 
     return result
@@ -701,13 +680,12 @@ end
 Compute Hadamard sense using right rectangular formula.
 """
 function fracdiff(f, α, x₀, x, h, ::Hadamard_RRect)
-    N=Int64((x-x₀)/h)
-    result=0
+    N = Int64((x-x₀)/h)
+    result = 0
 
-    for i in range(0, N-1, step=1)
-        result+=LRectCoeff(i, N, h, α, x₀)*f(x₀+(i+1)*h)
+    for i ∈ 0:N-1
+        result += LRectCoeff(i, N, h, α, x₀)*f(x₀+(i+1)*h)
     end
-
 
     return result
 end
@@ -731,8 +709,8 @@ function fracdiff(f, α, x₀, x, h, ::Hadamard_Trap)
 
     result=0
 
-    for i in range(0, N, step=1)
-        result+=RRectCoeff(i, N, h, α, x₀)*f(x₀+i*h)
+    for i ∈ 0:N
+        result += RRectCoeff(i, N, h, α, x₀)*f(x₀+i*h)
     end
 
     return result
@@ -744,9 +722,9 @@ end
 Compute fractional derivative of Riesz sense using Triangular Strip Matrix algorithm.
 """
 function fracdiff(f, α, end_point, h, ::Riesz_Symmetric)
-    N=Int(end_point/h)
+    N=Int(floot(end_point/h))
 
-    mat=RieszMatrix(α, N+1, h)
+    mat = RieszMatrix(α, N+1, h)
     return mat*f.(collect(0:h:end_point))
 end
 function RieszMatrix(α, N, h)

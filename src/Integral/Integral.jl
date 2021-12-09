@@ -221,20 +221,20 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_Pie
     #checks(f, α, 0, end_point)
 
     #Init
-    n=end_point/h
-    result=0
+    n = Int64(floor(end_point/h))
+    result = 0
 
-    for i in range(0, n, step=1)
-        result = result + W(i, n, α)*f(i*h)
+    for i ∈ 0:n
+        result += W(i, n, α)*f(i*h)
     end
 
     result1 = result*h^α/gamma(α+2)
     return result1
 end
 function W(i, n, α)
-    if i==0
+    if i == 0
         return n^α*(α+1-n) + (n-1)^(α+1)
-    elseif i==n 
+    elseif i == n 
         return 1
     else
         return (n-i-1)^(α+1) + (n-i+1)^(α+1) - 2*(n-i)^(α+1)
@@ -267,14 +267,14 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_
     #checks(f, α, 0, end_point)
 
     α = -α
-    n = end_point/h
+    n = Int64(floor(end_point/h))
     result=0
 
-    for i in range(0, n-1, step=1)
-        result += (f(end_point-i*end_point/n)+f(end_point-(i+1)*end_point/n))/2*((i+1)^(-α)-i^(-α))
+    for i ∈ 0:n-1
+        result += (f(end_point - i*h)+f(end_point - (i+1)*h))/2*((i+1)^(-α) - i^(-α))
     end
 
-    result1=result*end_point^(-α)*n^α/gamma(1-α)
+    result1 = result*end_point^(-α)*n^α/gamma(1-α)
     return result1
 end
 
@@ -306,14 +306,14 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point::Number, h, 
     #checks(f, α, 0, end_point)
 
     α = -α
-    n = end_point/h
+    n = Int64(floor(end_point/h))
     result = 0
     
-    for i in range(0, n-1, step=1)
-        result+=((i+1)*f(end_point-i*end_point/n)-i*f(end_point-(i+1)*end_point/n))/(-α)*((i+1)^(-α)-i^(-α))+(f(end_point-(i+1)*end_point/n)-f(end_point-i*end_point/n))/(1-α)*((i+1)^(1-α)-i^(1-α))
+    for i ∈ 0:n-1
+        result += ((i+1)*f(end_point-i*h)-i*f(end_point-(i+1)*h))/(-α)*((i+1)^(-α) - i^(-α))+(f(end_point - (i+1)*h) - f(end_point-i*h))/(1-α)*((i+1)^(1-α) - i^(1-α))
     end
 
-    result1=result*end_point^(-α)*n^α/gamma(-α)
+    result1 = result*end_point^(-α)*n^α/gamma(-α)
     return result1
 end
 
@@ -347,8 +347,8 @@ julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Matrix())
 Try to set α as an integer, arbitrary integer of course! I promise you would enjoy it😏
 """
 function fracint(f, α::Number, end_point, h::Float64, ::RLInt_Matrix)
-    N=Int64(end_point/h+1)
-    tspan=collect(0:h:end_point)
+    N = Int64(end_point/h+1)
+    tspan = collect(0:h:end_point)
     return J(N, α, h)*f.(tspan)
 end
 
@@ -356,7 +356,7 @@ function omega(n, p)
     omega = zeros(n+1)
 
     omega[1]=1
-    for i in range(1, n, step=1)
+    @fastmath @inbounds @simd for i ∈ 1:n
         omega[i+1]=(1-(p+1)/i)*omega[i]
     end
     
@@ -367,7 +367,7 @@ function J(N, p, h::Float64)
     result=zeros(N, N)
     temp=omega(N, -p)
 
-    for i in range(1, N, step=1)
+    @fastmath @inbounds @simd for i ∈ 1:N
         result[i, 1:i]=reverse(temp[1:i])
     end
 
@@ -381,32 +381,30 @@ end
 
 """
 function fracint(f, α, point, h, ::RLInt_Simpson)
-    N=floor(point/h)
-    N=Int64(N)
-    temp1=0
-    temp2=0
+    N = Int64(floor(point/h))
+    temp1 = 0
+    temp2 = 0
 
-    @fastmath @inbounds @simd for i in range(0, N, step=1)
-        temp1 += h^α/gamma(α+3)*ccoeff(i, N, α)*f(i*h)
+    @fastmath @inbounds @simd for i ∈ 0:N
+        temp1 += ccoeff(i, N, α)*f(i*h)
     end
 
-    @fastmath @inbounds @simd for k in range(0, N-1, step=1)
-        temp2 += 4*h^α/gamma(α+3)*hccoeff(k, N, α)*f((k+0.5)*h)
+    @fastmath @inbounds @simd for k ∈ 0:N-1
+        temp2 += hccoeff(k, N, α)*f((k+0.5)*h)
     end
 
-    return temp1+temp2
+    return h^α/gamma(α+3)*temp1 + 4*h^α/gamma(α+3)*temp2
 end
 
 function ccoeff(k, n, α)
-    if k==0
+    if k == 0
         return 4*((n+1)^(2+α)-n^(2+α))-(α+2)*(3*(n+1)^(1+α)+n^(1+α))+(α+2)*(α+1)*(n+1)^α
     elseif 1 ≤ k ≤ n-1
         return -(α+2)*((n+1-k)^(1+α)+6*(n-k)^(1+α)+(n-k-1)^(1+α))+4*((n+1-k)^(2+α)-(n-1-k)^(2+α))
-    elseif k==n
+    elseif k == n
         return 2-α
     end
 end
-
 function hccoeff(k, n, α)
     return ((α+2)*((n+1-k)^(1+α)+(n-k)^(1+α))-2*((n+1-k)^(2+α)-(n-k)^(2+α)))
 end
@@ -416,7 +414,7 @@ function fracint(f, α, point, h, ::RLInt_Trapezoidal)
     N=Int64(floor(point/h))
     result = 0
 
-    @fastmath @inbounds @simd for i in range(0, N, step=1)
+    @fastmath @inbounds @simd for i ∈ 0:N
         result += trapezoidalcoeff(i, N, α)*f(i*h)
     end
 
@@ -438,7 +436,7 @@ function fracint(f, α, point, h, ::RLInt_Rectangular)
     N=Int64(floor(point/h))
     result = 0
 
-    @fastmath @inbounds @simd for i in range(0, N-1, step=1)
+    @fastmath @inbounds @simd for i ∈ 0:N-1
         result += rectcoeff(N-i-1, α)*f(i*h)
     end
 
@@ -450,7 +448,7 @@ function rectcoeff(k, α)
 end
 
 function first_order(f, point, h)
-    return (f(point+h)-f(point-h))/(2*h)
+    return (f(point+h) - f(point-h))/(2*h)
 end
 
 """
@@ -464,7 +462,7 @@ function fracint(f, α, point, h, ::RLInt_Cubic_Spline_Interp)
     N=Int64(floor(point/h))
     result=0
 
-    @fastmath @inbounds @simd for j in range(0, N, step=1)
+    @fastmath @inbounds @simd for j ∈ 0:N
         result += ecoeff(j, N, α)*f(j*h) + h*tecoeff(j, N, α)*first_order(f, j*h, h)
     end
 
