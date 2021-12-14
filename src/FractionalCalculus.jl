@@ -20,7 +20,6 @@ export Caputo_Diethelm
 export GL_Direct
 
 # Grünwald Letnikov sense fractional derivative
-export GL
 export GL_Multiplicative_Additive, GL_Lagrange_Three_Point_Interp
 
 # Riemann Liouville sense fractional derivative

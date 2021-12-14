@@ -35,6 +35,11 @@ Using **Grünwald–Letnikov finite difference method** to compute Grünwald–L
 """
 struct GL_Finite_Difference <: GL end
 
+"""
+Grunwald Letnikov high precision algorithms.
+"""
+struct GL_High_Precision <: GL end
+
 
 ################################################################
 ###                    Type defination done                  ###
@@ -195,4 +200,85 @@ function fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, h, :
         append!(ResultArray, fracint(f, α, value, h, GL_Finite_Difference()))
     end
     return ResultArray    
+end
+
+"""
+    fracdiff(f, α, point, h, GL_High_Precision())
+
+Use the high precision algorithms to compute the Grunwald letnikov fractional derivative.
+
+!!! tip
+    The value interval passing in the function should be a array!
+
+"""
+function fracdiff(f, α, t, p, ::GL_High_Precision)
+    if isa(f, Function)
+        y=f.(t)
+    elseif isa(f, Vector)
+        y=f[:]
+    end
+    h=t[2]-t[1]
+    
+    t=t[:]
+    n=length(t)
+    u=0
+    du=0
+    r=collect(0:p)*h
+    R=reverse(Vandermonde(r), dims=2)
+    c=inv(R)*y[1:p+1]
+    for i=1:p+1
+        u = u.+c[i]*t.^(i-1)
+        du = du.+c[i]*t.^(i-1-α)*gamma(i)/gamma(i-α)
+    end
+
+    v=y.-u
+    g=genfun(p)
+    w=getvec(α, n, g)
+    dv=zeros(n)
+    for i=1:n
+        dv[i] = w[1:i]'*v[i:-1:1]/h^α
+    end
+
+    dy = dv .+ du
+    if abs(y[1])<1e-10
+        dy[1]=0
+    end
+    return dy
+end
+
+"""
+P-th precision polynomial generate function
+
+```math
+g_p(z)=\\sum_{k=1}^p \\frac{1}{k}(1-z)^k
+```
+"""
+function genfun(p)
+    a=collect(1:p+1)
+    A=Vandermonde(a)'
+    return (1 .-a')*inv(A')
+end
+
+function getvec(α, n, g)
+    p = length(g)-1
+    b = 1 + α
+    g0 = g[1]
+    w = Float64[]
+    push!(w, g[1]^α)
+
+    for m = 2:p
+        M = m-1
+        dA = b/M
+        temp = (-(g[2:m] .*collect((1-dA):-dA:(1-b))))' *w[M:-1:1]/g0
+        push!(w, temp)
+    end
+
+    for k = p+1:n
+        M = k-1
+        dA = b/M
+        temp = (-(g[2:(p+1)] .*collect((1-dA):-dA:(1-p*dA))))' *w[M:-1:(k-p)]/g0
+        push!(w, temp)
+    end
+
+    return w
 end

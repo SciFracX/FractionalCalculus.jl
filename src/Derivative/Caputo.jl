@@ -56,6 +56,11 @@ Diethelm's method for computingn Caputo sense fractional derivative using [produ
 """
 struct Caputo_Diethelm <: Caputo end
 
+"""
+High precision algorithm
+"""
+struct Caputo_High_Precision <: Caputo end
+
 
 ################################################################
 ###                    Type defination done                  ###
@@ -258,4 +263,36 @@ function quadweights(n, N, α)
     elseif n == N
         return (1-α)*N^(-α)-N^(1-α)+(N-1)^(1-α)
     end
+end
+
+
+"""
+    fracdiff()
+
+Use the high precision algorithm to compute the Caputo sense fractional derivative.
+"""
+function fracdiff(y, t, gam, p)
+    h = t[2]-t[1]
+    t=t[:]
+    n=length(t)
+    y=y.(t)
+    q=Int64(ceil(gam))
+    r=Int64(max(p, q))
+    R=reverse(Vandermonde(collect(0:(r-1)).*h))
+    c=inv(R)*y[1:r]
+    u=0
+    du=0
+    for i=1:r
+        u=u.+c[i]*t.^(i-1)
+    end
+    if q < r
+        for i=(q+1):p
+            du = du.+c[i]*t.^(i-1-gam)*gamma(1)/gamma(i-gam)
+        end
+    end
+
+    v=y[:]-u[:]
+    dv=fracdiff(v, gam, t, p, GL_High_Precision())
+    dy=dv[:]+du[:]
+    return dy
 end
