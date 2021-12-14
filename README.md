@@ -84,12 +84,14 @@ Current Algorithms
 |   |   ├── Caputo_Direct_First_Diff_Known
 |   |   ├── Caputo_Direct_First_Second_Diff_Known
 |   |   ├── Caputo_Piecewise
-|   |   └── Caputo_Diethelm
+|   |   ├── Caputo_Diethelm
+|   |   └── Caputo_High_Precision
 |   |
 │   ├── Grünwald Letnikov
 |   |   ├── GL_Direct
 |   |   ├── GL_Multiplicative_Additive
-|   |   └── GL_Lagrange_Three_Point_Interp
+|   |   ├── GL_Lagrange_Three_Point_Interp
+|   |   └── GL_High_Precision
 |   |
 |   ├── Riemann Liouville
 |   |    ├── RLDiff_Approx
