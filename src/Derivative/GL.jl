@@ -217,24 +217,24 @@ function fracdiff(f, α, t, p, ::GL_High_Precision)
     elseif isa(f, Vector)
         y=f[:]
     end
-    h=t[2]-t[1]
+    h = t[2] - t[1]
     
-    t=t[:]
-    n=length(t)
-    u=0
-    du=0
-    r=collect(0:p)*h
-    R=reverse(Vandermonde(r), dims=2)
-    c=inv(R)*y[1:p+1]
-    for i=1:p+1
+    t = t[:]
+    n = length(t)
+    u = 0
+    du = 0
+    r = collect(0:p)*h
+    R = reverse(Vandermonde(r), dims=2)
+    c = inv(R)*y[1:p+1]
+    for i = 1:p+1
         u = u.+c[i]*t.^(i-1)
         du = du.+c[i]*t.^(i-1-α)*gamma(i)/gamma(i-α)
     end
 
-    v=y.-u
-    g=genfun(p)
-    w=getvec(α, n, g)
-    dv=zeros(n)
+    v = y.-u
+    g = genfun(p)
+    w = getvec(α, n, g)
+    dv = zeros(n)
     for i=1:n
         dv[i] = w[1:i]'*v[i:-1:1]/h^α
     end
@@ -276,7 +276,7 @@ function getvec(α, n, g)
     for k = p+1:n
         M = k-1
         dA = b/M
-        temp = (-(g[2:(p+1)] .*collect((1-dA):-dA:(1-p*dA))))' *w[M:-1:(k-p)]/g0
+        temp = (-(g[2:(p+1)] .*collect((1-dA):-dA:(1-p*dA))))' *w[M:-1:(k-p)]./g0 #FIXME: When p is greater than 2 threw DimensionMismatch
         push!(w, temp)
     end
 

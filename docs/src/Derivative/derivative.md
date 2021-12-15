@@ -52,6 +52,12 @@ We can see the result is closely resembling with the result in Riemann Liouville
 D^\alpha f(t)=\displaystyle \lim_{h\rightarrow0}\frac{1}{h^\alpha}\sum_{0\leq m\lt\infty}(-1)^m {{\alpha}\choose{m}}f(t+(\alpha-m)h)
 ```
 
+To compute the Grünwald Letnikov sense derivative, you can use FractionalCalculus.jl by:
+
+```julia
+fracdiff()
+```
+
 ## Riesz sense derivative
 
 The Riesz sense symmetric fractional derivative is defined by **Caputo** derivative:
