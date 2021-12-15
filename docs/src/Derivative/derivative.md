@@ -58,17 +58,34 @@ The Riesz sense symmetric fractional derivative is defined by **Caputo** derivat
 
 ```math
 
-\frac{d^\beta \phi(x)}{d|x|^\mu} =
- D_{R}^{\beta} \phi(x) = 
- \frac{1}{2}
- \Bigl(  \, \,
- _{a}D_{x}^{\beta} \phi(x) + \, 
- _{x}D_{b}^{\beta} \phi(x)
+\frac{d^\beta \phi(x)}{d|x|^\mu}=D_{R}^{\beta}\phi(x)=\frac{1}{2}\Bigl(_{a}D_{x}^{\beta}\phi(x)+{_{x}D_{b}^{\beta}}\phi(x)
  \Bigr)
 
- ```
+```
 
 ## Hadamard sense derivative
+
+The Hadamard sense derivative is defined using Hadamard sense integral:
+
+```math
+
+{_HD_{a+}^{-\alpha}}f(x)=\frac{1}{\Gamma(\alpha)}\int_a^x(\log\frac{x}{t})^{-(1-\alpha)}f(t)\frac{dt}{t},\ x > a
+
+```
+
+So we can know the Hadamard sense fractional derivative:
+
+```math
+
+{_HD_{a+}^\alpha}f(x)=\delta^n[{_HD_{a+}^{-(n-\alpha)}f(x)}],\ x>a
+
+```
+
+```math
+
+\delta=x\frac{d}{dx},\ n-1\leq\alpha<n\in\mathrm{Z^+}
+
+```
 
 ## Highlight on some algorithms
 
