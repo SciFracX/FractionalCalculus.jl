@@ -40,9 +40,8 @@ pkg> add FractionalCalculus#master
 
 > See SciFracX 2021 Winter Report
 
-<a href="https://www.youtube.com/watch?v=oVvrW7EgEwg">
-![Conf](/assets/conf2021.png)
-</a>
+
+[![Video Tutorial](https://github.com/SciFracX/FractionalCalculus.jl/blob/master/docs/src/assets/conf2021.png)](https://www.youtube.com/watch?v=oVvrW7EgEwg)
 
 ## Plans
 
