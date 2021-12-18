@@ -57,7 +57,7 @@ Pkg> add FractionalCalculus#master
 To compute the fractional derivative in a specific point, for example, compute <img src="https://latex.codecogs.com/svg.image?\inline&space;\alpha=0.2" title="\inline \alpha=0.2" /> derivative of <img src="https://latex.codecogs.com/svg.image?\inline&space;f(x)=x" title="\inline f(x)=x" /> in <img src="https://latex.codecogs.com/svg.image?\inline&space;x=1" title="\inline x=1" /> with step size <img src="https://latex.codecogs.com/svg.image?\inline&space;h=0.0001" title="\inline h=0.0001" /> using **Riemann Liouville** sense:
 
 ```julia
-Julia> fracdiff(x->x, 0.2, 1, 0.0001, RLDiff_Approx())
+julia> fracdiff(x->x, 0.2, 1, 0.0001, RLDiff_Approx())
 1.0736712740308347
 ```
 
@@ -153,12 +153,12 @@ Fractional Derivative:
 
 - [x] Caputo fractional derivative
 - [x] Grunwald-Letnikov fractional derivative
-- [ ] Caputo-Fabrizio fractional derivative
 - [x] Riemann-Liouville fractional derivative 
-- [ ] Atangana-Baleanu fractional derivative
 - [x] Riesz fractional derivative
-- [ ] Marchaud fractional derivative
 - [x] Hadamard  fractional derivative
+- [ ] Caputo-Fabrizio fractional derivative
+- [ ] Atangana-Baleanu fractional derivative
+- [ ] Marchaud fractional derivative
 - [ ] Weyl  fractional derivative
 - [ ] ......
 
