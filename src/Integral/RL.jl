@@ -445,10 +445,6 @@ function rectcoeff(k, α)
     return (k+1)^α-k^α
 end
 
-function first_order(f, point, h)
-    return (f(point+h) - f(point-h))/(2*h)
-end
-
 """
 
 Error estimate is ``O(h^4)``
