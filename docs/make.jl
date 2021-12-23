@@ -22,7 +22,8 @@ makedocs(
         "Example" => [
             "Example/derivative.md",
             "Example/integral.md"
-        ]
+        ],
+        "Comparison" => "comparison.md"
     ]
 )
 
