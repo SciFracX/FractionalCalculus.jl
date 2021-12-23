@@ -12,11 +12,14 @@
   <a href="https://codecov.io/gh/SciFracX/FractionalCalculus.jl">
     <img alt="codecov" src="https://codecov.io/gh/SciFracX/FractionalCalculus.jl/branch/master/graph/badge.svg">
   </a>
-  <a href="https://www.erikqqy.xyz/FractionalCalculus.jl/dev/">
+  <a href="https://scifracx.github.io/FractionalCalculus.jl/dev/">
     <img src="https://img.shields.io/badge/docs-dev-blue.svg" alt="license">
   </a>
   <a href="https://github.com/SciFracX/FractionalCalculus.jl/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/SciFracX/FractionalCalculus.jl?style=flat-square" alt="license">
+  </a>
+    <a href="https://zenodo.org/badge/latestdoi/420992306">
+  	<img src="https://zenodo.org/badge/420992306.svg" alt="DOI">
   </a>
 </p>
 

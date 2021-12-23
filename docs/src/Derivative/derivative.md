@@ -54,9 +54,31 @@ D^\alpha f(t)=\displaystyle \lim_{h\rightarrow0}\frac{1}{h^\alpha}\sum_{0\leq m\
 
 To compute the Grünwald Letnikov sense derivative, you can use FractionalCalculus.jl by:
 
-```julia
-fracdiff()
+```julia-repl
+fracdiff(x->x, 0.5, collect(0:0.01:1), 2, GL_High_Precision())
+101-element Vector{Float64}:
+ 0.0
+ 0.11283791670955126
+ 0.15957691216057307
+ 0.19544100476116796
+ 0.22567583341910252
+ 0.252313252202016
+ 0.27639531957706837
+ 0.29854106607209235
+ 0.31915382432114614
+ ⋮
+ 1.082303275961202
+ 1.0881694613449238
+ 1.094004191971426
+ 1.0998079684646789
+ 1.1055812783082735
+ 1.111324596323283
+ 1.1170383851240115
+ 1.1227230955528664
+ 1.1283791670955126
 ```
+
+Here, we use the high precision algorithm, the fourth parameter means we set the precision order as **p=2**. The returned result means the derivative on the interval $[0, 1]$.
 
 ## Riesz sense derivative
 
@@ -67,6 +89,12 @@ The Riesz sense symmetric fractional derivative is defined by **Caputo** derivat
 \frac{d^\beta \phi(x)}{d|x|^\mu}=D_{R}^{\beta}\phi(x)=\frac{1}{2}\Bigl(_{a}D_{x}^{\beta}\phi(x)+{_{x}D_{b}^{\beta}}\phi(x)
  \Bigr)
 
+```
+
+In FractionalCalculus.jl, we can use the **Riesz_Symmetric** algorithm to compute the fractional derivative:
+
+```julia-repl
+julia> fracdiff(x->x, 0.5, 1, 0.01, Riesz_Symmetric())
 ```
 
 ## Hadamard sense derivative
@@ -92,6 +120,18 @@ So we can know the Hadamard sense fractional derivative:
 \delta=x\frac{d}{dx},\ n-1\leq\alpha<n\in\mathrm{Z^+}
 
 ```
+
+To compute Hadamard fractional derivative, we can use the Hadamard relating algorithms in FractionalCalculus.jl:
+
+```julia-repl
+julia> fracdiff(x->x, 0.5, 0, 1, 0.01, Hadamard_LRect())
+0.9165222777761635
+```
+
+!!! note
+	Here we need to specify the **start point** and **end point**
+
+There are different approximating methods being used in the computing, choose the one you need😉
 
 ## Highlight on some algorithms
 
