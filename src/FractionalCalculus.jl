@@ -23,8 +23,7 @@ export Caputo_High_Precision
 export GL_Direct, GL_Multiplicative_Additive, GL_Lagrange_Three_Point_Interp, GL_High_Precision
 
 # Riemann Liouville sense fractional derivative
-export RLDiff_Approx
-export RLDiff_Matrix
+export RLDiff_Approx, RLDiff_Matrix, RL_Linear_Spline_Interp
 
 # Hadamard sense fractional derivative
 export Hadamard_LRect, Hadamard_RRect, Hadamard_Trap

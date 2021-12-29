@@ -35,6 +35,10 @@ end
     @test isapprox(fracdiff(x->x, 0.5, 1, 0.0001, RLDiff_Matrix())[end], 2/sqrt(pi); atol = 1e-4)
 end
 
+@testset "Test RL Linear Spline Interpolation" begin
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.0001, RL_Linear_Spline_Interp()), 2/sqrt(pi); atol = 1e-4)
+end
+
 @testset "Test Hadamard Fractional Derivative" begin
     @test isapprox(fracdiff(log, 0.5, 1, 2, 1/4000000, Hadamard_LRect()), 0.9391460; atol=1e-4)
     @test isapprox(fracdiff(log, 0.3, 1, 2, 1/4000000, Hadamard_LRect()), 0.8514935; atol=1e-4)

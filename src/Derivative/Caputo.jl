@@ -197,7 +197,7 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caput
     n = Int64(floor(end_point/h))
 
     @fastmath @inbounds @simd for i ∈ 0:n
-        summation +=W₅(i, n, m, α)*first_order(f, i*h, h)
+        summation += W₅(i, n, m, α)*first_order(f, i*h, h)
     end
 
     result=summation*h^(m-α)/gamma(m-α+2)

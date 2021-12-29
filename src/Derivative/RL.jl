@@ -26,6 +26,12 @@ Using [Triangular Strip Matrix](https://en.wikipedia.org/wiki/Triangle_strip) to
 struct RLDiff_Matrix <: RLDiff end
 
 
+"""
+Using linear spline interpolation method to approximate the Riemann Liouville fractional derivative.
+"""
+struct RL_Linear_Spline_Interp <: RLDiff end
+
+
 ################################################################
 ###                    Type defination done                  ###
 ################################################################
@@ -134,4 +140,46 @@ function B(N, p)
     end
 
     return result
+end
+
+
+
+"""
+Numerical methods for fractional calculus by Li, Changpin
+Page 57
+
+Linear Spline Interpolation
+"""
+function fracdiff(f, α, x, h, ::RL_Linear_Spline_Interp)
+    N = Int64(floor(x/h))
+
+    result = 0
+
+    for k = 0:(N+1)
+        result += zcoeff(N, k, α)*f(k*h)
+    end
+
+    return 1/(gamma(4-α)h^α)*result
+
+end
+
+function zcoeff(m, k, α)
+    if k ≤ m-1
+        return tideccoeff(m-1, k, α)-2*tideccoeff(m, k, α)+tideccoeff(m+1, k, α)
+    elseif k == m
+        return -2*tideccoeff(m, k, α)+tideccoeff(m+1, k, α)
+    elseif k == m+1
+        return tideccoeff(m+1, k, α)
+    elseif k > m+1
+        return 0
+    end
+end
+function tideccoeff(j, k, α)
+    if k==0
+        return (j-1)^(3-α)-j^(2-α)*(j-3+α)
+    elseif 1 ≤ k ≤ j-1
+        return (j-k+1)^(3-α)-2*(j-k)^(3-α)+(j-k-1)^(3-α)
+    elseif k == j
+        return 1
+    end
 end
