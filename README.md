@@ -98,6 +98,7 @@ Current Algorithms
 |   |
 |   ├── Riemann Liouville
 |   |    ├── RLDiff_Approx
+|   |    ├── RL_Linear_Spline_Interp
 |   |    └── RLDiff_Matrix
 |   | 
 |   ├── Hadamard
