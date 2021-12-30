@@ -156,25 +156,26 @@ function fracdiff(f, α, x, h, ::RL_Linear_Spline_Interp)
     result = 0
 
     for k = 0:(N+1)
-        result += zcoeff(N, k, α)*f(k*h)
+        result += z̄ₘₖ(N, k, α)*f(k*h)
     end
 
     return 1/(gamma(4-α)h^α)*result
 
 end
 
-function zcoeff(m, k, α)
+function z̄ₘₖ(m, k, α)
     if k ≤ m-1
-        return tideccoeff(m-1, k, α)-2*tideccoeff(m, k, α)+tideccoeff(m+1, k, α)
+        return c̄ⱼₖ(m-1, k, α)-2*c̄ⱼₖ(m, k, α)+c̄ⱼₖ(m+1, k, α)
     elseif k == m
-        return -2*tideccoeff(m, k, α)+tideccoeff(m+1, k, α)
+        return -2*c̄ⱼₖ(m, k, α)+c̄ⱼₖ(m+1, k, α)
     elseif k == m+1
-        return tideccoeff(m+1, k, α)
+        return c̄ⱼₖ(m+1, k, α)
     elseif k > m+1
         return 0
     end
 end
-function tideccoeff(j, k, α)
+
+function c̄ⱼₖ(j, k, α)
     if k==0
         return (j-1)^(3-α)-j^(2-α)*(j-3+α)
     elseif 1 ≤ k ≤ j-1

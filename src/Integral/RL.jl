@@ -384,17 +384,17 @@ function fracint(f, α, point, h, ::RLInt_Simpson)
     temp2 = 0
 
     @fastmath @inbounds @simd for i ∈ 0:N
-        temp1 += ccoeff(i, N, α)*f(i*h)
+        temp1 += cₖₙ(i, N, α)*f(i*h)
     end
 
     @fastmath @inbounds @simd for k ∈ 0:N-1
-        temp2 += hccoeff(k, N, α)*f((k+0.5)*h)
+        temp2 += ĉₖₙ(k, N, α)*f((k+0.5)*h)
     end
 
     return h^α/gamma(α+3)*temp1 + 4*h^α/gamma(α+3)*temp2
 end
 
-function ccoeff(k, n, α)
+function cₖₙ(k, n, α)
     if k == 0
         return 4*((n+1)^(2+α)-n^(2+α))-(α+2)*(3*(n+1)^(1+α)+n^(1+α))+(α+2)*(α+1)*(n+1)^α
     elseif 1 ≤ k ≤ n-1
@@ -403,25 +403,28 @@ function ccoeff(k, n, α)
         return 2-α
     end
 end
-function hccoeff(k, n, α)
+function ĉₖₙ(k, n, α)
     return ((α+2)*((n+1-k)^(1+α)+(n-k)^(1+α))-2*((n+1-k)^(2+α)-(n-k)^(2+α)))
 end
 
-
+"""
+《Numerical methods for fractional calculus》.
+Using Trapezoidal method to approximate fractional integral
+"""
 function fracint(f, α, point, h, ::RLInt_Trapezoidal)
-    N=Int64(floor(point/h))
+    N = Int64(floor(point/h))
     result = 0
 
     @fastmath @inbounds @simd for i ∈ 0:N
-        result += trapezoidalcoeff(i, N, α)*f(i*h)
+        result += aₖₙ(i, N, α)*f(i*h)
     end
 
     return h^α/gamma(α+2)*result
 end
 
-function trapezoidalcoeff(k, n, α)
+function aₖₙ(k, n, α)
     if k == 0
-        return (n-1)^(α+1)-(n-1-α)*n^α
+        return (n-1)^(α+1) - (n-1-α)*n^α
     elseif 1 ≤ k ≤ n-1
         return (n-k+1)^(α+1)+(n-1-k)^(α+1)-2*(n-k)^(α+1)
     else
@@ -435,45 +438,44 @@ function fracint(f, α, point, h, ::RLInt_Rectangular)
     result = 0
 
     @fastmath @inbounds @simd for i ∈ 0:N-1
-        result += rectcoeff(N-i-1, α)*f(i*h)
+        result += bₖ(N-i-1, α)*f(i*h)
     end
 
     return h^α/gamma(α+1)*result
 end
 
-function rectcoeff(k, α)
+function bₖ(k, α)
     return (k+1)^α-k^α
 end
 
 """
 
-Error estimate is ``O(h^4)``
+Error estimate is ``\\mathcal{O(h^4)}``, it is determined by the error of the cubic spline interpolation.
 
 !!! warning "Set h as 0.001 or bigger"
     For some reason, in the **RLInt_Cubic_Spline_Interp** method, set **h** as 0.001 would get better result.
 """
 function fracint(f, α, point, h, ::RLInt_Cubic_Spline_Interp)
-    N=Int64(floor(point/h))
-    result=0
+    N = Int64(floor(point/h))
+    result = 0.0
 
     @fastmath @inbounds @simd for j ∈ 0:N
-        result += ecoeff(j, N, α)*f(j*h) + h*tecoeff(j, N, α)*first_order(f, j*h, h)
+        result += eⱼₙ(j, N, α)*f(j*h) + h*êⱼₙ(j, N, α)*first_order(f, j*h, h)
     end
 
     return h^α/gamma(α+4)*result
 end
 
-function ecoeff(j, n, α)
+function eⱼₙ(j, n, α)
     if j == 0
-        return -6*(n-1)^(2+α)*(1+2*n+α)+n^α*(12*n^3-6*(3+α)*n^2+(1+α)*(2+α)*(3+α))
+        return -6*(n-1)^(2+α)*(1+2*n+α) + n^α*(12*n^3-6*(3+α)*n^2 + (1+α)*(2+α)*(3+α))
     elseif j == n
         return 6*(1+α)
     else
         return 6*(4*(n-j)^(3+α) + (n-j-1)^(2+α)*(2*j-2*n-1-α) + (1+n-j)^(2+α)*(2*j-2*n+1+α))
     end
 end
-
-function tecoeff(j, n, α)
+function êⱼₙ(j, n, α)
     if j == 0
         return -2*(n-1)^(2+α)*(3*n+α) + n^(1+α)*(6*n^2-4*(3+α)*n + (2+α)*(3+α))
     elseif j == n
@@ -484,5 +486,5 @@ function tecoeff(j, n, α)
 end
 # Deploy Complex Step Differentiation to compute the first order derivative.
 function first_order(f, point, h)
-    return imag(f(point+im*h))/h
+    return imag(f(point + im*h))/h
 end

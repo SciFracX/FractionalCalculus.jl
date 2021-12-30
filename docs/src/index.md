@@ -20,13 +20,13 @@ Pages = ["index.md"]
 To install FractionalCalculus, please open Julia REPL and press`]` key to use package mode and then type the following command:
 
 ```julia-repl
-pkg> add FractionalCalculus
+Pkg> add FractionalCalculus
 ```
 
 Or if you want to experience the latest version of FractionalCalculus.jl:
 
 ```julia-repl
-pkg> add FractionalCalculus#master
+Pkg> add FractionalCalculus#master
 ```
 
 ## Features
