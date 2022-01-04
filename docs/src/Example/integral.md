@@ -6,7 +6,7 @@ Let's see how easy it is to compute the fractional integral of a function🕺
 using FractionalCalculus
 using Plots
 
-tspan=collect(0:0.01:3)
+tspan = collect(0:0.01:3)
 
 exampleintegral = []
 

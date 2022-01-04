@@ -34,6 +34,10 @@ The relating document is here: [differint](https://mpmath.org/doc/current/calcul
 
 Mpmath only support Riemann Liouville fractional derivative.
 
+### differint
+
+[differint](https://github.com/differint/differint) is a Python package for calculating fractional derivatives, the main algorithms are **Riemann Liouville(RL)**, **Grunwald Letnikov(GL)** and  **improved Grunwald Letnikov(GLI)** algorithms.
+
 ## R
 
 Didn't see any packages used to compute fractional calculus😟

@@ -13,7 +13,7 @@ Pages = ["index.md"]
 ```
 
 !!! tip "Star Us"
-	If you think **FractionalCalculus.jl** is useful and powerful, please [star us in GitHub](httpd://github.com/SciFracX/FractionalCalculus.jl), it means a lot to us!
+	If you think **FractionalCalculus.jl** is useful, please [star us on GitHub](httpd://github.com/SciFracX/FractionalCalculus.jl), it means a lot to us!
 
 ## Installation
 

@@ -32,12 +32,24 @@ author = {Changpin Li and An Chen and Junjie Ye},
 """
 
 """
+# Riemann Liouville sense fractional integral using piecewise interpolation.
+    
+    fracint(f, α, end_point, h, RL_Piecewise())
+    
+### Example
+    
+```julia-repl
+julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_Piecewise())
+```
+    
+By deploying Piecewise interpolation to approximate the original function, with small step size, this method is fast and take little memory allocation.
+
 Using piecewise linear interpolation:
 
 ```math
     y_n(t)=\\frac{t-t_{i+1}}{t_i-t_{i+1}}y(t_i)+\\frac{t-t_i}{t_{i+1}-t_i}y(t_{i+1})
 ```
-
+    
 Constitute the original function with the interpolation and implement the summation.
 """
 struct RL_Piecewise <: RLInt end
@@ -51,11 +63,34 @@ year={1984}}
 """
 
 """
+# Riemann Liouville sense fractional integral approximation.
+
+    fracint(f, α, end_point, h, RLInt_Approx())
+
+### Example
+
+```julia-repl
+julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Approx())
+```
+
 Using the **Staircase approximation** to approximate the original function and implement the summation.
 """
 struct RLInt_Approx <: RLInt end
 
+
 """
+# Riemann Liouville sense fractional integral using **Linear interpolation**.
+
+    fracint(f, α, end_point, h, RL_LinearInterp())
+
+### Example
+
+```julia-repl
+julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_LinearInterp())
+```
+
+**RL_LinearInterp** is more complex compared with *RLInt_Approx* but more precise.
+
 Deploying the [Linear Interpolation](https://en.wikipedia.org/wiki/Linear_interpolation) between ``f_{j+1}`` and ``f_j``, **RL_LinearInterp** method is more precise than **RLInt_Approx**.
 """
 struct RL_LinearInterp <: RLInt end
@@ -71,12 +106,39 @@ author={Podlubny, Igor and Chechkin, Aleksei and Skovranek, Tomas and Chen, Yang
 """
 
 """
+# Riemann Liouville sense integral using Triangular Strip Matrix to discrete.
+
+    fracint(f, α, end_point, h, RLInt_Matrix())
+
+Using Triangular Strip Matrix to approximate fractional integral.
+
+### Example
+
+```julia-repl
+julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Matrix())
+```
+
+!!! info
+    Triangular Strip Matrix method returns the derivative in the interval ``[0, T]`` in ```Vector```
+
+!!! tip
+    With the advancing Triangular Strip Matrix method, you can not only compute fractional integrals, integer order, higher order integral is also supported!!
+Try to set α as an integer, arbitrary integer of course! I promise you would enjoy it😏
+
 Using [Triangular Strip Matrix](https://en.wikipedia.org/wiki/Triangle_strip) to discrete the integral.
 """
 struct RLInt_Matrix <: RLInt end
 
 
 """
+# Riemann Liouville sense fractional integral using fractional Simpson's formula to approximate.
+
+### Example
+
+```julia-repl
+julia> fracint(x->x, 0.5, 1, 0.001, RLInt_Simpson)
+```
+
 @inproceedings{Li2015NumericalMF,
   title={Numerical Methods for Fractional Calculus},
   author={Changpin Li and Fanhai Zeng},
@@ -85,17 +147,50 @@ struct RLInt_Matrix <: RLInt end
 
 Using fractional Simpson's formula to discrete fractional integral.
 """
-
 struct RLInt_Simpson <: RLInt end
 
 
+"""
+# Riemann Liouville sense fractional integral using fractional trapezoidal formula to approximate.
+
+### Example
+
+```julia-repl
+julia> fracint(x->x, 0.5, 1, 0.001, RLInt_Trapezoidal())
+```
+
+《Numerical methods for fractional calculus》.
+Using Trapezoidal method to approximate fractional integral
+"""
 struct RLInt_Trapezoidal <: RLInt end
 
 
+"""
+# Riemann Liouville sense fractional integral using fractional rectangular formula to approximate.
+
+### Example
+
+```julia-repl
+julia> fracint(x->x, 0.5, 1, 0.001, RLInt_Rectangular())
+```
+"""
 struct RLInt_Rectangular <: RLInt end
 
 """
-Numerical Methods for Fractional Calculus Page 34
+# Riemann Liouville sense fractional integral using cubic spline interpolation to approximate.
+
+### Example
+
+```julia-repl
+julia> fracint(x->x, 0.5, 1, 0.0001, RLInt_Cubic_Spline_Interp())
+```
+
+Error estimate of this method is ``\\mathcal{O(h^4)}``, it is determined by the error of the cubic spline interpolation.
+
+!!! warning "Set h as 0.001 or bigger"
+    For some reason, in the **RLInt_Cubic_Spline_Interp** method, set **h** as 0.001 would get better result.
+
+> Numerical Methods for Fractional Calculus Page 34
 """
 struct RLInt_Cubic_Spline_Interp <: RLInt end
 
@@ -202,19 +297,7 @@ function fracint(f::Union{Function, Number}, α::Float64, start_point, end_point
 end
 
 
-"""
-# Riemann Liouville sense fractional integral using piecewise interpolation.
 
-    fracint(f, α, end_point, h, RL_Piecewise())
-
-### Example
-
-```julia-repl
-julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_Piecewise())
-```
-
-By deploying Piecewise interpolation to approximate the original function, with small step size, this method is fast and take little memory allocation.
-"""
 function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_Piecewise)::Float64
     #checks(f, α, 0, end_point)
 
@@ -250,17 +333,6 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArr
 end
 
 
-"""
-# Riemann Liouville sense fractional integral approximation.
-
-    fracint(f, α, end_point, h, RLInt_Approx())
-
-### Example
-
-```julia-repl
-julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Approx())
-```
-"""
 function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_Approx)::Float64
     #checks(f, α, 0, end_point)
 
@@ -286,19 +358,8 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArr
 end
 
 
-"""
-# Riemann Liouville sense fractional integral using Linear interpolation.
 
-    fracint(f, α, end_point, h, RL_LinearInterp())
 
-### Example
-
-```julia-repl
-julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_LinearInterp())
-```
-
-**RL_LinearInterp** is more complex but more precise.
-"""
 function fracint(f::Union{Function, Number}, α::Float64, end_point::Number, h, ::RL_LinearInterp)::Float64
         
     #checks(f, α, 0, end_point)
@@ -324,26 +385,9 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArr
     return ResultArray
 end
 
-"""
-# Riemann Liouville sense integral using Triangular Strip Matrix to discrete and compute.
 
-    fracint(f, α, end_point, h, RLInt_Matrix())
 
-Using Triangular Strip Matrix to approximate fractional integral.
 
-### Example
-
-```julia-repl
-julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Matrix())
-```
-
-!!! info
-    Triangular Strip Matrix method returns the derivative in the interval ``[0, T]`` in ```Vector```
-
-!!! tip
-    With the advancing Triangular Strip Matrix method, you can not only compute fractional integrals, integer order, higher order integral is also supported!!
-Try to set α as an integer, arbitrary integer of course! I promise you would enjoy it😏
-"""
 function fracint(f, α::Number, end_point, h::Float64, ::RLInt_Matrix)
     N = Int64(floor(end_point/h+1))
     tspan = collect(0:h:end_point)
@@ -373,11 +417,9 @@ function J(N, p, h::Float64)
 end
 
 
-"""
-# Riemann Liouville sense integral using fractional Simpson's formula to approximate.
-
-
-"""
+#=
+RLInt_Simpson Algorithm
+=#
 function fracint(f, α, point, h, ::RLInt_Simpson)
     N = Int64(floor(point/h))
     temp1 = 0
@@ -407,10 +449,9 @@ function ĉₖₙ(k, n, α)
     return ((α+2)*((n+1-k)^(1+α)+(n-k)^(1+α))-2*((n+1-k)^(2+α)-(n-k)^(2+α)))
 end
 
-"""
-《Numerical methods for fractional calculus》.
-Using Trapezoidal method to approximate fractional integral
-"""
+#=
+RLInt_Trapezoidal Algorithm
+=#
 function fracint(f, α, point, h, ::RLInt_Trapezoidal)
     N = Int64(floor(point/h))
     result = 0
@@ -448,13 +489,9 @@ function bₖ(k, α)
     return (k+1)^α-k^α
 end
 
-"""
-
-Error estimate is ``\\mathcal{O(h^4)}``, it is determined by the error of the cubic spline interpolation.
-
-!!! warning "Set h as 0.001 or bigger"
-    For some reason, in the **RLInt_Cubic_Spline_Interp** method, set **h** as 0.001 would get better result.
-"""
+#=
+RLInt_Cubic_Spline_Interp Algorithm
+=#
 function fracint(f, α, point, h, ::RLInt_Cubic_Spline_Interp)
     N = Int64(floor(point/h))
     result = 0.0

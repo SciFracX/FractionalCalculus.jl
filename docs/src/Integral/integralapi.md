@@ -15,11 +15,14 @@ FractionalCalculus.FracIntAlg
 ```@docs
 FractionalCalculus.RLInt
 FractionalCalculus.RL_Direct
-FractionalCalculus.RL_Direct_First_Diff_Known
 FractionalCalculus.RL_Piecewise
 FractionalCalculus.RLInt_Approx
 FractionalCalculus.RL_LinearInterp
 FractionalCalculus.RLInt_Matrix
+FractionalCalculus.RLInt_Simpson
+FractionalCalculus.RLInt_Trapezoidal
+FractionalCalculus.RLInt_Rectangular
+FractionalCalculus.RLInt_Cubic_Spline_Interp
 ```
 
 ```@docs
