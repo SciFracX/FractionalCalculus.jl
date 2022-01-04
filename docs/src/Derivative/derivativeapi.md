@@ -20,21 +20,41 @@ FractionalCalculus.Hadamard
 FractionalCalculus.Riesz
 ```
 
+## Caputo Sense fractional derivative
+
 ```@docs
 FractionalCalculus.Caputo_Direct
-FractionalCalculus.Caputo_Direct_First_Diff_Known
-FractionalCalculus.Caputo_Direct_First_Second_Diff_Known
 FractionalCalculus.Caputo_Piecewise
 FractionalCalculus.Caputo_Diethelm
+```
+
+## Grunwald Letnikov sense fractional derivative
+
+```@docs
 FractionalCalculus.GL_Direct
 FractionalCalculus.GL_Finite_Difference
 FractionalCalculus.GL_Multiplicative_Additive
 FractionalCalculus.GL_Lagrange_Three_Point_Interp
+```
+
+## Riemann Liouville sense fractional derivative
+
+```@docs
 FractionalCalculus.RLDiff_Approx
 FractionalCalculus.RLDiff_Matrix
+```
+
+## Hadamard sense fractional derivative
+
+```@docs
 FractionalCalculus.Hadamard_LRect
 FractionalCalculus.Hadamard_RRect
 FractionalCalculus.Hadamard_Trap
+```
+
+## Riesz sense fractional derivative
+
+```@docs
 FractionalCalculus.Riesz_Symmetric
 ```
 

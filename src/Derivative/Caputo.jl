@@ -7,7 +7,22 @@ abstract type Caputo <: FracDiffAlg end
 
 
 """
-Note *Caputo Direct* algorithms belong to direct computing, precise are ensured, but maybe cause more memory allocation and take more compilation time.
+# Caputo sense fractional derivative.
+
+    fracdiff(f::Function, α, start_point, end_point, step_size ::Caputo)
+
+### Example: 
+
+```julia-repl
+julia> fracdiff(x->x^5, 0.5, 0, 2.5, 0.0001, Caputo_Direct())
+```
+
+Returns a tuple (**result**, **error**), which means the value of this derivative is 141.59714979764541, and the error estimate is 1.1532243848672914e-6.
+
+Refer to [Caputo derivative](https://en.wikipedia.org/wiki/Fractional_calculus#Caputo_fractional_derivative)
+
+!!! note
+    *Caputo Direct* algorithms belong to direct computing, precise are ensured, but maybe cause more memory allocation and take more compilation time.
 
 Using the direct mathematic expression:
 
@@ -30,29 +45,64 @@ With first and second derivative known, we can direct use derivative and second 
 struct Caputo_Direct_First_Second_Diff_Known <: Caputo end
 
 """
+
+"""
+
+"""
+# Caputo sense Piecewise algorithm
+
+    fracdiff(f, α, end_point, h, Caputo_Piecewise())
+
+Using piecewise linear interpolation function to approximate input function and combining Caputo derivative then implement summation.
+
+### Example
+
+```julia-repl
+julia> fracdiff(x->x^5, 0.5, 2.5, 0.001, Caputo_Piecewise())
+```
+
+Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
+
+```tex
 @article{LI20113352,
 title = {Numerical approaches to fractional calculus and fractional ordinary differential equation},
 author = {Changpin Li and An Chen and Junjie Ye},
 }
-"""
+```
 
-"""
-Using piecewise linear interpolation function to approximate input function and combining Caputo derivative then implement summation.
 """
 struct Caputo_Piecewise <: Caputo end
 
 
+
 """
+# Caputo sense Diethelm computation
+    
+    fracdiff(f, α, end_point, h, Caputo_Diethelm())
+
+Using quadrature weights(derived from product trapezoidal rule) to approximate the derivative.
+
+### Example
+
+```julia-repl
+julia> fracdiff(x->x, 0.5, 1, 0.007, Caputo_Diethelm())
+1.128378318687192
+```
+
+!!! info "Scope"
+    0 < α < 1
+
+Diethelm's method for computingn Caputo sense fractional derivative using [product trapezoidal rule](https://en.wikipedia.org/wiki/Trapezoidal_rule) and [Richardsin extrapolation](https://en.wikipedia.org/wiki/Richardson_extrapolation)
+
+```tex
 @article{10.1093/imanum/17.3.479,
 author = {DIETTELM, KAI},
 title = "{Generalized compound quadrature formulae for finite-part integrals}",
 journal = {IMA Journal of Numerical Analysis},
 doi = {10.1093/imanum/17.3.479},
 }
-"""
+```
 
-"""
-Diethelm's method for computingn Caputo sense fractional derivative using [product trapezoidal rule](https://en.wikipedia.org/wiki/Trapezoidal_rule) and [Richardsin extrapolation](https://en.wikipedia.org/wiki/Richardson_extrapolation)
 """
 struct Caputo_Diethelm <: Caputo end
 
@@ -67,23 +117,7 @@ struct Caputo_High_Precision <: Caputo end
 ################################################################
 
 
-"""
-# Caputo sense fractional derivative.
 
-    fracdiff(f::Function, α, start_point, end_point, step_size ::Caputo)
-
-### Example: 
-
-```julia-repl
-julia> fracdiff(x->x^5, 0.5, 0, 2.5, 0.0001, Caputo_Direct())
-```
-
-Returns a tuple (**result**, **error**), which means the value of this derivative is 141.59714979764541, and the error estimate is 1.1532243848672914e-6.
-
-When the input end points is an array, **fracdiff** will compute 
-
-Refer to [Caputo derivative](https://en.wikipedia.org/wiki/Fractional_calculus#Caputo_fractional_derivative)
-"""
 function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_point, h::Float64, ::Caputo_Direct)
     #checks(f, α, start_point, end_point)
 
@@ -174,21 +208,6 @@ function fracdiff(f::Function, α::Float64, start_point, end_point::AbstractArra
 end
 
 
-"""
-# Caputo sense Piecewise algorithm
-
-    fracdiff(f, α, end_point, h, Caputo_Piecewise())
-
-Using the **piecewise algorithm** to obtain the fractional derivative at a specific point.
-
-### Example
-
-```julia-repl
-julia> fracdiff(x->x^5, 0.5, 2.5, 0.001, Caputo_Piecewise())
-```
-
-Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
-"""
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Piecewise)
 
     m = floor(α)+1
@@ -225,23 +244,9 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractAr
 end
 
 
-"""
-# Caputo sense Diethelm computation
-    
-    fracdiff(f, α, end_point, h, Caputo_Diethelm())
-
-Using quadrature weights(derived from product trapezoidal rule) to approximate the derivative.
-
-### Example
-
-```julia-repl
-julia> fracdiff(x->x, 0.5, 1, 0.007, Caputo_Diethelm())
-1.128378318687192
-```
-
-!!!info "Scope"
-    0 < α < 1
-"""
+#=
+Caputo Diethelm algorithm
+=#
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Diethelm)
     #checks(f, α, 0, end_point)
 
