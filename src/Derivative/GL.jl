@@ -19,7 +19,7 @@ abstract type GL <: FracDiffAlg end
 julia> fracdiff(x->x^5, 0, 0.5, GL_Direct())
 ```
 !!! info "Scope"
-    Please note Grunwald-Letnikov sense fracdiff only support $0 < \\alpha < 1$.
+    Please note Grunwald-Letnikov sense fracdiff only support ``0 < \\alpha < 1``.
 
 Please refer to [Grünwald–Letnikov derivative](https://en.wikipedia.org/wiki/Gr%C3%BCnwald%E2%80%93Letnikov_derivative) for more details.
 
