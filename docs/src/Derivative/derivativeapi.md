@@ -8,18 +8,6 @@ This page contain all of the existing API we can use for computing fractional de
 FractionalCalculus.fracdiff
 ```
 
-```@docs
-FractionalCalculus.FracDiffAlg
-```
-
-```@docs
-FractionalCalculus.Caputo
-FractionalCalculus.GL
-FractionalCalculus.RLDiff
-FractionalCalculus.Hadamard
-FractionalCalculus.Riesz
-```
-
 ## Caputo Sense fractional derivative
 
 ```@docs

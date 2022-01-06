@@ -23,6 +23,15 @@ include("Hadamard.jl")
 include("Riesz.jl")
 include("RL.jl")
 
+"""
+    fracdiff(f, α, point, h, FracDiffAlg())
+
+```fracdiff``` is the general API for computing fractional derivative
+"""
+function fracdiff(f, α, point, h, ::FracDiffAlg)
+
+end
+
 
 ## Macros for convenient computing.
 """
