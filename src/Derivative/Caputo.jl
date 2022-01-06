@@ -35,12 +35,41 @@ As for the derivative inside the integral, we use the **Complex Step Differentia
 struct Caputo_Direct <: Caputo end
 
 """
-With first derivative known, we can direct use the derivative to compute a more accurate result.
+# Caputo sense fractional derivative with first derivative known.
+
+    fracdiff(fd, α, start_point, end_point, Caputo_Direct_First_Diff_Known())
+
+If the first order derivative of a function is already known, we can use this method to compute the fractional order derivative more precisely.
+
+The inout function should be the first order derivative of a function
+
+### Example
+
+```julia-repl
+julia> fracdiff(x->5*x^4, 0.5, 0, 2.5, Caputo_Direct_First_Diff_Known())
+```
+Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
+
+Compared with **Caputo_Direct** method, this method don't need to specify step size, more precision are guaranteed.
 """
 struct Caputo_Direct_First_Diff_Known <: Caputo end
 
 """
-With first and second derivative known, we can direct use derivative and second derivative to compute a more accurate result.
+# Caputo sense fractional derivative with first and second derivative known.
+
+    fracdiff(fd1, fd2, α, start_point, end_point, Caputo_Direct_First_Second_Diff_Known)
+
+If the first and second order derivative of a function is already known, we can use this method to compute the fractional order derivative more precisely.
+
+
+### Example
+
+```julia-repl
+julia> fracdiff(x->5*x^4, x->20*x^3, 0.5, 0, 2.5, Caputo_Direct_First_Second_Diff_known())
+```
+Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
+    
+Compared with **Caputo_Direct** method, this method don't need to specify step size, more precision are guaranteed.
 """
 struct Caputo_Direct_First_Second_Diff_Known <: Caputo end
 
@@ -141,26 +170,6 @@ function fracdiff(f::Union{Number, Function}, α::Float64, start_point, end_poin
 end
 
 
-
-
-"""
-# Caputo sense fractional derivative with first derivative known.
-
-    fracdiff(fd, α, start_point, end_point, Caputo_Direct_First_Diff_Known())
-
-If the first order derivative of a function is already known, we can use this method to compute the fractional order derivative more precisely.
-
-The inout function should be the first order derivative of a function
-
-### Example
-
-```julia-repl
-julia> fracdiff(x->5*x^4, 0.5, 0, 2.5, Caputo_Direct_First_Diff_Known())
-```
-Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
-
-Compared with **Caputo_Direct** method, this method don't need to specify step size, more precision are guaranteed.
-"""
 function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_Direct_First_Diff_Known)
 
     g(τ) = (end_point-τ) .^ (-α) * fd(τ)
@@ -177,24 +186,6 @@ function fracdiff(f::Function, α, start_point, end_point::AbstractArray, step_s
 end
 
 
-
-"""
-# Caputo sense fractional derivative with first and second derivative known.
-
-    fracdiff(fd1, fd2, α, start_point, end_point, Caputo_Direct_First_Second_Diff_Known)
-
-If the first and second order derivative of a function is already known, we can use this method to compute the fractional order derivative more precisely.
-
-
-### Example
-
-```julia-repl
-julia> fracdiff(x->5*x^4, x->20*x^3, 0.5, 0, 2.5, Caputo_Direct_First_Second_Diff_known())
-```
-Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
-    
-Compared with **Caputo_Direct** method, this method don't need to specify step size, more precision are guaranteed.
-"""
 function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_Direct_First_Second_Diff_Known)
 
     temp1 = fd1(start_point) .* (end_point-start_point) .^ (1-α) ./ gamma(2-α)
