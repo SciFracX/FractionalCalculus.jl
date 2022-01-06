@@ -1,12 +1,21 @@
 import FractionalCalculus.FracDiffAlg
 
 """
-Riesz sense fractional derivative algorithms.
+Riesz sense fractional derivative
 """
 abstract type Riesz <: FracDiffAlg end
 
 """
-Using the Triangular Strip Matrices to compute the fractional derivative Riesz derivative.
+# Riesz sense symmetric fractional derivative algorithm.
+
+    fracdiff(f, α, end_point, h, Riesz_Symmetric())
+
+Compute fractional derivative of Riesz sense using Triangular Strip Matrix algorithm.
+
+### Example
+
+```julia-repl
+julia> fracdiff(x->x, 0.5, 1, 0.01, Riesz_Symmetric())
 """
 struct Riesz_Symmetric <: Riesz end
 
@@ -16,11 +25,6 @@ struct Riesz_Symmetric <: Riesz end
 ################################################################
 
 
-"""
-    fracdiff(f, α, end_point, h, Riesz_Symmetric())
-
-Compute fractional derivative of Riesz sense using Triangular Strip Matrix algorithm.
-"""
 function fracdiff(f, α, end_point, h, ::Riesz_Symmetric)
     N=Int(floor(end_point/h))
 

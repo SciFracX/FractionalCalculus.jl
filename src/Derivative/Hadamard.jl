@@ -19,16 +19,22 @@ doi = {10.2139/ssrn.3281675}
 """
 
 """
+    fracdiff(f, α, a, x, h, Hadamard_LRect())
+
 Using finite part integral of **left rectangular formula** to compute the fractional hadamard derivative.
 """
 struct Hadamard_LRect <: Hadamard end
 
 """
+    fracdiff(f, α, a, x, h, Hadamard_Trap())
+
 Using finite part integral of **right rectangular formula** to compute the fractional hadamard derivative.
 """
 struct Hadamard_RRect <: Hadamard end
 
 """
+    fracdiff(f, α, a, x, h, Hadamard_Trap())
+
 Using finite part integral of **trapezoidal formula** to compute the fractional hadamard derivative.
 """
 struct Hadamard_Trap <: Hadamard end
@@ -39,12 +45,9 @@ struct Hadamard_Trap <: Hadamard end
 ################################################################
 
 
-
-"""
-    fracdiff(f, α, a, x, h, Hadamard_LRect())
-
-Compute Hadamard sense using left rectangular formula.
-"""
+#=
+Hadamard Left Rectangular computing algorithms
+=#
 function fracdiff(f, α, x₀, x, h, ::Hadamard_LRect)
     N = Int64((x-x₀)/h)
     result = 0
@@ -63,11 +66,9 @@ function LRectCoeff(i, n, h, α, x₀)
     end
 end
 
-"""
-    fracdiff(f, α, a, x, h, Hadamard_Trap())
-
-Compute Hadamard sense using right rectangular formula.
-"""
+#=
+Hadamard Right Rectangular computing algorithm
+=#
 function fracdiff(f, α, x₀, x, h, ::Hadamard_RRect)
     N = Int64((x-x₀)/h)
     result = 0
@@ -82,21 +83,19 @@ function RRectCoeff(i, n, h, α, x₀)
     if i == 0
         return 1/2*LRectCoeff(i, n, h, α, x₀)
     elseif 1 ≤ i ≤ n-1
-        return 1/2*(LRectCoeff(i-1, n, h, α, x₀)+LRectCoeff(i, n, h, α, x₀))
+        return 1/2*(LRectCoeff(i-1, n, h, α, x₀) + LRectCoeff(i, n, h, α, x₀))
     elseif i == n
         return 1/2*LRectCoeff(i-1, n, h, α, x₀)
     end
 end
 
-"""
-    fracdiff(f, α, a, x, h, Hadamard_Trap())
-
-Compute Hadamard sense using Trapezoidal formula.
-"""
+#=
+Hadamard trapezoidal computing algorithm
+=#
 function fracdiff(f, α, x₀, x, h, ::Hadamard_Trap)
     N=Int64((x-x₀)/h)
 
-    result=0
+    result = 0
 
     for i ∈ 0:N
         result += RRectCoeff(i, N, h, α, x₀)*f(x₀+i*h)

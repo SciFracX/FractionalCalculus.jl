@@ -7,21 +7,51 @@ abstract type RLDiff <: FracDiffAlg end
 
 #RLDiff_LinearInterp maybe??
 """
+# Riemann Liouville sense derivative approximation
+
+    fracdiff(f, α, end_point, h, RLDiff_Approx())
+
 Using Linear interpolation to approximate fractional derivative in Riemann Liouville  fractional derivative sense.
+
+### Example
+
+```julia-repl
+julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiff_Approx())
+```
+
+!!! warning
+    The RLDiff_Approx algorithm only support for 0 < α < 1.
 """
 struct RLDiff_Approx <: RLDiff end
 
+
 """
+# Riemann Liouville sense derivative using Triangular Strip Matrix to discrete and compute.
+
+    fracdiff(f, α, end_point, h, RLDiff_Matrix())
+
+Using [Triangular Strip Matrix](https://en.wikipedia.org/wiki/Triangle_strip) to approximate fractional derivative.
+
+### Example
+
+```julia-repl
+julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLInt_Matrix())
+```
+
+!!! info
+    Triangular Strip Matrix method returns the derivative in the interval ``[0, T]`` in ```Vector```
+
+!!! tip
+    With the advancing Triangular Strip Matrix method, you can not only compute fractional derivatives, integer order, higher order derivative is also supported!!
+Try to set α as an integer, arbitrary integer of course! I promise you would enjoy it😏
+
+```tex
 @article{2009,
 title={Matrix approach to discrete fractional calculus II: Partial fractional differential equations},
 DOI={10.1016/j.jcp.2009.01.014},
 author={Podlubny, Igor and Chechkin, Aleksei and Skovranek, Tomas and Chen, YangQuan and Vinagre Jara, Blas M.},
 }
-
-"""
-
-"""
-Using [Triangular Strip Matrix](https://en.wikipedia.org/wiki/Triangle_strip) to discrete the derivative.
+```
 """
 struct RLDiff_Matrix <: RLDiff end
 
@@ -37,23 +67,6 @@ struct RL_Linear_Spline_Interp <: RLDiff end
 ################################################################
 
 
-"""
-# Riemann Liouville sense derivative approximation
-
-    fracdiff(f, α, end_point, h, RLDiff_Approx())
-
-Using approximation to obtain fractional derivative value.
-
-### Example
-
-```julia-repl
-julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiff_Approx())
-```
-
-!!! warning
-    The RLDiff_Approx algorithm only support for 0 < α < 1.
-
-"""
 function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx)
     #checks(f, α, 0, end_point)
 
@@ -77,26 +90,7 @@ function fracdiff(f::Union{Number, Function}, α, end_point::AbstractArray, h, :
 end
 
 
-"""
-# Riemann Liouville sense derivative using Triangular Strip Matrix to discrete and compute.
 
-    fracdiff(f, α, end_point, h, RLDiff_Matrix())
-
-Using Triangular Strip Matrix to approximate fractional derivative.
-
-### Example
-
-```julia-repl
-julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLInt_Matrix())
-```
-
-!!! info
-    Triangular Strip Matrix method returns the derivative in the interval ``[0, T]`` in ```Vector```
-
-!!! tip
-    With the advancing Triangular Strip Matrix method, you can not only compute fractional derivatives, integer order, higher order derivative is also supported!!
-Try to set α as an integer, arbitrary integer of course! I promise you would enjoy it😏
-"""
 function fracdiff(f, α, end_point, h::Float64, ::RLDiff_Matrix)
     N = Int64(end_point/h+1)
     @views tspan = collect(0:h:end_point)
@@ -144,12 +138,12 @@ end
 
 
 
-"""
+#=
 Numerical methods for fractional calculus by Li, Changpin
 Page 57
 
 Linear Spline Interpolation
-"""
+=#
 function fracdiff(f, α, x, h, ::RL_Linear_Spline_Interp)
     N = Int64(floor(x/h))
 

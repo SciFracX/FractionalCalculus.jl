@@ -106,8 +106,13 @@ doi = {10.1093/imanum/17.3.479},
 """
 struct Caputo_Diethelm <: Caputo end
 
+
 """
-High precision algorithm
+# Caputo sense fractioal derivative with p-th order precision.
+
+    fracdiff(f, α, t, Caputo_High_Precision())
+
+Use the high precision algorithm to compute the Caputo sense fractional derivative.
 """
 struct Caputo_High_Precision <: Caputo end
 
@@ -223,12 +228,12 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caput
     return result
 end
 function W₅(i, n, m, α)
-    if i==0
-        return n^(m-α)*(m-α+1-n)+(n-1)^(m-α+1)
-    elseif i==n
+    if i == 0
+        return n^(m-α)*(m-α+1-n) + (n-1)^(m-α+1)
+    elseif i == n
         return 1
     else
-        (n-i-1)^(m-α+1)+(n-i+1)^(m-α+1)-2*(n-i)^(m-α+1)
+        (n-i-1)^(m-α+1) + (n-i+1)^(m-α+1) - 2*(n-i)^(m-α+1)
     end
 end
 function first_order(f, point, h)
@@ -255,7 +260,7 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caput
     result = 0
 
     @fastmath @inbounds @simd for i ∈ 0:N
-        result += quadweights(i, N, α)*(f(end_point-i*h)-f(0))
+        result += quadweights(i, N, α)*(f(end_point-i*h) - f(0))
     end
 
     return result*h^(-α)/gamma(2-α)
@@ -271,33 +276,31 @@ function quadweights(n, N, α)
 end
 
 
-"""
-    fracdiff()
-
-Use the high precision algorithm to compute the Caputo sense fractional derivative.
-"""
-function fracdiff(y, t, gam, p)
+#=
+Caputo sense high precision algorithm
+=#
+function fracdiff(y, α, t, p, ::Caputo_High_Precision)
     h = t[2]-t[1]
-    t=t[:]
-    n=length(t)
-    y=y.(t)
-    q=Int64(ceil(gam))
-    r=Int64(max(p, q))
-    R=reverse(Vandermonde(collect(0:(r-1)).*h))
-    c=inv(R)*y[1:r]
-    u=0
-    du=0
-    for i=1:r
-        u=u.+c[i]*t.^(i-1)
+    t = t[:]
+    n = length(t)
+    y = y.(t)
+    q = Int64(ceil(α))
+    r = Int64(max(p, q))
+    R = reverse(Vandermonde(collect(0:(r-1)).*h))
+    c = inv(R)*y[1:r]
+    u = 0
+    du = 0
+    for i = 1:r
+        u = u.+c[i]*t.^(i-1)
     end
     if q < r
-        for i=(q+1):p
-            du = du.+c[i]*t.^(i-1-gam)*gamma(1)/gamma(i-gam)
+        for i = (q+1):p
+            du = du.+c[i]*t.^(i-1-α)*gamma(1)/gamma(i-α)
         end
     end
 
-    v=y[:]-u[:]
-    dv=fracdiff(v, gam, t, p, GL_High_Precision())
-    dy=dv[:]+du[:]
+    v = y[:] - u[:]
+    dv = fracdiff(v, α, t, p, GL_High_Precision())
+    dy = dv[:] + du[:]
     return dy
 end
