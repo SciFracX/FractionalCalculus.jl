@@ -6,6 +6,14 @@ abstract type FracIntAlg end
 
 include("RL.jl")
 
+"""
+    fracint(f, α, point, h, FracIntAlg())
+
+The general API used for fractional integral computing.
+"""
+function fracint(f, α, point, h, ::FracIntAlg)
+end
+
 
 
 ## Macros for convenient computing.

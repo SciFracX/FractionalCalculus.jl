@@ -9,17 +9,39 @@ Note this two algorithms belong to direct compute, precise are ensured, but mayb
 abstract type RLInt <: FracIntAlg end
 
 """
-Using the direct mathematic expression:
+# Riemann Liouville sense fractional integral
+
+    fracint(f::Function, α, start_point, end_point, h, RL_Direct())
+
+Riemann_Liouville fractional integral using complex step differentiation.
 
 ```math
 (J^αf)(t)=\\frac{1}{\\Gamma(α)} \\int_0^t(t-τ)^{α-1}f(τ)dτ
 ```
 
 By using [QuadGK](https://github.com/JuliaMath/QuadGK.jl) calculate the integration and obtain the value.
+
+### Example: 
+
+```julia-repl
+julia> fracint(x->x^5, 0.5, 0, 2.5, 1e-8, RL_Direct())
+```
+
+Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which contains the value of this derivative is 1.1639316474512205, and the error estimate is 1.0183453796725215e-8
 """
 struct RL_Direct <: RLInt end
 
 """
+# Riemann Liouville sense fractional integral with first diff known.
+
+    fracint(f, fd, α, start_point, end_point, RL_Direct_First_Diff_Known())
+
+### Example
+
+```julia-repl
+julia> fracint(x->x^5, x->5*x^4, 0.5, 0, 2.5, RL_Direct_First_Diff_Known())
+```
+
 With first derivative known, we can use the Riemann Liouville sense to obtain the fractional integral more effcient.
 """
 struct RL_Direct_First_Diff_Known <: RLInt end
@@ -219,21 +241,6 @@ function checks(f, α, start_point, end_point)
     end
 end
 
-
-"""
-# Riemann Liouville sense fractional integral
-
-    fracint(f::Function, α, start_point, end_point, h, RL_Direct())
-
-### Example: 
-
-```julia-repl
-julia> fracint(x->x^5, 0.5, 0, 2.5, 1e-8, RL_Direct())
-```
-
-Riemann_Liouville fractional integral using complex step differentiation.
-Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which contains the value of this derivative is 1.1639316474512205, and the error estimate is 1.0183453796725215e-8
-"""
 function fracint(f::Union{Function, Number}, α, start_point, end_point::Real, h, ::RL_Direct)
     #checks(f, α, start_point, end_point)
     
@@ -255,19 +262,7 @@ function fracint(f::Union{Function, Number}, α::Float64, start_point, end_point
 end
 
 
-"""
-# Riemann Liouville sense fractional integral with first diff known.
 
-    fracint(f, fd, α, start_point, end_point, RL_Direct_First_Diff_Known())
-
-### Example
-
-```julia-repl
-julia> fracint(x->x^5, x->5*x^4, 0.5, 0, 2.5, RL_Direct_First_Diff_Known())
-```
-
-With first order derivative known, we can directly use it in the computation of α order fraction integral
-"""
 function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Direct_First_Diff_Known)
     #checks(f, α, start_point, end_point)
     

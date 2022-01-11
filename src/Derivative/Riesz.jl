@@ -16,6 +16,7 @@ Compute fractional derivative of Riesz sense using Triangular Strip Matrix algor
 
 ```julia-repl
 julia> fracdiff(x->x, 0.5, 1, 0.01, Riesz_Symmetric())
+```
 """
 struct Riesz_Symmetric <: Riesz end
 

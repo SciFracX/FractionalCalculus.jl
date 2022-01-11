@@ -8,9 +8,7 @@ This page contain all of the existing API we can use for computing fractional in
 FractionalCalculus.fracint
 ```
 
-```@docs
-FractionalCalculus.FracIntAlg
-```
+## Riemann Liouville sense fractional integral
 
 ```@docs
 FractionalCalculus.RLInt
