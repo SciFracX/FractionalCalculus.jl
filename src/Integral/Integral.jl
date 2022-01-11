@@ -15,7 +15,6 @@ function fracint(f, α, point, h, ::FracIntAlg)
 end
 
 
-
 ## Macros for convenient computing.
 """
     @fracint(f, α, point)
@@ -27,7 +26,7 @@ julia> @fracint(x->x, 0.5, 1)
 0.7522525439593486
 ```
 """
-macro fracint(f::Union{Function, Number}, α::Float64, point)
+macro fracint(f, α, point)
     return :(fracint($f, $α, $point, 0.0001, RLInt_Approx()))
 end
 
@@ -41,6 +40,6 @@ julia> @semifracint(x->x, 1)
 0.7522525439593486
 ```
 """
-macro semifracint(f::Union{Function, Number}, point)
+macro semifracint(f, point)
     return :(fracint($f, 0.5, $point, 0.0001, RLInt_Approx()))
 end

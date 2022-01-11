@@ -32,7 +32,7 @@ end
 end
 
 @testset "Test RLDiff Matrix Fractional Deriavtive" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 0.0001, RLDiff_Matrix())[end], 2/sqrt(pi); atol = 1e-4)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLDiff_Matrix())[end], 2/sqrt(pi); atol = 1e-3)
 end
 
 @testset "Test RL Linear Spline Interpolation" begin
