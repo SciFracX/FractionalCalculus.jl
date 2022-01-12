@@ -20,20 +20,22 @@ Pages = ["index.md"]
 To install FractionalCalculus, please open Julia REPL and press`]` key to use package mode and then type the following command:
 
 ```julia-repl
-Pkg> add FractionalCalculus
+pkg> add FractionalCalculus
 ```
 
 Or if you want to experience the latest version of FractionalCalculus.jl:
 
 ```julia-repl
-Pkg> add FractionalCalculus#master
+pkg> add FractionalCalculus#master
 ```
 
 ## Features
 
-* Feature-Rich. FractionalCalculus now has algorithms for **Caputo fractional derivative**, **Grunwald-Letnikov fractional derivative** and **Riemann-Liouville fractional integral** support, more algorithms are planned to support to enrich the package ecosystem.
+* Feature-Rich. FractionalCalculus now has algorithms for **Caputo fractional derivative**, **Grunwald-Letnikov fractional derivative**, **Riesz fractional derivative**, **Hadamard fractional derivative** and **Riemann-Liouville fractional integral** support, more algorithms are planned to support to enrich the package ecosystem.
 
 * Easy to Use. FractionalCalculus.jl is quite easy to use, with only a few API but equiped a lot algorithms.
+
+* High performance. FractionalCalculus.jl is highly optimized for high performance. It is written in Julia and deployed many optimization techniques to improve the performance.
 
 !!! tip "Fractional Differential Equations"
 	Want to solve fractional differential equations with performant and effcient algorithms? Please see [FractionalDiffEq.jl](https://github.com/SciFracX/FractionalDiffEq.jl)
@@ -47,6 +49,10 @@ Pkg> add FractionalCalculus#master
 - Symbolic differentiation and integration
 
 - Add more visualization of how the fraction derivative and integral are changing based on Makie or Javis or Manim
+
+- Add more algorithms
+
+- Add Pluto or Jupyter notebook based examples
 
 ## Contributing
 
