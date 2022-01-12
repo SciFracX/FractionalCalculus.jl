@@ -123,13 +123,6 @@ function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_poin
     return result
 end
 
-function fracdiff(f::Union{Number, Function}, α::Float64, start_point, end_point::AbstractArray, ::GL_Direct)::Vector
-    ResultArray = Float64[]
-    for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracdiff(f, α, start_point, value, GL_Direct()))
-    end
-    return ResultArray
-end
 
 
 

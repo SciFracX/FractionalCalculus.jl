@@ -14,6 +14,11 @@ end
     @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-4, RL_Piecewise()), 1.163931646862977; atol = 1e-5)
     @test isapprox(fracint(x->x^4, 0.25, 1.23, 1e-4, RL_Piecewise()), 1.64294134724409; atol = 1e-5)
     @test isapprox(fracint(sin, 0.5, 0.97, 1e-4, RL_Piecewise()), 0.6442601778843754; atol = 1e-5)
+
+    result = fracint(x->x^4, 0.5, [1.23, 2, 3], 1e-4, RL_Piecewise())
+    @test isapprox(result[1], 1.163931646862977; atol = 1e-3)
+    @test isapprox(result[2], 10.375035632494745; atol = 1e-3)
+    @test isapprox(result[3], 64.3280200256207; atol = 1e-3)
 end
 
 @testset "Test RLInt_Approx" begin
@@ -22,23 +27,44 @@ end
 
 @testset "Test RL_LinearInterp" begin
     @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-4, RL_LinearInterp()), 1.163931646862977; atol = 1e-4)
+
+    result = fracint(x->x^4, 0.5, [1.23, 2, 3], 1e-4, RL_LinearInterp())
+    @test isapprox(result[1], 1.163931646862977; atol = 1e-3)
+    @test isapprox(result[2], 10.375035632494745; atol = 1e-3)
+    @test isapprox(result[3], 64.3280200256207; atol = 1e-3)
 end
 
 @testset "Test Simpson Fractional Integral" begin
-    @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-7, RLInt_Simpson()), 1.163931646862977; atol = 1e-3)
+    @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-7, RLInt_Simpson()), 1.163931646862977; atol = 1e-2)
+
+    result = fracint(x->x^4, 0.5, [1.23, 2, 3], 1e-7, RLInt_Simpson())
+    @test isapprox(result[1], 1.163931646862977; atol = 1e-2)
+    @test isapprox(result[2], 10.375035632494745; atol = 1e-2)
+    @test isapprox(result[3], 64.3280200256207; atol = 1)
 end
 
 @testset "Test Trapezoidal Fractional Integral" begin
-    @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-4, RLInt_Trapezoidal()), 1.163931646862977; atol = 1e-4)
+    @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-7, RLInt_Trapezoidal()), 1.163931646862977; atol = 1e-4)
+#=
+    result = fracint(x->x^4, 0.5, [1.23, 2, 3], 1e-7, RLInt_Trapezoidal())
+    @test isapprox(result[1], 1.163931646862977; atol = 1e-3)
+    @test isapprox(result[2], 10.375035632494745; atol = 1e-3)
+    @test isapprox(result[3], 64.3280200256207; atol = 1e-3)
+    =#
 end
 
 @testset "Test Rectangular Fractional Integral" begin
-    @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-7, RLInt_Rectangular()), 1.163931646862977; atol = 1e-4)
+    @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-6, RLInt_Rectangular()), 1.163931646862977; atol = 1e-3)
 end
 
 @testset "Test Cubic Spline Interpolation Fractional Integral" begin
     @test isapprox(fracint(x->x^4, 0.5, 1.23, 0.001, RLInt_Cubic_Spline_Interp()), 1.163931646862977; atol = 1e-5)
     @test isapprox(fracint(sin, 0.5, 0.97, 0.01, RLInt_Cubic_Spline_Interp()), 0.6442601778843754; atol = 1e-6)
+
+    result = fracint(x->x^4, 0.5, [1.23, 2, 3], 0.01, RLInt_Cubic_Spline_Interp())
+    @test isapprox(result[1], 1.163931646862977; atol = 1e-3)
+    @test isapprox(result[2], 10.375035632494745; atol = 1e-3)
+    @test isapprox(result[3], 64.3280200256207; atol = 1e-3)
 end
 
 @testset "Test fractional integral macros" begin

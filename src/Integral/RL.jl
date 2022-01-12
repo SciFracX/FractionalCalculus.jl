@@ -252,15 +252,6 @@ function fracint(f::Union{Function, Number}, α, start_point, end_point::Real, h
     return result
 end
 
-function fracint(f::Union{Function, Number}, α::Float64, start_point, end_point::AbstractArray, h, ::RL_Direct)::Vector
-    ResultArray = Float64[]
-
-    for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracint(f, α, start_point, value, h, RL_Direct())[1])
-    end
-    return ResultArray
-end
-
 
 
 function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Direct_First_Diff_Known)
@@ -318,13 +309,9 @@ function W(i, n, α)
 end
 
 
-function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArray, h, ::RL_Piecewise)::Vector
-    ResultArray = Float64[]
-
-    for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracint(f, α, value, h, RL_Piecewise())[1])
-    end
-    return ResultArray
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RL_Piecewise)::Vector
+    result = map(x->fracint(f, α, x, h, RL_Piecewise()), end_point)
+    return result
 end
 
 
@@ -352,6 +339,11 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArr
     return ResultArray
 end
 
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RLInt_Approx)::Vector
+    result = map(x->fracint(f, α, x, h, RLInt_Approx()), end_point)
+    return result
+end
+
 
 
 
@@ -371,13 +363,9 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point::Number, h, 
     return result1
 end
 
-function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArray, h, ::RL_LinearInterp)::Vector
-    ResultArray = Float64[]
-
-    for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracint(f, α, value, h, RL_LinearInterp())[1])
-    end
-    return ResultArray
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RL_LinearInterp)::Vector
+    result = map(x->fracint(f, α, x, h, RL_LinearInterp()), end_point)
+    return result
 end
 
 
@@ -444,6 +432,11 @@ function ĉₖₙ(k, n, α)
     return ((α+2)*((n+1-k)^(1+α)+(n-k)^(1+α))-2*((n+1-k)^(2+α)-(n-k)^(2+α)))
 end
 
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RLInt_Simpson)::Vector
+    result = map(x->fracint(f, α, x, h, RLInt_Simpson()), end_point)
+    return result
+end
+
 #=
 RLInt_Trapezoidal Algorithm
 =#
@@ -484,8 +477,13 @@ function bₖ(k, α)
     return (k+1)^α-k^α
 end
 
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RLInt_Rectangular)::Vector
+    result = map(x->fracint(f, α, x, h, RLInt_Rectangular()), end_point)
+    return result
+end
+
 #=
-RLInt_Cubic_Spline_Interp Algorithm
+RLInt_Cubic_Spline_Interp Algorithm, when h is 0.01 behave best
 =#
 function fracint(f, α, point, h, ::RLInt_Cubic_Spline_Interp)
     N = Int64(floor(point/h))
@@ -515,6 +513,11 @@ function êⱼₙ(j, n, α)
     else
         return 2*(n-j-1)^(α+2)*(3*j-3*n-α)-2*(n-j+1)^(α+2)*(3*j-3*n+α) - (n-j)^(α+2)*(24+8α)
     end
+end
+
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RLInt_Cubic_Spline_Interp)::Vector
+    result = map(x->fracint(f, α, x, h, RLInt_Cubic_Spline_Interp()), end_point)
+    return result
 end
 # Deploy Complex Step Differentiation to compute the first order derivative.
 function first_order(f, point, h)

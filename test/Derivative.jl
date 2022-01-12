@@ -35,8 +35,24 @@ end
     @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLDiff_Matrix())[end], 2/sqrt(pi); atol = 1e-3)
 end
 
+@testset "Test RLDiff Approx" begin
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLDiff_Approx()), 2/sqrt(pi); atol = 1e-4)
+
+    # Test Array input end point
+    result = fracdiff(x->x, 0.5, [1, 2, 3], 0.001, RLDiff_Approx())
+    @test isapprox(result[1], 2/sqrt(pi); atol=1e-4)
+    @test isapprox(result[2], 1.5957691216057306; atol=1e-4)
+    @test isapprox(result[3], 1.954410047611678; atol=1e-4)
+end
+
 @testset "Test RL Linear Spline Interpolation" begin
     @test isapprox(fracdiff(x->x, 0.5, 1, 0.0001, RL_Linear_Spline_Interp()), 2/sqrt(pi); atol = 1e-4)
+
+    # Test Array input end point
+    result = fracdiff(x->x, 0.5, [1, 2, 3], 0.001, RL_Linear_Spline_Interp())
+    @test isapprox(result[1], 2/sqrt(pi); atol=1e-4)
+    @test isapprox(result[2], 1.5957691216057306; atol=1e-4)
+    @test isapprox(result[3], 1.954410047611678; atol=1e-4)
 end
 
 @testset "Test Hadamard Fractional Derivative" begin

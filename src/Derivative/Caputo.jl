@@ -162,11 +162,15 @@ function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_poin
 end
 
 function fracdiff(f::Union{Number, Function}, α::Float64, start_point, end_point::AbstractArray, h::Float64, ::Caputo_Direct)::Vector
+    #=
     ResultArray = Float64[]
     for (_, value) in enumerate(end_point)
         append!(ResultArray, fracdiff(f, α, start_point, value, h, Caputo_Direct()))
     end
     return ResultArray
+    =#
+    result = map(x->fracdiff(f, α, start_point, x, h, Caputo_Direct()), end_point)
+    return result
 end
 
 
@@ -232,18 +236,15 @@ function first_order(f, point, h)
 end
 
 function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::Caputo_Piecewise)::Vector
-    ResultArray = Float64[]
-    for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracdiff(f, α, value, h, Caputo_Piecewise()))
-    end
-    return ResultArray
+    result = map(x->fracdiff(f, α, x, h, Caputo_Piecewise()), end_point)
+    return result
 end
 
 
 #=
 Caputo Diethelm algorithm
 =#
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Diethelm)
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point::Number, h, ::Caputo_Diethelm)
     #checks(f, α, 0, end_point)
 
     N = Int64(floor(end_point/h))
@@ -260,9 +261,9 @@ function quadweights(n, N, α)
     if n == 0
         return 1
     elseif  0 < n < N
-        return (n+1)^(1-α)-2*n^(1-α)+(n-1)^(1-α)
+        return (n+1)^(1-α) - 2*n^(1-α) + (n-1)^(1-α)
     elseif n == N
-        return (1-α)*N^(-α)-N^(1-α)+(N-1)^(1-α)
+        return (1-α)*N^(-α) - N^(1-α) + (N-1)^(1-α)
     end
 end
 

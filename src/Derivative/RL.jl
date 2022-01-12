@@ -81,13 +81,11 @@ function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx)
     return result
 end
 
-function fracdiff(f::Union{Number, Function}, α, end_point::AbstractArray, h, ::RLDiff_Approx)::Vector
-    ResultArray = Float64[]
-    for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracdiff(f, α, value, h, RLDiff_Approx()))
-    end
-    return ResultArray
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RLDiff_Approx)::Vector
+    result = map(x->fracdiff(f, α, x, h, RLDiff_Approx()), end_point)
+    return result
 end
+
 
 
 
@@ -177,4 +175,9 @@ function c̄ⱼₖ(j, k, α)
     elseif k == j
         return 1
     end
+end
+
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RL_Linear_Spline_Interp)::Vector
+    result = map(x->fracdiff(f, α, x, h, RL_Linear_Spline_Interp()), end_point)
+    return result
 end
