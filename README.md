@@ -44,13 +44,13 @@ FractionalCalculus.jl provides support for fractional calculus computing.
 If you have already install Julia, you can install FractionalCalculus.jl in REPL using Julia package manager:
 
 ```julia
-Pkg> add FractionalCalculus
+pkg> add FractionalCalculus
 ```
 
 Or if you want to experience the latest version of FractionalCalculus.jl:
 
 ```julia
-Pkg> add FractionalCalculus#master
+pkg> add FractionalCalculus#master
 ```
 
 ## 🦸 Quick start
@@ -127,7 +127,7 @@ Current Algorithms
 
 Let's see examples here:
 
-Compute the semi-derivative of <img src="https://latex.codecogs.com/svg.image?\inline&space;f(x)=x" title="\inline f(x)=x" /> in the interval [0, 1]:
+Compute the semi-derivative of <img src="https://latex.codecogs.com/svg.image?\inline&space;f(x)=x" title="\inline f(x)=x" /> in the interval <img src="https://latex.codecogs.com/svg.image?[0,\&space;1]" title="[0,\ 1]" />:
 
 ![Plot](/docs/src/assets/semiderivativeplot.png)
 
