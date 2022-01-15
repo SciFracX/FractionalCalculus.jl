@@ -22,7 +22,7 @@ Returns a tuple (**result**, **error**), which means the value of this derivativ
 Refer to [Caputo derivative](https://en.wikipedia.org/wiki/Fractional_calculus#Caputo_fractional_derivative)
 
 !!! note
-    *Caputo Direct* algorithms belong to direct computing, precise are ensured, but maybe cause more memory allocation and take more compilation time.
+    ```Caputo Direct``` algorithms belong to direct computing, precise are ensured, but maybe cause more memory allocation and take more compilation time.
 
 Using the direct mathematic expression:
 

@@ -8,13 +8,13 @@ While most packages are encoded in Matlab, we would elaborate more on this secti
 
 ### Matrix Discretization
 
-The [Matrix Discretization method](https://www.mathworks.com/matlabcentral/fileexchange/22071-matrix-approach-to-discretization-of-odes-and-pdes-of-arbitrary-real-order) is a Matlab toolbox developed by Professor Igor Podlubny. FractionalCalculus.jl also support this method, the relating API is ```RLDiff_Matrix```.
+The [Matrix Discretization method](https://www.mathworks.com/matlabcentral/fileexchange/22071-matrix-approach-to-discretization-of-odes-and-pdes-of-arbitrary-real-order) is a Matlab toolbox developed by Professor Igor Podlubny. FractionalCalculus.jl also support this method, the relating API is ```RLDiff_Matrix``` and ```RLInt_Matrix```.
 
 ### FOTF
 
 [FOTF](https://www.mathworks.com/matlabcentral/fileexchange/60874-fotf-toolbox) is a Matlab toolbox developed by Professor Dingyu Xue, it can be used to modeling and analysis fractional order systems. FOTF contains various methods to compute fractional calculus, FractionalCalculus.jl adapted all the methods in this toolbox, the relating methods are:
 
-```GL_High_Precision```
+```GL_High_Precision``` and ```Caputo_High_Precision```.
 
 ### Chebfun
 
