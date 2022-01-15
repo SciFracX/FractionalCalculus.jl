@@ -46,6 +46,13 @@ julia>fracdiff(x->x, 0.5, 1, 0.0001, Caputo_Piecewise())
 
 We can see the result is closely resembling with the result in Riemann Liouville sense.
 
+!!! tip
+	The Riemann Liouville sense derivative and Caputo sense derivative have the following relationship:
+	```math
+	_{RL}D^{\alpha}_{a, t}f(t)={_CD^\alpha_{a, t}f(t)}+\sum_{k=0}^{m-1}\frac{f^{(k)}(a)(t-a)^{k-a}}{\Gamma(k+1-\alpha)}
+	```
+	> Here ``m-1<\alpha<m``, ``f^{(m)}`` is integrable on ``[a, t]``.
+
 ## Grünwald Letnikov sense derivative
 
 ```math
@@ -79,6 +86,9 @@ fracdiff(x->x, 0.5, collect(0:0.01:1), 2, GL_High_Precision())
 ```
 
 Here, we use the high precision algorithm, the fourth parameter means we set the precision order as **p=2**. The returned result means the derivative on the interval $[0, 1]$.
+
+!!! tip
+	If the function ``f(t)`` is suitably smooth, then the Grünwald Letnikov sense derivative and the Riemann Liouville sense derivative is equivalent.
 
 ## Riesz sense derivative
 
