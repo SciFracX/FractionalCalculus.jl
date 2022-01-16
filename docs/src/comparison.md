@@ -26,6 +26,10 @@ There are only one algorithm in Chebfun regarding Riemann Liouville fractional d
 
 ## Python
 
+### fcpy
+
+[fcpy](https://github.com/SciFracX/fcpy) is a Python package for computing fractional calculus built by SciFracX community. It is based on [FractionalCalculus.jl](https://github.com/SciFracX/FractionalCalculus.jl)
+
 ### mpmath
 
 [mpmath](https://github.com/fredrik-johansson/mpmath) mpmath is a python library for arbitrary-precision floating-point arithmetic computing, it is noteworthy that mpmath also support fractional calculus computing.
