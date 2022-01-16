@@ -289,7 +289,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_Pie
 
     #Init
     n = Int64(floor(end_point/h))
-    result = 0
+    result = zero(Float64)
 
     for i ∈ 0:n
         result += W(i, n, α)*f(i*h)
@@ -320,7 +320,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_
 
     α = -α
     n = Int64(floor(end_point/h))
-    result=0
+    result = zero(Float64)
 
     for i ∈ 0:n-1
         result += (f(end_point - i*h) + f(end_point - (i+1)*h))/2*((i+1)^(-α) - i^(-α))
@@ -348,12 +348,10 @@ end
 
 
 function fracint(f::Union{Function, Number}, α::Float64, end_point::Number, h, ::RL_LinearInterp)::Float64
-        
-    #checks(f, α, 0, end_point)
 
     α = -α
     n = Int64(floor(end_point/h))
-    result = 0
+    result = zero(Float64)
     
     for i ∈ 0:n-1
         result += ((i+1)*f(end_point-i*h)-i*f(end_point-(i+1)*h))/(-α)*((i+1)^(-α) - i^(-α))+(f(end_point - (i+1)*h) - f(end_point-i*h))/(1-α)*((i+1)^(1-α) - i^(1-α))
@@ -442,7 +440,7 @@ RLInt_Trapezoidal Algorithm
 =#
 function fracint(f, α, point, h, ::RLInt_Trapezoidal)
     N = Int64(floor(point/h))
-    result = 0
+    result = zero(Float64)
 
     @fastmath @inbounds @simd for i ∈ 0:N
         result += aₖₙ(i, N, α)*f(i*h)
@@ -464,7 +462,7 @@ end
 
 function fracint(f, α, point, h, ::RLInt_Rectangular)
     N=Int64(floor(point/h))
-    result = 0
+    result = zero(Float64)
 
     @fastmath @inbounds @simd for i ∈ 0:N-1
         result += bₖ(N-i-1, α)*f(i*h)
@@ -485,9 +483,9 @@ end
 #=
 RLInt_Cubic_Spline_Interp Algorithm, when h is 0.01 behave best
 =#
-function fracint(f, α, point, h, ::RLInt_Cubic_Spline_Interp)
+function fracint(f::Function, α, point, h, ::RLInt_Cubic_Spline_Interp)
     N = Int64(floor(point/h))
-    result = 0.0
+    result = zero(Float64)
 
     @fastmath @inbounds @simd for j ∈ 0:N
         result += eⱼₙ(j, N, α)*f(j*h) + h*êⱼₙ(j, N, α)*first_order(f, j*h, h)

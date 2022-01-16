@@ -212,7 +212,7 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caput
 
     m = floor(α)+1
 
-    summation = 0
+    summation = zero(Float64)
     n = Int64(floor(end_point/h))
 
     @fastmath @inbounds @simd for i ∈ 0:n
@@ -231,9 +231,11 @@ function W₅(i, n, m, α)
         (n-i-1)^(m-α+1) + (n-i+1)^(m-α+1) - 2*(n-i)^(m-α+1)
     end
 end
+# Deploy Complex Step Differentiation to compute the first order derivative.
 function first_order(f, point, h)
-    return (f(point+h)-f(point-h))/(2*h)
+    return imag(f(point + im*h))/h
 end
+
 
 function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::Caputo_Piecewise)::Vector
     result = map(x->fracdiff(f, α, x, h, Caputo_Piecewise()), end_point)
@@ -249,7 +251,7 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point::Number, h,
 
     N = Int64(floor(end_point/h))
 
-    result = 0
+    result = zero(Float64)
 
     @fastmath @inbounds @simd for i ∈ 0:N
         result += quadweights(i, N, α)*(f(end_point-i*h) - f(0))

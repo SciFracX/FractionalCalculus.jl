@@ -50,7 +50,7 @@ Hadamard Left Rectangular computing algorithms
 =#
 function fracdiff(f, α, x₀, x, h, ::Hadamard_LRect)
     N = Int64((x-x₀)/h)
-    result = 0
+    result = zero(Float64)
 
     for i ∈ 0:N-1
         result += LRectCoeff(i, N, h, α, x₀)*f(x₀+i*h)
@@ -71,7 +71,7 @@ Hadamard Right Rectangular computing algorithm
 =#
 function fracdiff(f, α, x₀, x, h, ::Hadamard_RRect)
     N = Int64((x-x₀)/h)
-    result = 0
+    result = zero(Float64)
 
     for i ∈ 0:N-1
         result += LRectCoeff(i, N, h, α, x₀)*f(x₀+(i+1)*h)
@@ -95,7 +95,7 @@ Hadamard trapezoidal computing algorithm
 function fracdiff(f, α, x₀, x, h, ::Hadamard_Trap)
     N=Int64((x-x₀)/h)
 
-    result = 0
+    result = zero(Float64)
 
     for i ∈ 0:N
         result += RRectCoeff(i, N, h, α, x₀)*f(x₀+i*h)

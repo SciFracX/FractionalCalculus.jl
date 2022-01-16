@@ -130,7 +130,7 @@ end
 #This algorithm is not good, still more to do
 function fracdiff(f::Union{Function, Number}, α, end_point, h, ::GL_Multiplicative_Additive)::Float64
 
-    summation = 0
+    summation = zero(Float64)
     n = Int64(floor(end_point/h))
 
     for i ∈ 0:n-1
@@ -156,7 +156,7 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::GL_La
     #checks(f, α, 0, end_point)
 
     n = Int64(floor(end_point/h))
-    summation=0
+    summation = zero(Float64)
 
     for i ∈ 0:n-1
         summation += gamma(i-α)/gamma(i+1)*(f(end_point-i*h)+1/4*α*(f(end_point-(i-1)*h)-f(end_point-(i+1)*h))+1/8*α^2*(f(end_point-(i-1)*h)-2*f(end_point-i*h)+f(end_point-(i+1)*h)))
@@ -179,7 +179,7 @@ end
 function fracdiff(f::Union{Number, Function}, α::Float64, end_point::Real, h, ::GL_Finite_Difference)::Float64
 
     n = Int64(floor(end_point/h))
-    result=0
+    result = zero(Float64)
 
     @fastmath @simd for i ∈ 0:n
         result += (-1)^i/(gamma(i+1)*gamma(α-i+1))*f(end_point-i*h)
