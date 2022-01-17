@@ -483,7 +483,7 @@ end
 #=
 RLInt_Cubic_Spline_Interp Algorithm, when h is 0.01 behave best
 =#
-function fracint(f::Function, α, point, h, ::RLInt_Cubic_Spline_Interp)
+function fracint(f, α, point, h, ::RLInt_Cubic_Spline_Interp)
     N = Int64(floor(point/h))
     result = zero(Float64)
 
