@@ -287,7 +287,7 @@ end
 function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_Piecewise)::Float64
     #checks(f, α, 0, end_point)
 
-    #Init
+    #Initialize
     n = Int64(floor(end_point/h))
     result = zero(Float64)
 
@@ -323,7 +323,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_
     result = zero(Float64)
 
     for i ∈ 0:n-1
-        result += (f(end_point - i*h) + f(end_point - (i+1)*h))/2*((i+1)^(-α) - i^(-α))
+        result += (f(end_point-i*h) + f(end_point-(i+1)*h))/2*((i+1)^(-α) - i^(-α))
     end
 
     result1 = result*end_point^(-α)*n^α/gamma(1-α)
@@ -387,11 +387,11 @@ function omega(n, p)
 
 end
 function J(N, p, h::Float64)
-    result=zeros(N, N)
-    temp=omega(N, -p)
+    result = zeros(N, N)
+    temp = omega(N, -p)
 
     @fastmath @inbounds @simd for i ∈ 1:N
-        result[i, 1:i]=reverse(temp[1:i])
+        result[i, 1:i] = reverse(temp[1:i])
     end
 
     return h^p*result

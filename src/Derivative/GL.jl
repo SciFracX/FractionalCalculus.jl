@@ -244,8 +244,8 @@ g_p(z)=\\sum_{k=1}^p \\frac{1}{k}(1-z)^k
 ```
 """
 function genfun(p)
-    a=collect(1:p+1)
-    A=Vandermonde(a)'
+    a = collect(1:p+1)
+    A = Vandermonde(a)'
     return (1 .-a')*inv(A')
 end
 

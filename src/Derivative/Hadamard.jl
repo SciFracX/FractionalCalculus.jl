@@ -52,17 +52,17 @@ function fracdiff(f, α, x₀, x, h, ::Hadamard_LRect)
     N = Int64((x-x₀)/h)
     result = zero(Float64)
 
-    for i ∈ 0:N-1
+    @fastmath @inbounds @simd for i ∈ 0:N-1
         result += LRectCoeff(i, N, h, α, x₀)*f(x₀+i*h)
     end
 
-    return result
+    return 1/gamma(1-α)*result
 end
 function LRectCoeff(i, n, h, α, x₀)
     if 0 ≤ i ≤ n-2
-        return 1/gamma(1-α)*((log((x₀+n*h)/(x₀+i*h)))^(-α) - (log((x₀+n*h)/(x₀+(i+1)*h)))^(-α))
+        return ((log((x₀+n*h)/(x₀+i*h)))^(-α) - (log((x₀+n*h)/(x₀+(i+1)*h)))^(-α))
     elseif i == n-1
-        return 1/gamma(1-α)*(log((x₀+n*h)/(x₀+i*h)))^(-α)
+        return (log((x₀+n*h)/(x₀+i*h)))^(-α)
     end
 end
 
@@ -73,7 +73,7 @@ function fracdiff(f, α, x₀, x, h, ::Hadamard_RRect)
     N = Int64((x-x₀)/h)
     result = zero(Float64)
 
-    for i ∈ 0:N-1
+    @fastmath @inbounds @simd for i ∈ 0:N-1
         result += LRectCoeff(i, N, h, α, x₀)*f(x₀+(i+1)*h)
     end
 
@@ -97,7 +97,7 @@ function fracdiff(f, α, x₀, x, h, ::Hadamard_Trap)
 
     result = zero(Float64)
 
-    for i ∈ 0:N
+    @fastmath @inbounds @simd for i ∈ 0:N
         result += RRectCoeff(i, N, h, α, x₀)*f(x₀+i*h)
     end
 

@@ -219,7 +219,7 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caput
         summation += W₅(i, n, m, α)*first_order(f, i*h, h)
     end
 
-    result=summation*h^(m-α)/gamma(m-α+2)
+    result = summation*h^(m-α)/gamma(m-α+2)
     return result
 end
 function W₅(i, n, m, α)
