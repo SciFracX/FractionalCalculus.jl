@@ -77,7 +77,7 @@ function fracdiff(f, α, x₀, x, h, ::Hadamard_RRect)
         result += LRectCoeff(i, N, h, α, x₀)*f(x₀+(i+1)*h)
     end
 
-    return result
+    return 1/gamma(1-α)*result
 end
 function RRectCoeff(i, n, h, α, x₀)
     if i == 0
@@ -101,5 +101,5 @@ function fracdiff(f, α, x₀, x, h, ::Hadamard_Trap)
         result += RRectCoeff(i, N, h, α, x₀)*f(x₀+i*h)
     end
 
-    return result
+    return 1/gamma(1-α)*result
 end
