@@ -84,8 +84,6 @@ Current Algorithms
 ├── FracDiffAlg
 │   ├── Caputo
 |   |   ├── Caputo_Direct
-|   |   ├── Caputo_Direct_First_Diff_Known
-|   |   ├── Caputo_Direct_First_Second_Diff_Known
 |   |   ├── Caputo_Piecewise
 |   |   ├── Caputo_Diethelm
 |   |   └── Caputo_High_Precision
@@ -112,7 +110,6 @@ Current Algorithms
 └── FracIntAlg
     └── Riemann Liouville
         ├── RL_Direct
-        ├── RL_Direct_First_Diff_Known
         ├── RL_Piecewise
         ├── RL_LinearInterp
         ├── RLInt_Approx
