@@ -17,6 +17,7 @@ Using Linear interpolation to approximate fractional derivative in Riemann Liouv
 
 ```julia-repl
 julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiff_Approx())
+141.59707906952633
 ```
 
 !!! warning

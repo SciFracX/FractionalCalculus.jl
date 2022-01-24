@@ -25,6 +25,7 @@ By using [QuadGK](https://github.com/JuliaMath/QuadGK.jl) calculate the integrat
 
 ```julia-repl
 julia> fracint(x->x^5, 0.5, 0, 2.5, 1e-8, RL_Direct())
+(64.36234189727955, 7.742994054849976e-7)
 ```
 
 Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which contains the value of this derivative is 1.1639316474512205, and the error estimate is 1.0183453796725215e-8
@@ -62,6 +63,7 @@ author = {Changpin Li and An Chen and Junjie Ye},
     
 ```julia-repl
 julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_Piecewise())
+64.36234206345209
 ```
     
 By deploying Piecewise interpolation to approximate the original function, with small step size, this method is fast and take little memory allocation.
@@ -93,6 +95,7 @@ year={1984}}
 
 ```julia-repl
 julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Approx())
+64.36229646291393
 ```
 
 Using the **Staircase approximation** to approximate the original function and implement the summation.
@@ -109,6 +112,7 @@ struct RLInt_Approx <: RLInt end
 
 ```julia-repl
 julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_LinearInterp())
+64.36234206434942
 ```
 
 **RL_LinearInterp** is more complex compared with *RLInt_Approx* but more precise.
@@ -158,7 +162,8 @@ struct RLInt_Matrix <: RLInt end
 ### Example
 
 ```julia-repl
-julia> fracint(x->x, 0.5, 1, 0.001, RLInt_Simpson)
+julia> fracint(x->x, 0.5, 1, 0.000001, RLInt_Simpson())
+0.7516516520541335
 ```
 
 @inproceedings{Li2015NumericalMF,
@@ -179,6 +184,7 @@ struct RLInt_Simpson <: RLInt end
 
 ```julia-repl
 julia> fracint(x->x, 0.5, 1, 0.001, RLInt_Trapezoidal())
+0.7522527780636226
 ```
 
 《Numerical methods for fractional calculus》.
@@ -194,6 +200,7 @@ struct RLInt_Trapezoidal <: RLInt end
 
 ```julia-repl
 julia> fracint(x->x, 0.5, 1, 0.001, RLInt_Rectangular())
+0.7516812175993778
 ```
 """
 struct RLInt_Rectangular <: RLInt end
@@ -205,6 +212,7 @@ struct RLInt_Rectangular <: RLInt end
 
 ```julia-repl
 julia> fracint(x->x, 0.5, 1, 0.0001, RLInt_Cubic_Spline_Interp())
+0.7529119186452693
 ```
 
 Error estimate of this method is ``\\mathcal{O(h^4)}``, it is determined by the error of the cubic spline interpolation.
