@@ -20,9 +20,17 @@ end
     @test isapprox(fracdiff(x->exp(-x^2), 0.25, 2.3, 1e-3, Caputo_Piecewise()), -0.762927553656252; atol = 1e-5)
 end
 
+@testset "Test CAputo Piecewise Fractional Derivative" begin
+    @test isapprox(fracdiff(x->x, 0.5, [1, 2, 3], 1e-4, Caputo_Piecewise()), [1.1283791670557781, 1.5957691213491374, 1.9544100474864603])
+end
+
 @testset "Test Caputo Diethelm Fractional Derivative" begin
     @test isapprox(fracdiff(x->x, 0.5, 1, 1e-4, Caputo_Diethelm()), 2/sqrt(pi); atol = 1e-5)
     @test isapprox(fracdiff(x->x^5, 0.5, 3.2, 1e-5, Caputo_Diethelm()), 4.300306216488329e2; atol = 1e-5)
+end
+
+@testset "Test Caputo Diethelm Fractional Derivative" begin
+    @test isapprox(fracdiff(x->x, 0.5, [1, 2, 3], 0.0001, Caputo_Diethelm()), [1.1283791670955023, 1.5957691216057386, 1.954410047611745])
 end
 
 @testset "Test Grunwald-Letnikov Fractional Derivative" begin

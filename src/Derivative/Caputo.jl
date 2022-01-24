@@ -269,6 +269,11 @@ function quadweights(n, N, α)
     end
 end
 
+function fracdiff(f, α::Float64, end_point::AbstractArray, h, ::Caputo_Diethelm)::Vector
+    result = map(x->fracdiff(f, α, x, h, Caputo_Diethelm()), end_point)
+    return result
+end
+
 
 #=
 Caputo sense high precision algorithm

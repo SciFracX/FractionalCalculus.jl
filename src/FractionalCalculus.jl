@@ -14,7 +14,7 @@ export fracdiff, fracint
 export Caputo, GL, RLDiff, Hadamard
 
 # Caputo sense fractional derivative
-export Caputo_Direct, Caputo_Direct_First_Diff_Known, Caputo_Direct_First_Second_Diff_Known
+export Caputo_Direct
 export Caputo_Piecewise
 export Caputo_Diethelm
 export Caputo_High_Precision
@@ -36,7 +36,7 @@ export @fracdiff, @semifracdiff
 
 #Export fractional integral relating API
 export RLInt
-export RL_Direct, RL_Direct_First_Diff_Known, RL_Piecewise
+export RL_Direct, RL_Piecewise
 export RLInt_Approx, RL_LinearInterp, RLInt_Matrix
 export RLInt_Simpson, RLInt_Trapezoidal, RLInt_Rectangular, RLInt_Cubic_Spline_Interp
 
