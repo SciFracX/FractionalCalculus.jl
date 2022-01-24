@@ -73,9 +73,6 @@ Compared with **Caputo_Direct** method, this method don't need to specify step s
 """
 struct Caputo_Direct_First_Second_Diff_Known <: Caputo end
 
-"""
-
-"""
 
 """
 # Caputo sense Piecewise algorithm
