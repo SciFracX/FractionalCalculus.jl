@@ -2,14 +2,14 @@ import FractionalCalculus.FracIntAlg
 
 
 """
-Riemann-Liouville sense fractional integral algorithms
+# Riemann-Liouville sense fractional integral algorithms
 
 Note this two algorithms belong to direct compute, precise are ensured, but maybe cause more memory allocation and take more compilation time.
 """
 abstract type RLInt <: FracIntAlg end
 
 """
-# Riemann Liouville sense fractional integral
+# Riemann Liouville sense direct compute
 
     fracint(f::Function, α, start_point, end_point, h, RL_Direct())
 

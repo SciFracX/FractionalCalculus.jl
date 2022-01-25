@@ -136,9 +136,11 @@ struct Caputo_Diethelm <: Caputo end
 """
 # Caputo sense fractioal derivative with p-th order precision.
 
-    fracdiff(f, α, t, Caputo_High_Precision())
+    fracdiff(f, α, t, p, Caputo_High_Precision())
 
 Use the high precision algorithm to compute the Caputo sense fractional derivative.
+
+The **p** here is the grade of precision.
 """
 struct Caputo_High_Precision <: Caputo end
 

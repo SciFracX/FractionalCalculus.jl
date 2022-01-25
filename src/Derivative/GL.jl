@@ -18,6 +18,7 @@ abstract type GL <: FracDiffAlg end
 ```julia-repl
 julia> fracdiff(x->x^5, 0, 0.5, GL_Direct())
 ```
+
 !!! info "Scope"
     Please note Grunwald-Letnikov sense fracdiff only support ``0 < \\alpha < 1``.
 
@@ -31,7 +32,7 @@ struct GL_Direct <: GL end
 
 
 """
-# Grünwald Letnikov sense derivative approximation
+# Grünwald Letnikov sense Multiplicative and Addtive approximation
 
     fracdiff(f, α, end_point, h, GL_Multiplicative_Additive())
 
@@ -43,9 +44,6 @@ Grünwald–Letnikov multiplication-addition-multiplication-addition··· metho
 julia> fracdiff(x->x, 0.5, 1, 0.007, GL_Multiplicative_Additive())
 1.127403405642918
 ```
-
-!!! danger "Inaccurate"
-    The `GL_Multiplicative_Additive` method is not accruate, please use it at your own risk.
 
 ```tex
 @book{oldham_spanier_1984,
@@ -59,7 +57,7 @@ struct GL_Multiplicative_Additive <: GL end
 
 
 """
-# Grünwald Letnikov sense derivative approximation
+# Grünwald Letnikov sense three point interpolation
 
     fracdiff(f, α, end_point, h, GL_Lagrange_Three_Point_Interp())
 
@@ -68,17 +66,14 @@ Using Lagrange three poitns interpolation to approximate the fractional derivati
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 1, 0.007, GL_Lagrange_Three_Point_Interp())
-1.1283963376811044
+julia> fracdiff(x->x, 0.5, 1, 0.006, GL_Lagrange_Three_Point_Interp())
+1.1261297605404632
 ```
-
-!!! danger "Inaccurate"
-    The `GL_Lagrange_Three_Point_Interp` method is not accruate, please use it at your own risk.
 """
 struct GL_Lagrange_Three_Point_Interp <: GL end
 
 """
-# Grünwald Letnikov sense derivative approximation
+# Grünwald Letnikov sense finite difference approximation
 
     fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, h, ::GL_Finite_Difference)::Vector
 
@@ -90,16 +85,17 @@ Use finite difference method to obtain Grünwald Letnikov sense fractional deriv
 julia> fracdiff(x->x, 0.5, 1, 0.01, GL_Finite_Difference())
 1.1269695801851276
 ```
-
-!!! danger "Inaccurate"
-    `GL_Finite_Difference` method is not accruate, please use it at your own risk.
 """
 struct GL_Finite_Difference <: GL end
 
 """
-fracdiff(f, α, point, h, GL_High_Precision())
+# Grünwald Letnikov sense derivative approximation
+
+    fracdiff(f, α, point, p, GL_High_Precision())
 
 Use the high precision algorithms to compute the Grunwald letnikov fractional derivative.
+
+The **p** here is the grade of precision.
 
 !!! note
     The value interval passing in the function should be a array!
@@ -127,7 +123,7 @@ end
 
 
 #TODO: Use the improved alg!! This algorithm is not accurate
-#This algorithm is not good, still more to do
+#This algorithm is not so good, still more to do
 function fracdiff(f::Union{Function, Number}, α, end_point, h, ::GL_Multiplicative_Additive)::Float64
 
     summation = zero(Float64)
@@ -151,7 +147,7 @@ end
 
 
 #TODO: This algorithm is same with the above one, not accurate!!!
-#This algorithm is not good, still more to do
+#This algorithm is not so good, still more to do
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::GL_Lagrange_Three_Point_Interp)::Float64
     #checks(f, α, 0, end_point)
 
@@ -181,11 +177,11 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point::Real, h, :
     n = Int64(floor(end_point/h))
     result = zero(Float64)
 
-    @fastmath @simd for i ∈ 0:n
+    @fastmath @simd for i = 0:n
         result += (-1)^i/(gamma(i+1)*gamma(α-i+1))*f(end_point-i*h)
     end
 
-    result1=result*h^(-α)*gamma(α+1)
+    result1 = result*h^(-α)*gamma(α+1)
     return result1
 end
 
