@@ -75,9 +75,11 @@ Remove the limit symbol in the definition of Grunwald-Letnikov fractional deriva
 """
 struct RL_G1 <: RLDiff end
 
+#struct RL_G2 <: RLDiff end
+
 
 ################################################################
-###                    Type defination done                  ###
+###                    Type definition done                  ###
 ################################################################
 
 

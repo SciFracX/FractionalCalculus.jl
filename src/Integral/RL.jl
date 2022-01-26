@@ -227,7 +227,7 @@ Error estimate of this method is ``\\mathcal{O(h^4)}``, it is determined by the 
 struct RLInt_Cubic_Spline_Interp <: RLInt end
 
 ####################################
-###     Type defination done     ###
+###     Type definition done     ###
 ####################################
 
 

@@ -146,7 +146,7 @@ struct Caputo_High_Precision <: Caputo end
 
 
 ################################################################
-###                    Type defination done                  ###
+###                    Type definition done                  ###
 ################################################################
 
 
