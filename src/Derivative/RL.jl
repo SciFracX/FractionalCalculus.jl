@@ -62,6 +62,19 @@ Using linear spline interpolation method to approximate the Riemann Liouville fr
 """
 struct RL_Linear_Spline_Interp <: RLDiff end
 
+"""
+# Riemann Liouville sense G1 scheme
+
+    fracdiff(f, α, start_point, end_point, h, RL_G1())
+
+Remove the limit symbol in the definition of Grunwald-Letnikov fractional derivative, thereby leading to a discretization scheme in form of truncated series.
+
+!!! tip
+        **RL_G1** also can be used to compute fractional integral~
+        ``+\\alpha`` for fractional derivative and ``-\\alpha`` for fractional integral.
+"""
+struct RL_G1 <: RLDiff end
+
 
 ################################################################
 ###                    Type defination done                  ###
@@ -181,4 +194,15 @@ end
 function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RL_Linear_Spline_Interp)::Vector
     result = map(x->fracdiff(f, α, x, h, RL_Linear_Spline_Interp()), end_point)
     return result
+end
+
+function fracdiff(f, α, start_point, end_point, h, ::RL_G1)
+    N = Int64(floor((end_point-start_point)/h))
+
+    result = zero(Float64)
+    for j = 0:N-1
+        result += gamma(j-α)/gamma(j+1)*f(end_point-j*h)
+    end
+
+    return h^(-α)/gamma(-α)*result
 end

@@ -20,7 +20,7 @@ end
     @test isapprox(fracdiff(x->exp(-x^2), 0.25, 2.3, 1e-3, Caputo_Piecewise()), -0.762927553656252; atol = 1e-5)
 end
 
-@testset "Test CAputo Piecewise Fractional Derivative" begin
+@testset "Test Caputo Piecewise Fractional Derivative" begin
     @test isapprox(fracdiff(x->x, 0.5, [1, 2, 3], 1e-4, Caputo_Piecewise()), [1.1283791670557781, 1.5957691213491374, 1.9544100474864603])
 end
 
@@ -63,6 +63,10 @@ end
     @test isapprox(result[3], 1.954410047611678; atol=1e-4)
 end
 
+
+@testset "Test RL_G1 method" begin
+    @test isapprox(fracdiff(x->x, 0.5, 0, 1, 0.006, RL_G1()), 2/sqrt(pi); atol=1e-2)
+end
 @testset "Test Hadamard Fractional Derivative" begin
     @test isapprox(fracdiff(log, 0.5, 1, 2, 1/4000000, Hadamard_LRect()), 0.9391460; atol=1e-4)
     @test isapprox(fracdiff(log, 0.3, 1, 2, 1/4000000, Hadamard_LRect()), 0.8514935; atol=1e-4)
