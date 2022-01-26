@@ -333,20 +333,11 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_
     result = zero(Float64)
 
     for i ∈ 0:n-1
-        result += (f(end_point-i*h) + f(end_point-(i+1)*h))/2*((i+1)^(-α) - i^(-α))
+        result += (f(end_point-i*h) + f(end_point-(i+1)*h))*((i+1)^(-α) - i^(-α))
     end
 
-    result1 = result*end_point^(-α)*n^α/gamma(1-α)
+    result1 = result/2*end_point^(-α)*n^α/gamma(1-α)
     return result1
-end
-
-function fracint(f::Union{Function, Number}, α::Float64, end_point::AbstractArray, h, ::RLInt_Approx)::Vector
-    ResultArray = Float64[]
-
-    for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracint(f, α, value, h, RLInt_Approx())[1])
-    end
-    return ResultArray
 end
 
 function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RLInt_Approx)::Vector

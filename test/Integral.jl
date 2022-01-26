@@ -23,6 +23,11 @@ end
 
 @testset "Test RLInt_Approx" begin
     @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-4, RLInt_Approx()), 1.163931646862977; atol = 1e-4)
+
+    result = fracint(x->x^4, 0.5, [1.23, 2, 3], 1e-4, RLInt_Approx())
+    @test isapprox(result[1], 1.163931646862977; atol = 1e-3)
+    @test isapprox(result[2], 10.375035632494745; atol = 1e-3)
+    @test isapprox(result[3], 64.3280200256207; atol = 1e-3)
 end
 
 @testset "Test RL_LinearInterp" begin
