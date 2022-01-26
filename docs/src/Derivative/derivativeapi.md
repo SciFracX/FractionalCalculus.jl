@@ -32,6 +32,7 @@ FractionalCalculus.GL_Lagrange_Three_Point_Interp
 FractionalCalculus.RLDiff_Approx
 FractionalCalculus.RLDiff_Matrix
 FractionalCalculus.RL_G1
+FractionalCalculus.RL_D
 ```
 
 ## Hadamard sense fractional derivative
