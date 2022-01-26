@@ -72,11 +72,31 @@ Remove the limit symbol in the definition of Grunwald-Letnikov fractional deriva
 !!! tip
         **RL_G1** also can be used to compute fractional integral~
         ``+\\alpha`` for fractional derivative and ``-\\alpha`` for fractional integral.
+
+```tex
+@inproceedings{Guo2015FractionalPD,
+  title={Fractional Partial Differential Equations and their Numerical Solutions},
+  author={Boling Guo and Xueke Pu and Feng-Hui Huang},
+  year={2015}
+}
+```
 """
 struct RL_G1 <: RLDiff end
 
-#struct RL_G2 <: RLDiff end
+"""
+# Riemann Liouville sense D scheme
 
+        fracdiff(f, α, point, h, RL_D())
+
+```tex
+@inproceedings{Guo2015FractionalPD,
+  title={Fractional Partial Differential Equations and their Numerical Solutions},
+  author={Boling Guo and Xueke Pu and Feng-Hui Huang},
+  year={2015}
+}
+```
+"""
+struct RL_D <: RLDiff end
 
 ################################################################
 ###                    Type definition done                  ###
@@ -207,4 +227,29 @@ function fracdiff(f, α, start_point, end_point, h, ::RL_G1)
     end
 
     return h^(-α)/gamma(-α)*result
+end
+
+function fracdiff(f, α, point, h, ::RL_D)
+    N = Int64(floor(point/h))
+
+    result = zero(Float64)
+    for k = 0:N
+        result += ωₖₙ(N, k, α)*f(point-k*h)
+    end
+
+    return point^(-α)/gamma(-α)*result
+
+end
+
+function ωₖₙ(n, k, α)
+    temp = 0
+
+    if k == 0
+        temp = -1
+    elseif 1 ≤ k ≤ n-1
+        temp = 2*k^(1-α)-(k-1)^(1-α)-(k+1)^(1-α)
+    elseif k == n
+        temp = (α-1)*n^(-α)-(n-1)^(1-α)+n^(1-α)
+    end
+    return n^α/(α*(1-α))*temp
 end
