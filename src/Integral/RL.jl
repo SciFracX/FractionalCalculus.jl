@@ -301,7 +301,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_Pie
     n = Int64(floor(end_point/h))
     result = zero(Float64)
 
-    for i ∈ 0:n
+    @fastmath @inbounds @simd for i ∈ 0:n
         result += W(i, n, α)*f(i*h)
     end
 
@@ -332,7 +332,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_
     n = Int64(floor(end_point/h))
     result = zero(Float64)
 
-    for i ∈ 0:n-1
+    @fastmath @inbounds @simd for i ∈ 0:n-1
         result += (f(end_point-i*h) + f(end_point-(i+1)*h))*((i+1)^(-α) - i^(-α))
     end
 
@@ -354,7 +354,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point::Number, h, 
     n = Int64(floor(end_point/h))
     result = zero(Float64)
     
-    for i ∈ 0:n-1
+    @fastmath @inbounds @simd for i ∈ 0:n-1
         result += ((i+1)*f(end_point-i*h)-i*f(end_point-(i+1)*h))/(-α)*((i+1)^(-α) - i^(-α))+(f(end_point - (i+1)*h) - f(end_point-i*h))/(1-α)*((i+1)^(1-α) - i^(1-α))
     end
 

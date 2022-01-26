@@ -183,7 +183,7 @@ function fracdiff(f, α, x, h, ::RL_Linear_Spline_Interp)
 
     result = 0
 
-    for k = 0:(N+1)
+    @fastmath @inbounds @simd for k = 0:(N+1)
         result += z̄ₘₖ(N, k, α)*f(k*h)
     end
 
@@ -222,7 +222,7 @@ function fracdiff(f, α, start_point, end_point, h, ::RL_G1)
     N = Int64(floor((end_point-start_point)/h))
 
     result = zero(Float64)
-    for j = 0:N-1
+    @fastmath @inbounds @simd for j = 0:N-1
         result += gamma(j-α)/gamma(j+1)*f(end_point-j*h)
     end
 
@@ -233,7 +233,7 @@ function fracdiff(f, α, point, h, ::RL_D)
     N = Int64(floor(point/h))
 
     result = zero(Float64)
-    for k = 0:N
+    @fastmath @inbounds @simd for k = 0:N
         result += ωₖₙ(N, k, α)*f(point-k*h)
     end
 
