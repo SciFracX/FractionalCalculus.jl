@@ -2,7 +2,7 @@
 
 FractionalCalculus.jl has a disciplinary type system, by specifying which type you want to use, you can use the relating algorithm to compute fractional differentiation and fractional integral. 
 
-This page contain all of the existing API we can use for computing fractional integral.
+This page contains all of the existing API we can use for computing fractional integral.
 
 ```@docs
 FractionalCalculus.fracint

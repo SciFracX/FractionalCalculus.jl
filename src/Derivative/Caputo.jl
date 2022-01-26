@@ -9,7 +9,7 @@ abstract type Caputo <: FracDiffAlg end
 """
 # Caputo sense fractional derivative.
 
-    fracdiff(f::Function, α, start_point, end_point, step_size ::Caputo)
+    fracdiff(f::Function, α, start_point, end_point, step_size, ::Caputo)
 
 ### Example: 
 

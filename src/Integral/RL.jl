@@ -4,7 +4,7 @@ import FractionalCalculus.FracIntAlg
 """
 # Riemann-Liouville sense fractional integral algorithms
 
-Note this two algorithms belong to direct compute, precise are ensured, but maybe cause more memory allocation and take more compilation time.
+As the general fractional order integral type, RLInt is the parent type of all Riemann Liouville sense numerical methods.
 """
 abstract type RLInt <: FracIntAlg end
 
@@ -166,11 +166,13 @@ julia> fracint(x->x, 0.5, 1, 0.000001, RLInt_Simpson())
 0.7516516520541335
 ```
 
+```tex
 @inproceedings{Li2015NumericalMF,
   title={Numerical Methods for Fractional Calculus},
   author={Changpin Li and Fanhai Zeng},
   year={2015}
 }
+```
 
 Using fractional Simpson's formula to discrete fractional integral.
 """
