@@ -30,6 +30,10 @@ end
     @test isapprox(result[3], 64.3280200256207; atol = 1e-3)
 end
 
+@testset "Test RLInt_Matrix" begin
+    @test isapprox(fracint(x->x, 0.5, 1, 0.5, RLInt_Matrix()), [0; 0.3535533905932738; 0.8838834764831844]; atol=1e-3)
+end
+
 @testset "Test RL_LinearInterp" begin
     @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-4, RL_LinearInterp()), 1.163931646862977; atol = 1e-4)
 
@@ -60,6 +64,8 @@ end
 
 @testset "Test Rectangular Fractional Integral" begin
     @test isapprox(fracint(x->x^4, 0.5, 1.23, 1e-6, RLInt_Rectangular()), 1.163931646862977; atol = 1e-3)
+
+    @test isapprox(fracint(x->x^4, 0.5, [1.23, 2, 3], 0.001, RLInt_Rectangular()), [1.1617493910169032; 10.363130001411157; 64.27898282619807]; atol=1e-2)
 end
 
 @testset "Test Cubic Spline Interpolation Fractional Integral" begin

@@ -172,7 +172,8 @@ function fracdiff(f::Union{Number, Function}, α::Float64, start_point, end_poin
     return result
 end
 
-
+#=
+These might be redundant, leave it here for now, maybe useful one day ¯\_(ツ)_/¯
 function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_Direct_First_Diff_Known)
 
     g(τ) = (end_point-τ) .^ (-α) * fd(τ)
@@ -205,7 +206,7 @@ function fracdiff(f::Function, α::Float64, start_point, end_point::AbstractArra
     end
     return ResultArray
 end
-
+=#
 
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Piecewise)
 

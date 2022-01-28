@@ -39,6 +39,10 @@ end
     @test isapprox(fracdiff(x->x, 0.5, collect(0:0.01:1), 2, GL_High_Precision())[end], 2/sqrt(pi); atol = 1e-4)
 end
 
+@testset "Test Grunwald Letnikov Lagrange_Three_Point_Interp" begin
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.01, GL_Lagrange_Three_Point_Interp()), 2/sqrt(pi); atol=1e-4)
+end
+
 @testset "Test RLDiff Matrix Fractional Deriavtive" begin
     @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLDiff_Matrix())[end], 2/sqrt(pi); atol = 1e-3)
 end
@@ -79,6 +83,10 @@ end
     @test isapprox(fracdiff(log, 0.3, 1, 2, 1/4000000, Hadamard_RRect()), 0.8514936; atol=1e-4)
     @test isapprox(fracdiff(log, 0.5, 1, 2, 1/4000000, Hadamard_Trap()), 0.9391460; atol=1e-4)
     @test isapprox(fracdiff(log, 0.3, 1, 2, 1/4000000, Hadamard_Trap()), 0.8514935; atol=1e-4)
+end
+
+@testset "Test Riesz Symmetric fractional derivative" begin
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.5, Riesz_Symmetric()), [0.2651650429449553; 0.2651650429449553; -0.39774756441743303]; atol=1e-2)
 end
 
 @testset "Test macros" begin

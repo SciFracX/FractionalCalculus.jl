@@ -31,7 +31,7 @@ julia> fracint(x->x^5, 0.5, 0, 2.5, 1e-8, RL_Direct())
 Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which contains the value of this derivative is 1.1639316474512205, and the error estimate is 1.0183453796725215e-8
 """
 struct RL_Direct <: RLInt end
-
+#=
 """
 # Riemann Liouville sense fractional integral with first diff known.
 
@@ -46,7 +46,7 @@ julia> fracint(x->x^5, x->5*x^4, 0.5, 0, 2.5, RL_Direct_First_Diff_Known())
 With first derivative known, we can use the Riemann Liouville sense to obtain the fractional integral more effcient.
 """
 struct RL_Direct_First_Diff_Known <: RLInt end
-
+=#
 """
 @article{LI20113352,
 title = {Numerical approaches to fractional calculus and fractional ordinary differential equation},
@@ -263,7 +263,8 @@ function fracint(f::Union{Function, Number}, α, start_point, end_point::Real, h
 end
 
 
-
+#=
+These might be redundant, leave it here for now, maybe useful one day ¯\_(ツ)_/¯
 function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Direct_First_Diff_Known)
     #checks(f, α, start_point, end_point)
     
@@ -291,7 +292,7 @@ function fracint(f::Union{Function, Number}, α::Float64, start_point, end_point
     end
     return ResultArray
 end
-
+=#
 
 
 function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_Piecewise)::Float64
