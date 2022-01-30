@@ -95,3 +95,11 @@ end
     @test isapprox(@fracdiff(x->x, 0.5, 1), 1.1283791670955126; atol=1e-4)
     @test isapprox(@fracdiff(x->x^5, 0.5, 3.2), 4.300306216488329e2; atol=1e-2)
 end
+
+
+@testset "Test auxiliary functions" begin
+    @test isapprox(RieszMatrix(0.5, 2, 0.1), [-1.58114 1.3835; 1.3835 -1.58114]; atol=1e-3)
+    @test isapprox(omega(3, 2), [1, -2, 1, 0]; atol=1e-3)
+    @test isapprox(B(2, 2), [1.0 0.0; -2.0 1.0]; atol=1e-3)
+    @test isapprox(genfun(2), [1.5 -2 0.5]; atol=1e-3)
+end

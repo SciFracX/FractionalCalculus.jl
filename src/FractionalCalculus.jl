@@ -41,4 +41,7 @@ export RLInt_Simpson, RLInt_Trapezoidal, RLInt_Rectangular, RLInt_Cubic_Spline_I
 # Macros for convenient computing
 export @fracint, @semifracint
 
+# Auxiliary functions
+export RieszMatrix, omega, B, genfun
+
 end
