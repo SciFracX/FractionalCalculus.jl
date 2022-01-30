@@ -153,7 +153,7 @@ struct Caputo_High_Precision <: Caputo end
 
 function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_point, h::Float64, ::Caputo_Direct)
     #checks(f, α, start_point, end_point)
-
+    typeof(end_point) <: Number ? (end_point == 0 ? 0 : end_point/sqrt(pi*end_point)) : nothing
     #Using complex step differentiation to calculate the first order differentiation
     g(τ) = imag(f(τ+1*im*h) ./ h) ./ ((end_point-τ) .^α)
     result = quadgk(g, start_point, end_point) ./gamma(1-α)
@@ -209,7 +209,7 @@ end
 =#
 
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Piecewise)
-
+    typeof(end_point) <: Number ? (end_point == 0 ? 0 : end_point/sqrt(pi*end_point)) : nothing
     m = floor(α)+1
 
     summation = zero(Float64)
@@ -248,7 +248,7 @@ Caputo Diethelm algorithm
 =#
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point::Number, h, ::Caputo_Diethelm)
     #checks(f, α, 0, end_point)
-
+    typeof(end_point) <: Number ? (end_point == 0 ? 0 : end_point/sqrt(pi*end_point)) : nothing
     N = Int64(floor(end_point/h))
 
     result = zero(Float64)

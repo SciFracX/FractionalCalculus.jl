@@ -113,7 +113,7 @@ Grunwald Letnikov direct method
 =#
 function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_point, ::GL_Direct)
     #checks(f, α, start_point, end_point)
-
+    typeof(end_point) <: Number ? (end_point == 0 ? 0 : end_point/sqrt(pi*end_point)) : nothing
     g(τ) = (f(end_point)-f(τ)) ./ (end_point - τ) .^ (1+α)
     result = f(end_point)/(gamma(1-α) .* (end_point - start_point) .^ α) .+ quadgk(g, start_point, end_point) .* α ./ gamma(1-α)
     return result
@@ -125,7 +125,7 @@ end
 #TODO: Use the improved alg!! This algorithm is not accurate
 #This algorithm is not so good, still more to do
 function fracdiff(f::Union{Function, Number}, α, end_point, h, ::GL_Multiplicative_Additive)::Float64
-
+    typeof(end_point) <: Number ? (end_point == 0 ? 0 : end_point/sqrt(pi*end_point)) : nothing
     summation = zero(Float64)
     n = Int64(floor(end_point/h))
 
@@ -150,7 +150,7 @@ end
 #This algorithm is not so good, still more to do
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::GL_Lagrange_Three_Point_Interp)::Float64
     #checks(f, α, 0, end_point)
-
+    typeof(end_point) <: Number ? (end_point == 0 ? 0 : end_point/sqrt(pi*end_point)) : nothing
     n = Int64(floor(end_point/h))
     summation = zero(Float64)
 
@@ -173,7 +173,7 @@ end
 
 
 function fracdiff(f::Union{Number, Function}, α::Float64, end_point::Real, h, ::GL_Finite_Difference)::Float64
-
+    typeof(end_point) <: Number ? (end_point == 0 ? 0 : end_point/sqrt(pi*end_point)) : nothing
     n = Int64(floor(end_point/h))
     result = zero(Float64)
 
