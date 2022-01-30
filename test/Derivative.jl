@@ -11,6 +11,8 @@ using Test
     @test isapprox(fracdiff(x->cos(x), 0.25, 0, 0.34, 1e-8, Caputo_Direct())[1], -0.093074344902431; atol = 1e-5)
     @test isapprox(fracdiff(x->exp(-x^2), 0.5, 0, 2.3, 1e-8, Caputo_Direct())[1], -0.505891017154289; atol = 1e-5)
     @test isapprox(fracdiff(x->exp(-x^2), 0.25, 0, 2.3, 1e-8, Caputo_Direct())[1], -0.762927553656252; atol = 1e-5)
+
+    @test isapprox(fracdiff(x->x, 0.5, 0, [1, 2, 3], 0.0001, Caputo_Direct()), [2/sqrt(pi), 1.5957691216057408, 1.9544100476116828]; atol=1e-3)
 end
 
 @testset "Test Caputo Piecewise Fractional Derivative" begin

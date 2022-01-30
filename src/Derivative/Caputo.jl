@@ -168,7 +168,7 @@ function fracdiff(f::Union{Number, Function}, α::Float64, start_point, end_poin
     end
     return ResultArray
     =#
-    result = map(x->fracdiff(f, α, start_point, x, h, Caputo_Direct()), end_point)
+    result = map(x->fracdiff(f, α, start_point, x, h, Caputo_Direct())[1], end_point)
     return result
 end
 
