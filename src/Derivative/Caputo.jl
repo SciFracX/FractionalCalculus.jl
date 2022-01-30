@@ -209,7 +209,8 @@ end
 =#
 
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Piecewise)
-    typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
+    typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
+    end_point == 0 ? (return 0) : nothing
     m = floor(α)+1
 
     summation = zero(Float64)

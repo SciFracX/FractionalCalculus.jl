@@ -105,7 +105,9 @@ struct RL_D <: RLDiff end
 
 function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx)
     #checks(f, α, 0, end_point)
-    typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
+    typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
+    end_point == 0 ? (return 0) : nothing
+
     summation = 0
     n = Int64(floor(end_point/h))
 
@@ -179,7 +181,8 @@ Page 57
 Linear Spline Interpolation
 =#
 function fracdiff(f::Union{Number, Function}, α, x, h, ::RL_Linear_Spline_Interp)
-    typeof(f) <: Number ? (x == 0 ? 0 : f/sqrt(pi*x)) : nothing
+    typeof(f) <: Number ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
+    x == 0 ? (return 0) : nothing
     N = Int64(floor(x/h))
 
     result = 0
@@ -220,7 +223,9 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractAr
 end
 
 function fracdiff(f::Union{Number, Function}, α, start_point, end_point, h, ::RL_G1)
-    typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
+    typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
+    end_point == 0 ? (return 0) : nothing
+
     N = Int64(floor((end_point-start_point)/h))
 
     result = zero(Float64)
@@ -232,7 +237,9 @@ function fracdiff(f::Union{Number, Function}, α, start_point, end_point, h, ::R
 end
 
 function fracdiff(f::Union{Number, Function}, α, point, h, ::RL_D)
-    typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
+    typeof(f) <: Number ? (point == 0 ? (return 0) : (return f/sqrt(pi*point))) : nothing
+    point == 0 ? (return 0) : nothing
+
     N = Int64(floor(point/h))
 
     result = zero(Float64)

@@ -113,7 +113,8 @@ Grunwald Letnikov direct method
 =#
 function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_point, ::GL_Direct)
     #checks(f, α, start_point, end_point)
-    typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
+    typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
+    end_point == 0 ? (return 0) : nothing
     g(τ) = (f(end_point)-f(τ)) ./ (end_point - τ) .^ (1+α)
     result = f(end_point)/(gamma(1-α) .* (end_point - start_point) .^ α) .+ quadgk(g, start_point, end_point) .* α ./ gamma(1-α)
     return result
