@@ -12,11 +12,6 @@ Base type of fractional differentiation algorithms, in FractionalCalculus.jl, al
 """
 abstract type FracDiffAlg end
 
-
-function checks(f::Number, α::Float64, start_point::Float64, end_point::Float64)
-    f = f == 0 ? 0 : f/sqrt(pi*end_point)
-end
-
 include("Caputo.jl")
 include("GL.jl")
 include("Hadamard.jl")

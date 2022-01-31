@@ -1,4 +1,4 @@
-import FractionalCalculus.FracIntAlg
+import FractionalCalculus: FracIntAlg, first_order
 
 
 """
@@ -537,9 +537,3 @@ function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArr
     result = map(x->fracint(f, α, x, h, RLInt_Cubic_Spline_Interp()), end_point)
     return result
 end
-# Deploy Complex Step Differentiation to compute the first order derivative.
-function first_order(f, point, h)
-    return imag(f(point + im*h))/h
-end
-
-

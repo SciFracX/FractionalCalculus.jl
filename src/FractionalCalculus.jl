@@ -42,6 +42,6 @@ export RLInt_Simpson, RLInt_Trapezoidal, RLInt_Rectangular, RLInt_Cubic_Spline_I
 export @fracint, @semifracint
 
 # Auxiliary functions
-export RieszMatrix, omega, B, genfun
+export RieszMatrix, omega, B, genfun, first_order
 
 end
