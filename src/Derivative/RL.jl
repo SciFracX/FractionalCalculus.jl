@@ -150,17 +150,6 @@ function omega(n, p)
     
     return omega
 end
-function B(N, p, h::Float64)
-    result = zeros(N, N)
-    temp = omega(N, p)
-
-    @inbounds @simd for i ∈ 1:N
-        @views result[i, 1:i] = reverse(temp[1:i])
-    end
-
-    return h^(-p)*result
-end
-# Multiple dispatch for not assigning step size *h*.
 function B(N, p)
     result = zeros(N, N)
     temp = omega(N, p)
@@ -171,6 +160,13 @@ function B(N, p)
 
     return result
 end
+# Multiple dispatch for assigning step size *h*.
+function B(N, p, h::Float64)
+    result = B(N, p)
+
+    return h^(-p)*result
+end
+
 
 
 
