@@ -2,7 +2,7 @@ name = "FractionalCalculus"
 uuid = "638fb199-4bb2-4014-80c8-6dc0d90f156b"
 license = "MIT"
 authors = ["Qingyu Qu <erikqqy123@gmail.com>"]
-version = "0.2.2"
+version = "0.2.3"
 
 [deps]
 InvertedIndices = "41ab1584-1d38-5bbf-9106-f11c6c58b48f"
