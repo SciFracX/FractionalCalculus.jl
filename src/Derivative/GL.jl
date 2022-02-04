@@ -137,7 +137,7 @@ function fracdiff(f::Union{Function, Number}, α, end_point, h, ::GL_Multiplicat
 
     return result
 end
-
+#=
 function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::GL_Multiplicative_Additive)::Vector
     ResultArray = Float64[]
     for (_, value) in enumerate(end_point)
@@ -145,7 +145,7 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractAr
     end
     return ResultArray
 end
-
+=#
 
 #TODO: This algorithm is same with the above one, not accurate!!!
 #This algorithm is not so good, still more to do
@@ -163,7 +163,7 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::GL_La
 
     return result
 end
-
+#=
 function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::GL_Lagrange_Three_Point_Interp)::Vector
     ResultArray = Float64[]
     for (_, value) in enumerate(end_point)
@@ -171,7 +171,7 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractAr
     end
     return ResultArray
 end
-
+=#
 
 function fracdiff(f::Union{Number, Function}, α::Float64, end_point, h, ::GL_Finite_Difference)::Float64
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
@@ -185,7 +185,7 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point, h, ::GL_Fi
     result1 = result*h^(-α)*gamma(α+1)
     return result1
 end
-
+#=
 function fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, h, ::GL_Finite_Difference)::Vector
     ResultArray = Float64[]
 
@@ -194,7 +194,7 @@ function fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, h, :
     end
     return ResultArray    
 end
-
+=#
 
 
 

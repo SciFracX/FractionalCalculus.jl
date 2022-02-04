@@ -41,6 +41,18 @@ end
     @test isapprox(fracdiff(x->x, 0.5, collect(0:0.01:1), 2, GL_High_Precision())[end], 2/sqrt(pi); atol = 1e-4)
 end
 
+@testset "Test GL_Multiplicative_Additive()" begin
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.009, GL_Multiplicative_Additive()), 2/sqrt(pi); atol=1e-2)
+end
+
+@testset "Test GL_Lagrange_Three_Point_Interp" begin
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.009, GL_Lagrange_Three_Point_Interp()), 2/sqrt(pi); atol=1e-2)
+end
+
+@testset "Test GL_Finite_Difference" begin
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.009, GL_Finite_Difference()), 2/sqrt(pi); atol=1e-2)
+end
+
 @testset "Test Grunwald Letnikov Lagrange_Three_Point_Interp" begin
     @test isapprox(fracdiff(x->x, 0.5, 1, 0.01, GL_Lagrange_Three_Point_Interp()), 2/sqrt(pi); atol=1e-4)
 end

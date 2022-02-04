@@ -17,7 +17,7 @@ export Caputo, GL, RLDiff, Hadamard
 export Caputo_Direct, Caputo_Piecewise, Caputo_Diethelm, Caputo_High_Precision
 
 # Grünwald Letnikov sense fractional derivative
-export GL_Direct, GL_Multiplicative_Additive, GL_Lagrange_Three_Point_Interp, GL_High_Precision
+export GL_Direct, GL_Multiplicative_Additive, GL_Lagrange_Three_Point_Interp, GL_Finite_Difference, GL_High_Precision
 
 # Riemann Liouville sense fractional derivative
 export RLDiff_Approx, RLDiff_Matrix, RL_Linear_Spline_Interp, RL_G1, RL_D
