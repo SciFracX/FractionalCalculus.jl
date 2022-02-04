@@ -1,4 +1,4 @@
-import FractionalCalculus.FracDiffAlg
+import FractionalCalculus: FracDiffAlg, omega, B
 
 """
 Riesz sense fractional derivative
@@ -39,26 +39,4 @@ function RieszMatrix(α, N, h)
     result = h^(-α)*result
 
     return result
-end
-
-function B(N, p)
-    result=zeros(N, N)
-    temp=omega(N, p)
-
-    @inbounds @simd for i ∈ 1:N
-        @views result[i, 1:i]=reverse(temp[1:i])
-    end
-
-    return result
-end
-
-function omega(n, p)
-    omega = zeros(n+1)
-
-    omega[1]=1
-    @fastmath @inbounds @simd for i ∈ 1:n
-        omega[i+1]=(1-(p+1)/i)*omega[i]
-    end
-    
-    return omega
 end
