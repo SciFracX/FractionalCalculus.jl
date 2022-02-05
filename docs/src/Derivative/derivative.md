@@ -62,7 +62,7 @@ D^\alpha f(t)=\displaystyle \lim_{h\rightarrow0}\frac{1}{h^\alpha}\sum_{0\leq m\
 To compute the Grünwald Letnikov sense derivative, you can use FractionalCalculus.jl by:
 
 ```julia-repl
-fracdiff(x->x, 0.5, collect(0:0.01:1), 2, GL_High_Precision())
+julia> fracdiff(x->x, 0.5, collect(0:0.01:1), 2, GL_High_Precision())
 101-element Vector{Float64}:
  0.0
  0.11283791670955126

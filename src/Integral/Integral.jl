@@ -18,7 +18,7 @@ julia> fracint(x->x^2, 0.5, 1, 0.001, RLInt_Approx())
 0.6017877646029814
 ```
 
-There are many algorithms can be used to computing fractional integral, please refer to our manual for more details: http://scifracx.org/FractionalCalculus.jl/dev/Integral/integralapi/.
+There are many algorithms can be used to computing fractional integral, please refer to our manual for more details: [manual](http://scifracx.org/FractionalCalculus.jl/dev/Integral/integralapi/).
 """
 function fracint(f, α, point, h, ::FracIntAlg)
 end
@@ -28,7 +28,7 @@ end
 """
     @fracint(f, α, point)
 
-Return the α-order integral of **f** at specific point.
+Return the α-order integral of ``f`` at specific point.
 
 ```julia-repl
 julia> @fracint(x->x, 0.5, 1)
@@ -42,7 +42,7 @@ end
 """
     @semifracint(f, point)
 
-Return the semi-integral of **f** at specific point.
+Return the semi-integral of ``f`` at specific point.
 
 ```julia-repl
 julia> @semifracint(x->x, 1)
