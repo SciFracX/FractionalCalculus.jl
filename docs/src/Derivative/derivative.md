@@ -142,15 +142,3 @@ julia> fracdiff(x->x, 0.5, 0, 1, 0.01, Hadamard_LRect())
 	Here we need to specify the **start point** and **end point**
 
 There are different approximating methods being used in the computing, choose the one you need😉
-
-## Highlight on some algorithms
-
-FractionalCalculus.jl support many algorithms to calculate fractional derivative, here, I want to highlight the **Triangular Strip Matrix** method proposed by [Prof Igor](http://people.tuke.sk/igor.podlubny/index.html) to discrete fractional derivative.
-
-```julia-repl
-julia> fracdiff(f, α, end_point, h, RLDiff_Matrix())
-```
-
-With this advancing algorithms, we can not only compute the fractional derivative, but also the integer derivative! Or more precisely, arbitrary order!!!!🙌 Higher order derivative is also a piece of cake!!!!!!🎉
-
-Try to set $\alpha$ as an integer, arbitrary integer of course! I promise you would enjoy it😏

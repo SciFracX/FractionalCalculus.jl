@@ -39,11 +39,6 @@ pkg> add FractionalCalculus#master
 
 !!! tip "Fractional Differential Equations"
 	Want to solve fractional differential equations with performant and effcient algorithms? Please see [FractionalDiffEq.jl](https://github.com/SciFracX/FractionalDiffEq.jl)
-<!--
-> See SciFracX 2021 Winter Report
-
-[![Winter Conf](assets/conf2021.png)](https://www.youtube.com/watch?v=oVvrW7EgEwg)
--->
 
 ## Plans
 
@@ -62,6 +57,3 @@ The development of FractionalCalculus.jl is on GitHub, please [report bugs](http
 ## Acknowledge
 
 **FractionalCalculus.jl** is built upon the hard work of many scientific researchers, I sincerely appreciate what they have done to help the development of science and technology.
-
-!!! info "WIP"
-	FractionalCalculus.jl is under heavy construction, some API or docs might change a lot.
