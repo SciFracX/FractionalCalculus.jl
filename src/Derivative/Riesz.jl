@@ -27,7 +27,7 @@ struct Riesz_Symmetric <: Riesz end
 
 
 function fracdiff(f, α, end_point, h, ::Riesz_Symmetric)
-    N=Int(floor(end_point/h))
+    N=floor(Int, end_point/h)
 
     mat = RieszMatrix(α, N+1, h)
     return mat*f.(collect(0:h:end_point))
@@ -37,6 +37,5 @@ function RieszMatrix(α, N, h)
     caputo = caputo[2:(N+1), 1:N]
     result = 1/2*(caputo+caputo')
     result = h^(-α)*result
-
     return result
 end

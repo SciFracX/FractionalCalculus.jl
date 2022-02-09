@@ -302,7 +302,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_Pie
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
     #Initialize
-    n = Int64(floor(end_point/h))
+    n = round(Int, end_point/h)
     result = zero(Float64)
 
     @fastmath @inbounds @simd for i ∈ 0:n
@@ -334,7 +334,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
     α = -α
-    n = Int64(floor(end_point/h))
+    n = round(Int, end_point/h)
     result = zero(Float64)
 
     @fastmath @inbounds @simd for i ∈ 0:n-1
@@ -358,7 +358,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point::Number, h, 
     end_point == 0 ? (return 0) : nothing
 
     α = -α
-    n = Int64(floor(end_point/h))
+    n = round(Int, end_point/h)
     result = zero(Float64)
     
     @fastmath @inbounds @simd for i ∈ 0:n-1
@@ -376,16 +376,14 @@ end
 
 
 
-
 function fracint(f, α::Number, end_point, h::Float64, ::RLInt_Matrix)
-    N = Int64(floor(end_point/h+1))
+    N = round(Int, end_point/h+1)
     tspan = collect(0:h:end_point)
     return J(N, α, h)*f.(tspan)
 end
 
 function omega(n, p)
     omega = zeros(n+1)
-
     omega[1]=1
     @fastmath @inbounds @simd for i ∈ 1:n
         omega[i+1]=(1-(p+1)/i)*omega[i]
@@ -413,7 +411,7 @@ function fracint(f, α, point, h, ::RLInt_Simpson)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 
-    N = Int64(floor(point/h))
+    N = round(Int, point/h)
     temp1 = 0
     temp2 = 0
 
@@ -453,7 +451,7 @@ function fracint(f::Union{Function, Number}, α, point, h, ::RLInt_Trapezoidal)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 
-    N = Int64(floor(point/h))
+    N = round(Int, point/h)
     result = zero(Float64)
 
     @fastmath @inbounds @simd for i ∈ 0:N
@@ -478,7 +476,7 @@ function fracint(f::Union{Number, Function}, α, point, h, ::RLInt_Rectangular)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 
-    N = Int64(floor(point/h))
+    N = round(Int, point/h)
     result = zero(Float64)
 
     @fastmath @inbounds @simd for i ∈ 0:N-1
@@ -504,7 +502,7 @@ function fracint(f, α, point, h, ::RLInt_Cubic_Spline_Interp)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
     
-    N = Int64(floor(point/h))
+    N = round(Int, point/h)
     result = zero(Float64)
 
     @fastmath @inbounds @simd for j ∈ 0:N

@@ -128,7 +128,7 @@ end
 function fracdiff(f::Union{Function, Number}, α, end_point, h, ::GL_Multiplicative_Additive)::Float64
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     summation = zero(Float64)
-    n = Int64(floor(end_point/h))
+    n = round(Int, end_point/h)
 
     for i ∈ 0:n-1
         summation += gamma(i-α)/gamma(i+1)*f(end_point-i*h)
@@ -152,7 +152,7 @@ end
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::GL_Lagrange_Three_Point_Interp)::Float64
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
-    n = Int64(floor(end_point/h))
+    n = round(Int, end_point/h)
     summation = zero(Float64)
 
     for i ∈ 0:n-1
@@ -175,7 +175,7 @@ end
 
 function fracdiff(f::Union{Number, Function}, α::Float64, end_point, h, ::GL_Finite_Difference)::Float64
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
-    n = Int64(floor(end_point/h))
+    n = round(Int, end_point/h)
     result = zero(Float64)
 
     @fastmath @simd for i = 0:n

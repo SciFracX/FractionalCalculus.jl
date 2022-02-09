@@ -211,10 +211,10 @@ end
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Piecewise)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
-    m = floor(α)+1
+    m = floor(Int, α)+1
 
     summation = zero(Float64)
-    n = Int64(floor(end_point/h))
+    n = floor(Int, end_point/h)
 
     @fastmath @inbounds @simd for i ∈ 0:n
         summation += W₅(i, n, m, α)*first_order(f, i*h, h)
@@ -250,7 +250,7 @@ Caputo Diethelm algorithm
 function fracdiff(f::Union{Function, Number}, α::Float64, end_point::Number, h, ::Caputo_Diethelm)
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
-    N = Int64(floor(end_point/h))
+    N = round(Int, end_point/h)
 
     result = zero(Float64)
 

@@ -78,7 +78,7 @@ Hadamard Left Rectangular computing algorithms
 function fracdiff(f, α, x₀, x, h, ::Hadamard_LRect)
     typeof(f) <: Number ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
     x == 0 ? (return 0) : nothing
-    N = Int64((x-x₀)/h)
+    N = round(Int, (x-x₀)/h)
     result = zero(Float64)
 
     @fastmath @inbounds @simd for i ∈ 0:N-1
@@ -100,7 +100,7 @@ Hadamard Right Rectangular computing algorithm
 =#
 function fracdiff(f, α, x₀, x, h, ::Hadamard_RRect)
     typeof(f) <: Number ? (x == 0 ? 0 : f/sqrt(pi*x)) : nothing
-    N = Int64((x-x₀)/h)
+    N = round(Int, (x-x₀)/h)
     result = zero(Float64)
 
     @fastmath @inbounds @simd for i ∈ 0:N-1
@@ -124,7 +124,7 @@ Hadamard trapezoidal computing algorithm
 =#
 function fracdiff(f, α, x₀, x, h, ::Hadamard_Trap)
     typeof(f) <: Number ? (x == 0 ? 0 : f/sqrt(pi*x)) : nothing
-    N = Int64((x-x₀)/h)
+    N = round(Int, (x-x₀)/h)
 
     result = zero(Float64)
 

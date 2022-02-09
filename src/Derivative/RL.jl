@@ -109,7 +109,7 @@ function fracdiff(f::Union{Number, Function}, α, end_point, h, ::RLDiff_Approx)
     end_point == 0 ? (return 0) : nothing
 
     summation = 0
-    n = Int64(floor(end_point/h))
+    n = floor(Int, end_point/h)
 
     @fastmath @inbounds @simd for i ∈ 0:n-1
         summation += (f(end_point-i*h) - f(end_point-(i+1)*h))*((i+1)^(1-α) - i^(1-α))
@@ -128,7 +128,7 @@ end
 
 
 function fracdiff(f, α, end_point, h::Float64, ::RLDiff_Matrix)
-    N = Int64(end_point/h+1)
+    N = round(Int, end_point/h+1)
     @views tspan = collect(0:h:end_point)
     return B(N, α, h)*f.(tspan)
 end
@@ -142,7 +142,6 @@ end
 #Generate elements in Matrix.
 function omega(n, p)
     omega = zeros(n+1)
-
     omega[1] = 1
     @fastmath @inbounds @simd for i ∈ 1:n
         omega[i+1] = (1-(p+1)/i)*omega[i]
@@ -179,7 +178,7 @@ Linear Spline Interpolation
 function fracdiff(f::Union{Number, Function}, α, x, h, ::RL_Linear_Spline_Interp)
     typeof(f) <: Number ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
     x == 0 ? (return 0) : nothing
-    N = Int64(floor(x/h))
+    N = round(Int, x/h)
 
     result = 0
 
@@ -222,7 +221,7 @@ function fracdiff(f::Union{Number, Function}, α, start_point, end_point, h, ::R
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
 
-    N = Int64(floor((end_point-start_point)/h))
+    N = round(Int, (end_point-start_point)/h)
 
     result = zero(Float64)
     @fastmath @inbounds @simd for j = 0:N-1
@@ -236,7 +235,7 @@ function fracdiff(f::Union{Number, Function}, α, point, h, ::RL_D)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return f/sqrt(pi*point))) : nothing
     point == 0 ? (return 0) : nothing
 
-    N = Int64(floor(point/h))
+    N = round(Int, point/h)
 
     result = zero(Float64)
     @fastmath @inbounds @simd for k = 0:N
@@ -249,7 +248,6 @@ end
 
 function ωₖₙ(n, k, α)
     temp = 0
-
     if k == 0
         temp = -1
     elseif 1 ≤ k ≤ n-1
