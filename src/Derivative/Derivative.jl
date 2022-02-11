@@ -1,12 +1,3 @@
-# The structure of the fractional derivative:
-# (1) Type definition.
-# (2) Checks function to ensure the input parameters are correct and handle some special cases, for example, 0 end point case.
-# (3) Multiple dispatch for fracdiff of different algorithms, the first is used to compute the value of a specific point, the second is used to compute the fractional derivative of a Vector, other functions are auxillary functions to help with the coefficients.
-# (4) Fractional derivative macros for convenient computing.
-
-using QuadGK, SpecialFunctions, SpecialMatrices
-using LinearAlgebra, InvertedIndices
-
 """
 Base type of fractional differentiation algorithms, in FractionalCalculus.jl, all of the fractional derivative algorithms belong to ```FracDiffAlg```
 """
