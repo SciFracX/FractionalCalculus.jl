@@ -231,7 +231,7 @@ function W₅(i, n, m, α)
     end
 end
 # Deploy Complex Step Differentiation to compute the first order derivative.
-function first_order(f, point, h)
+function first_order(f, point, h::Float64)
     return imag(f(point + im*h))/h
 end
 
@@ -282,7 +282,7 @@ function fracdiff(y, α, t, p, ::Caputo_High_Precision)
     t = t[:]
     n = length(t)
     y = y.(t)
-    q = Int64(ceil(α))
+    q = ceil(Int, α)
     r = Int64(max(p, q))
     R = reverse(Vandermonde(collect(0:(r-1)).*h))
     c = inv(R)*y[1:r]
