@@ -248,7 +248,7 @@ function checks(f, α, start_point, end_point)
     end
 end
 
-function fracint(f::Union{Function, Number}, α, start_point, end_point::Real, h, ::RL_Direct)
+function fracint(f::Union{Function, Number}, α, start_point, end_point::Real, h::Float64, ::RL_Direct)
     #checks(f, α, start_point, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -294,7 +294,7 @@ end
 =#
 
 
-function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RL_Piecewise)::Float64
+function fracint(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::RL_Piecewise)::Float64
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -320,13 +320,13 @@ function W(i, n, α)
 end
 
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RL_Piecewise)::Vector
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RL_Piecewise)::Vector
     result = map(x->fracint(f, α, x, h, RL_Piecewise()), end_point)
     return result
 end
 
 
-function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_Approx)::Float64
+function fracint(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::RLInt_Approx)::Float64
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -342,7 +342,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point, h, ::RLInt_
     return result1
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RLInt_Approx)::Vector
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLInt_Approx)::Vector
     result = map(x->fracint(f, α, x, h, RLInt_Approx()), end_point)
     return result
 end
@@ -350,7 +350,7 @@ end
 
 
 
-function fracint(f::Union{Function, Number}, α::Float64, end_point::Number, h, ::RL_LinearInterp)::Float64
+function fracint(f::Union{Function, Number}, α::Float64, end_point::Number, h::Float64, ::RL_LinearInterp)::Float64
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
 
@@ -366,7 +366,7 @@ function fracint(f::Union{Function, Number}, α::Float64, end_point::Number, h, 
     return result1
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RL_LinearInterp)::Vector
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RL_LinearInterp)::Vector
     result = map(x->fracint(f, α, x, h, RL_LinearInterp()), end_point)
     return result
 end
@@ -404,7 +404,7 @@ end
 #=
 RLInt_Simpson Algorithm
 =#
-function fracint(f, α, point, h, ::RLInt_Simpson)
+function fracint(f, α, point, h::Float64, ::RLInt_Simpson)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 
@@ -436,7 +436,7 @@ function ĉₖₙ(k, n, α)
     return ((α+2)*((n+1-k)^(1+α)+(n-k)^(1+α))-2*((n+1-k)^(2+α)-(n-k)^(2+α)))
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RLInt_Simpson)::Vector
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLInt_Simpson)::Vector
     result = map(x->fracint(f, α, x, h, RLInt_Simpson()), end_point)
     return result
 end
@@ -444,7 +444,7 @@ end
 #=
 RLInt_Trapezoidal Algorithm
 =#
-function fracint(f::Union{Function, Number}, α, point, h, ::RLInt_Trapezoidal)
+function fracint(f::Union{Function, Number}, α, point, h::Float64, ::RLInt_Trapezoidal)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 
@@ -469,7 +469,7 @@ function aₖₙ(k, n, α)
 end
 
 
-function fracint(f::Union{Number, Function}, α, point, h, ::RLInt_Rectangular)
+function fracint(f::Union{Number, Function}, α, point, h::Float64, ::RLInt_Rectangular)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 
@@ -487,7 +487,7 @@ function bₖ(k, α)
     return (k+1)^α-k^α
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RLInt_Rectangular)::Vector
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLInt_Rectangular)::Vector
     result = map(x->fracint(f, α, x, h, RLInt_Rectangular()), end_point)
     return result
 end
@@ -495,7 +495,7 @@ end
 #=
 RLInt_Cubic_Spline_Interp Algorithm, when h is 0.01 behave best
 =#
-function fracint(f, α, point, h, ::RLInt_Cubic_Spline_Interp)
+function fracint(f, α, point, h::Float64, ::RLInt_Cubic_Spline_Interp)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
     
@@ -528,7 +528,7 @@ function êⱼₙ(j, n, α)
     end
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::RLInt_Cubic_Spline_Interp)::Vector
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLInt_Cubic_Spline_Interp)::Vector
     result = map(x->fracint(f, α, x, h, RLInt_Cubic_Spline_Interp()), end_point)
     return result
 end

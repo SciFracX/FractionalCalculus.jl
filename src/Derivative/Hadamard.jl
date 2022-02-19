@@ -73,7 +73,7 @@ struct Hadamard_Trap <: Hadamard end
 #=
 Hadamard Left Rectangular computing algorithms
 =#
-function fracdiff(f, α, x₀, x, h, ::Hadamard_LRect)
+function fracdiff(f, α, x₀, x, h::Float64, ::Hadamard_LRect)
     typeof(f) <: Number ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
     x == 0 ? (return 0) : nothing
     N = round(Int, (x-x₀)/h)
@@ -96,7 +96,7 @@ end
 #=
 Hadamard Right Rectangular computing algorithm
 =#
-function fracdiff(f, α, x₀, x, h, ::Hadamard_RRect)
+function fracdiff(f, α, x₀, x, h::Float64, ::Hadamard_RRect)
     typeof(f) <: Number ? (x == 0 ? 0 : f/sqrt(pi*x)) : nothing
     N = round(Int, (x-x₀)/h)
     result = zero(Float64)
@@ -120,7 +120,7 @@ end
 #=
 Hadamard trapezoidal computing algorithm
 =#
-function fracdiff(f, α, x₀, x, h, ::Hadamard_Trap)
+function fracdiff(f, α, x₀, x, h::Float64, ::Hadamard_Trap)
     typeof(f) <: Number ? (x == 0 ? 0 : f/sqrt(pi*x)) : nothing
     N = round(Int, (x-x₀)/h)
 

@@ -19,6 +19,8 @@ julia> fracdiff(x->x, 0.5, 1, 0.01, Riesz_Symmetric())
 struct Riesz_Symmetric <: Riesz end
 
 
+
+
 ################################################################
 ###                    Type definition done                  ###
 ################################################################
@@ -37,3 +39,4 @@ function RieszMatrix(α, N, h)
     result = h^(-α)*result
     return result
 end
+

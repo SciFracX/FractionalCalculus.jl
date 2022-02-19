@@ -206,7 +206,7 @@ function fracdiff(f::Function, α::Float64, start_point, end_point::AbstractArra
 end
 =#
 
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::Caputo_Piecewise)
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::Caputo_Piecewise)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
     m = floor(Int, α)+1
@@ -236,7 +236,7 @@ function first_order(f, point, h)
 end
 
 
-function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::Caputo_Piecewise)::Vector
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::Caputo_Piecewise)::Vector
     result = map(x->fracdiff(f, α, x, h, Caputo_Piecewise()), end_point)
     return result
 end
@@ -245,7 +245,7 @@ end
 #=
 Caputo Diethelm algorithm
 =#
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point::Number, h, ::Caputo_Diethelm)
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point::Number, h::Float64, ::Caputo_Diethelm)
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     N = round(Int, end_point/h)
@@ -268,7 +268,7 @@ function quadweights(n, N, α)
     end
 end
 
-function fracdiff(f, α::Float64, end_point::AbstractArray, h, ::Caputo_Diethelm)::Vector
+function fracdiff(f, α::Float64, end_point::AbstractArray, h::Float64, ::Caputo_Diethelm)::Vector
     result = map(x->fracdiff(f, α, x, h, Caputo_Diethelm()), end_point)
     return result
 end

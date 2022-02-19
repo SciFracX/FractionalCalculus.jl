@@ -122,7 +122,7 @@ end
 
 #TODO: Use the improved alg!! This algorithm is not accurate
 #This algorithm is not so good, still more to do
-function fracdiff(f::Union{Function, Number}, α, end_point, h, ::GL_Multiplicative_Additive)::Float64
+function fracdiff(f::Union{Function, Number}, α, end_point, h::Float64, ::GL_Multiplicative_Additive)::Float64
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     summation = zero(Float64)
     n = round(Int, end_point/h)
@@ -146,7 +146,7 @@ end
 
 #TODO: This algorithm is same with the above one, not accurate!!!
 #This algorithm is not so good, still more to do
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h, ::GL_Lagrange_Three_Point_Interp)::Float64
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::GL_Lagrange_Three_Point_Interp)::Float64
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     n = round(Int, end_point/h)
@@ -170,7 +170,7 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractAr
 end
 =#
 
-function fracdiff(f::Union{Number, Function}, α::Float64, end_point, h, ::GL_Finite_Difference)::Float64
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point, h::Float64, ::GL_Finite_Difference)::Float64
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     n = round(Int, end_point/h)
     result = zero(Float64)
@@ -260,7 +260,7 @@ function getvec(α, n, g)
     for k = p+1:n
         M = k-1
         dA = b/M
-        temp = (-(g[2:(p+1)] .*collect((1-dA):-dA:(1-p*dA))))' *w[M:-1:(k-p)]./g0 #FIXME: When p is greater than 2 threw DimensionMismatch
+        temp = (-(g[2:(p+1)] .*collect((1-dA):-dA:(1-p*dA))))' *w[M:-1:(k-p)]/g0
         push!(w, temp)
     end
 
