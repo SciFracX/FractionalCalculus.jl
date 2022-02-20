@@ -3,6 +3,8 @@ Base type of fractional differentiation algorithms, in FractionalCalculus.jl, al
 """
 abstract type FracDiffAlg end
 
+const FunctionAndNumber = Union{Function, Number}
+
 include("Caputo.jl")
 include("GL.jl")
 include("Hadamard.jl")

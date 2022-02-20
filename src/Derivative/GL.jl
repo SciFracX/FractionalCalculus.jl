@@ -108,7 +108,7 @@ struct GL_High_Precision <: GL end
 #=
 Grunwald Letnikov direct method
 =#
-function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_point, ::GL_Direct)
+function fracdiff(f::FunctionAndNumber, α::Float64, start_point, end_point, ::GL_Direct)
     #checks(f, α, start_point, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -122,7 +122,7 @@ end
 
 #TODO: Use the improved alg!! This algorithm is not accurate
 #This algorithm is not so good, still more to do
-function fracdiff(f::Union{Function, Number}, α, end_point, h::Float64, ::GL_Multiplicative_Additive)::Float64
+function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::GL_Multiplicative_Additive)::Float64
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     summation = zero(Float64)
     n = round(Int, end_point/h)

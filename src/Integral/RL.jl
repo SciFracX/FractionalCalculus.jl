@@ -248,7 +248,7 @@ function checks(f, α, start_point, end_point)
     end
 end
 
-function fracint(f::Union{Function, Number}, α, start_point, end_point::Real, h::Float64, ::RL_Direct)
+function fracint(f::FunctionAndNumber, α, start_point, end_point::Real, h::Float64, ::RL_Direct)
     #checks(f, α, start_point, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -283,7 +283,7 @@ function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Dir
     return result
 end
 
-function fracint(f::Union{Function, Number}, α::Float64, start_point, end_point::AbstractArray, ::RL_Direct_First_Diff_Known)::Vector
+function fracint(f::FunctionAndNumber, α::Float64, start_point, end_point::AbstractArray, ::RL_Direct_First_Diff_Known)::Vector
     ResultArray = Float64[]
 
     for (_, value) in enumerate(end_point)
@@ -294,7 +294,7 @@ end
 =#
 
 
-function fracint(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::RL_Piecewise)::Float64
+function fracint(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::RL_Piecewise)::Float64
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -326,7 +326,7 @@ function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArr
 end
 
 
-function fracint(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::RLInt_Approx)::Float64
+function fracint(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::RLInt_Approx)::Float64
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -350,7 +350,7 @@ end
 
 
 
-function fracint(f::Union{Function, Number}, α::Float64, end_point::Number, h::Float64, ::RL_LinearInterp)::Float64
+function fracint(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float64, ::RL_LinearInterp)::Float64
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
 
@@ -444,7 +444,7 @@ end
 #=
 RLInt_Trapezoidal Algorithm
 =#
-function fracint(f::Union{Function, Number}, α, point, h::Float64, ::RLInt_Trapezoidal)
+function fracint(f::FunctionAndNumber, α, point, h::Float64, ::RLInt_Trapezoidal)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 

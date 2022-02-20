@@ -26,7 +26,7 @@ struct Riesz_Symmetric <: Riesz end
 ################################################################
 
 
-function fracdiff(f, α, end_point, h, ::Riesz_Symmetric)
+function fracdiff(f::FunctionAndNumber, α, end_point, h, ::Riesz_Symmetric)
     N=floor(Int, end_point/h)
 
     mat = RieszMatrix(α, N+1, h)

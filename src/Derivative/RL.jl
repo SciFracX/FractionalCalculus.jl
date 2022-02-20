@@ -101,7 +101,7 @@ struct RL_D <: RLDiff end
 ################################################################
 
 
-function fracdiff(f::Union{Number, Function}, α, end_point, h::Float64, ::RLDiff_Approx)
+function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLDiff_Approx)
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -117,7 +117,7 @@ function fracdiff(f::Union{Number, Function}, α, end_point, h::Float64, ::RLDif
     return result
 end
 
-function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLDiff_Approx)::Vector
+function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::RLDiff_Approx)::Vector
     result = map(x->fracdiff(f, α, x, h, RLDiff_Approx()), end_point)
     return result
 end
@@ -125,7 +125,7 @@ end
 
 
 
-function fracdiff(f, α, end_point, h::Float64, ::RLDiff_Matrix)
+function fracdiff(f::Union{Function, Number}, α, end_point, h::Float64, ::RLDiff_Matrix)
     N = round(Int, end_point/h+1)
     @views tspan = collect(0:h:end_point)
     return B(N, α, h)*f.(tspan)
@@ -173,7 +173,7 @@ Page 57
 
 Linear Spline Interpolation
 =#
-function fracdiff(f::Union{Number, Function}, α, x, h::Float64, ::RL_Linear_Spline_Interp)
+function fracdiff(f::FunctionAndNumber, α, x, h::Float64, ::RL_Linear_Spline_Interp)
     typeof(f) <: Number ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
     x == 0 ? (return 0) : nothing
     N = round(Int, x/h)
@@ -210,12 +210,12 @@ function c̄ⱼₖ(j, k, α)
     end
 end
 
-function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RL_Linear_Spline_Interp)::Vector
+function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::RL_Linear_Spline_Interp)::Vector
     result = map(x->fracdiff(f, α, x, h, RL_Linear_Spline_Interp()), end_point)
     return result
 end
 
-function fracdiff(f::Union{Number, Function}, α, start_point, end_point, h::Float64, ::RL_G1)
+function fracdiff(f::FunctionAndNumber, α, start_point, end_point, h::Float64, ::RL_G1)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
 
@@ -229,7 +229,7 @@ function fracdiff(f::Union{Number, Function}, α, start_point, end_point, h::Flo
     return h^(-α)/gamma(-α)*result
 end
 
-function fracdiff(f::Union{Number, Function}, α, point, h::Float64, ::RL_D)
+function fracdiff(f::FunctionAndNumber, α, point, h::Float64, ::RL_D)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return f/sqrt(pi*point))) : nothing
     point == 0 ? (return 0) : nothing
 

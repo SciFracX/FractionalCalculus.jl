@@ -158,7 +158,7 @@ function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_poin
     return result
 end
 
-function fracdiff(f::Union{Number, Function}, α::Float64, start_point, end_point::AbstractArray, h::Float64, ::Caputo_Direct)::Vector
+function fracdiff(f::FunctionAndNumber, α::Float64, start_point, end_point::AbstractArray, h::Float64, ::Caputo_Direct)::Vector
     #=
     ResultArray = Float64[]
     for (_, value) in enumerate(end_point)
@@ -206,7 +206,7 @@ function fracdiff(f::Function, α::Float64, start_point, end_point::AbstractArra
 end
 =#
 
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::Caputo_Piecewise)
+function fracdiff(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::Caputo_Piecewise)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
     m = floor(Int, α)+1
@@ -236,7 +236,7 @@ function first_order(f, point, h::Float64)
 end
 
 
-function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::Caputo_Piecewise)::Vector
+function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::Caputo_Piecewise)::Vector
     result = map(x->fracdiff(f, α, x, h, Caputo_Piecewise()), end_point)
     return result
 end
@@ -245,7 +245,7 @@ end
 #=
 Caputo Diethelm algorithm
 =#
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point::Number, h::Float64, ::Caputo_Diethelm)
+function fracdiff(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float64, ::Caputo_Diethelm)
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     N = round(Int, end_point/h)
@@ -277,7 +277,7 @@ end
 #=
 Caputo sense high precision algorithm
 =#
-function fracdiff(y, α, t, p, ::Caputo_High_Precision)
+function fracdiff(y, α, t, p::Integer, ::Caputo_High_Precision)
     h = t[2]-t[1]
     t = t[:]
     n = length(t)
