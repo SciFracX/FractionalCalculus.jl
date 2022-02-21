@@ -14,7 +14,7 @@ export fracdiff, fracint
 export Caputo, GL, RLDiff, Hadamard
 
 # Caputo sense fractional derivative
-export Caputo_Direct, Caputo_Piecewise, Caputo_Diethelm, Caputo_High_Precision
+export Caputo_Direct, Caputo_Piecewise, Caputo_Diethelm, Caputo_High_Precision, Caputo_High_Order
 
 # Grünwald Letnikov sense fractional derivative
 export GL_Direct, GL_Multiplicative_Additive, GL_Lagrange_Three_Point_Interp, GL_Finite_Difference, GL_High_Precision

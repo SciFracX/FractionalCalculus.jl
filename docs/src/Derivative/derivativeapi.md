@@ -15,6 +15,7 @@ FractionalCalculus.Caputo_Direct
 FractionalCalculus.Caputo_Piecewise
 FractionalCalculus.Caputo_Diethelm
 FractionalCalculus.Caputo_High_Precision
+FractionalCalculus.Caputo_High_Order
 ```
 
 ## Grunwald Letnikov sense fractional derivative

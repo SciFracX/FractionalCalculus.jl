@@ -29,6 +29,9 @@ function fracdiff(f, α, point, h, ::FracDiffAlg)
 
 end
 
+function checkfracdiff(f, α, point, h)
+    point > 0 ? nothing : DomainError("Only positive points")
+end
 
 ## Macros for convenient computing.
 """

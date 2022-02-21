@@ -84,7 +84,8 @@ Current Algorithms
 |   |   ├── Caputo_Direct
 |   |   ├── Caputo_Piecewise
 |   |   ├── Caputo_Diethelm
-|   |   └── Caputo_High_Precision
+|   |   ├── Caputo_High_Precision
+|   |   └── Caputo_High_Order
 |   |
 │   ├── Grünwald Letnikov
 |   |   ├── GL_Direct

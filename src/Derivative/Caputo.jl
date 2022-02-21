@@ -143,6 +143,24 @@ The **p** here is the grade of precision.
 struct Caputo_High_Precision <: Caputo end
 
 
+
+"""
+High order approximation for Caputo fractional derivative
+
+### References
+
+```tex
+@article{Li2017HighOrderAT,
+  title={High-Order Approximation to Caputo Derivatives and Caputo-type Advection–Diffusion Equations: Revisited},
+  author={Changpin Li and Minhao Cai},
+  journal={Numerical Functional Analysis and Optimization},
+  year={2017},
+  volume={38},
+  pages={861 - 890}
+}
+```
+"""
+struct Caputo_High_Order <: Caputo end
 ################################################################
 ###                    Type definition done                  ###
 ################################################################
@@ -277,7 +295,7 @@ end
 #=
 Caputo sense high precision algorithm
 =#
-function fracdiff(y, α, t, p::Integer, ::Caputo_High_Precision)
+function fracdiff(y::FunctionAndNumber, α, t, p::Integer, ::Caputo_High_Precision)
     h = t[2]-t[1]
     t = t[:]
     n = length(t)
@@ -301,4 +319,88 @@ function fracdiff(y, α, t, p::Integer, ::Caputo_High_Precision)
     dv = fracdiff(v, α, t, p, GL_High_Precision())
     dy = dv[:] + du[:]
     return dy
+end
+
+function fracdiff(fy, α, T, n, p, ::Caputo_High_Order)
+    p = [n, p, α]
+    A=wj(p)
+    e=[n, T]
+    B=fj(e, fy)
+    C=ones(1, n)
+    hh=((n/T)^α)/(gamma(1-α))
+    D=C*A*B*hh
+    return D[1]
+end
+
+function wj(p)
+    n::Int64=p[1]
+    r=Int64(p[2])
+    a=p[3]
+    A=zeros(n, n+1)
+    for iw=1:r-2
+        for jw=1:iw+1
+            A[iw, jw]=w([iw+1-jw, iw+1, iw, n, a])
+        end
+    end
+    for iw=r-1:n
+        for jw=iw-r+2:iw+1
+            A[iw, jw]=w([iw+1-jw, r, iw, n, a])
+        end
+    end
+    return A
+end
+
+function w(q)
+    i=q[1]
+    r=Int64(q[2])
+    j=q[3]
+    n=q[4]
+    a=q[5]
+
+    ar=ones(1, r-1)
+    br=ones(1, r-1)
+    for lj=1:r-2
+        jj=r-lj-1
+        kj=r-2
+        tj=i-1
+        aj = collect(Int64, 0:tj)
+        bj = collect(Int64, tj+2:kj+1)
+        cj = [aj; bj]
+        dj = collect(Int64, -1:tj-1)
+        ej = collect(Int64, tj+1:kj)
+        fj = [dj; ej]
+        yj = binomial.(cj, jj)
+        pj = binomial.(fj, jj)
+        sj = 1
+        tj = 1
+        for m = 1:jj
+            sj = sj.*yj[:, m]
+            tj = tj.*pj[:, m]
+            ar[1, lj] = sum(sj)
+            br[1, lj] = sum(tj)
+        end
+    end
+    s=0
+    for l=1:r-1
+        k=1
+        for m1=1:l
+            k=k/(m1-a)
+        end
+        k=k*factorial(l)
+        k=k*(ar[1, l]*((n-j)^(l-a))-br[1, l]*((n-j+1)^(l-a)))
+        s=s+k
+    end
+    s=s*((-1)^(i+1))/(factorial(Int64(i))*factorial(Int64(r-1-i)))
+    return s
+end
+
+function fj(e, fy)
+    n = Int64(e[1])
+    T = e[2]
+
+    B=zeros(n+1, 1)
+    for i2 = 1:n+1
+        B[i2, 1] = fy(T*(i2-1)/n)
+    end
+    return B
 end
