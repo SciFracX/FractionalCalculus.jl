@@ -26,7 +26,7 @@ export RLDiff_Approx, RLDiff_Matrix, RL_Linear_Spline_Interp, RL_G1, RL_D
 export Hadamard_LRect, Hadamard_RRect, Hadamard_Trap
 
 # Riesz sense fractional derivative
-export Riesz_Symmetric
+export Riesz_Symmetric, Riesz_Ortigueira
 
 # Macros for convenient computing
 export @fracdiff, @semifracdiff

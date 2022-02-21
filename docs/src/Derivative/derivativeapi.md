@@ -48,6 +48,7 @@ FractionalCalculus.Hadamard_Trap
 
 ```@docs
 FractionalCalculus.Riesz_Symmetric
+FractionalCalculus.Riesz_Ortigueira
 ```
 
 ```@docs
