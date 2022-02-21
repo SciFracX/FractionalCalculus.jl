@@ -147,6 +147,9 @@ struct Caputo_High_Precision <: Caputo end
 """
 High order approximation for Caputo fractional derivative
 
+!!! info
+    By using ```Caputo_High_Order``` method, we can set ``0<\\alpha<2``
+
 ### References
 
 ```tex
@@ -321,14 +324,14 @@ function fracdiff(y::FunctionAndNumber, α, t, p::Integer, ::Caputo_High_Precisi
     return dy
 end
 
-function fracdiff(fy, α, T, n, p, ::Caputo_High_Order)
+function fracdiff(f::FunctionAndNumber, α, T, n, p::Integer, ::Caputo_High_Order)
     p = [n, p, α]
-    A=wj(p)
-    e=[n, T]
-    B=fj(e, fy)
-    C=ones(1, n)
-    hh=((n/T)^α)/(gamma(1-α))
-    D=C*A*B*hh
+    A = wj(p)
+    e = [n, T]
+    B = fj(e, f)
+    C = ones(1, n)
+    hh = ((n/T)^α)/(gamma(1-α))
+    D = C*A*B*hh
     return D[1]
 end
 
@@ -357,8 +360,8 @@ function w(q)
     n=q[4]
     a=q[5]
 
-    ar=ones(1, r-1)
-    br=ones(1, r-1)
+    ar=ones(r-1)
+    br=ones(r-1)
     for lj=1:r-2
         jj=r-lj-1
         kj=r-2
@@ -376,8 +379,8 @@ function w(q)
         for m = 1:jj
             sj = sj.*yj[:, m]
             tj = tj.*pj[:, m]
-            ar[1, lj] = sum(sj)
-            br[1, lj] = sum(tj)
+            ar[lj] = sum(sj)
+            br[lj] = sum(tj)
         end
     end
     s=0
@@ -387,7 +390,7 @@ function w(q)
             k=k/(m1-a)
         end
         k=k*factorial(l)
-        k=k*(ar[1, l]*((n-j)^(l-a))-br[1, l]*((n-j+1)^(l-a)))
+        k=k*(ar[l]*((n-j)^(l-a))-br[l]*((n-j+1)^(l-a)))
         s=s+k
     end
     s=s*((-1)^(i+1))/(factorial(Int64(i))*factorial(Int64(r-1-i)))
@@ -398,9 +401,9 @@ function fj(e, fy)
     n = Int64(e[1])
     T = e[2]
 
-    B=zeros(n+1, 1)
+    B=zeros(n+1)
     for i2 = 1:n+1
-        B[i2, 1] = fy(T*(i2-1)/n)
+        B[i2] = fy(T*(i2-1)/n)
     end
     return B
 end
