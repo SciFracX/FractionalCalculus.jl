@@ -20,7 +20,17 @@ struct Riesz_Symmetric <: Riesz end
 
 
 """
+# Riesz sense Ortigueira definition fractional derivative
+
+    fracdiff(f, α, end_point, h, Riesz_Ortigueira())
+
 Ortigueira's definition of the symmetric Riesz derivative via centred differences
+
+### Usage
+
+```julia-repl
+julia> fracdiff(x->x, 0.5, 1, 0.01, Riesz_Ortigueira())
+```
 """
 struct Riesz_Ortigueira <: Riesz end
 

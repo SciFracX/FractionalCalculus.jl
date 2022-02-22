@@ -106,7 +106,8 @@ Current Algorithms
 |   |    └── Hadamard_Trap
 |   |
 |   └── Riesz
-|        └── Riesz_Symmetric
+|        ├── Riesz_Symmetric
+|        └── Riesz_Ortigueira
 |
 └── FracIntAlg
     └── Riemann Liouville
