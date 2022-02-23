@@ -11,6 +11,8 @@ include("Hadamard.jl")
 include("Riesz.jl")
 include("RL.jl")
 
+include("SymbolicDiff.jl")
+
 """
     fracdiff(f, α, point, h, FracDiffAlg())
 
