@@ -3,7 +3,7 @@ module FractionalCalculus
 using QuadGK
 using SpecialFunctions: gamma
 using LinearAlgebra, InvertedIndices, SpecialMatrices
-using SymbolicUtils
+using SymbolicUtils, SymbolicUtils.Rewriters
 
 include("./Derivative/Derivative.jl")
 include("./Integral/Integral.jl")

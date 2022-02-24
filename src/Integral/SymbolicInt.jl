@@ -1,6 +1,3 @@
-using SymbolicUtils
-using SymbolicUtils.Rewriters
-
 CONST_POWERS_RULES = [
         # CONSTANTS AND POWERS
         @acrule sqrt(~x) => sqrt(pi)/2*~x

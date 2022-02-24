@@ -1,6 +1,3 @@
-using SymbolicUtils
-using SymbolicUtils.Rewriters
-
 incomplete_beta(z, a, b) = beta(a, b)*beta_inc(a, b, z)[1]
 
 CONST_POWERS_RULES = [
