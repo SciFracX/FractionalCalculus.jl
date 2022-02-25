@@ -152,6 +152,19 @@ Or arbitrary order derivative? A piece of cake!!😉
 
 -->
 
+## 🧙 Symbolic Fractional Differentiation and Integral
+
+FractionalCalculus.jl can do symbolic fractional differentiation and integral now!!
+
+```julia
+julia> using FractionalCalculus, SymbolicUtils
+julia> @syms x
+julia> semidiff(log(x))
+log(4x) / sqrt(πx)
+julia> semiint(x^4)
+0.45851597901024005(x^4.5)
+```
+
 ## 📢 Status
 
 Right now, FractionalCalculus.jl has only supports for little algorithms:
