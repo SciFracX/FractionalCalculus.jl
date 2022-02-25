@@ -14,6 +14,22 @@ SEMIINTRULES = [
         @acrule(1/(1-~x) => 2*asin(sqrt(~x))/sqrt(pi*(1-~x)))
         @acrule(1/(1+~x)^(3/2) => 2/(1+~x)*sqrt(~x/pi))
         @acrule(1/(1-~x)^(3/2) => 2/(1-~x)*sqrt(~x/pi))
+        @acrule(1/(1-~x)^(~p) => -incomplete_beta(~x, 1/2, ~p-1/2)/(sqrt(pi)*(1-~x)^(~p-1/2)))
+        @acrule(1/sqrt(~x*(1-~x)) => 2*ellipk(~x)/sqrt(pi))
+        @acrule(1/sqrt(~x*(1+~x)) => 2*ellipk(~x/(1+~x))/sqrt(pi*(1+~x)))
+        @acrule(sqrt(~x/(1-~x)) => 2/sqrt(pi)*(ellipk(~x)-ellipe(~x)))
+        @acrule(1/(sqrt(~x)*(1+~x)) => sqrt(pi/(1+~x)))
+        @acrule(1/(sqrt(~x)*(1-~x)) => sqrt(pi/(1-~x)))
+        @acrule(sqrt(~x)/~x => -sqrt(pi/(1+~x))+sqrt(pi))
+        @acrule(sqrt(~x)/(-~x) => sqrt(pi/(1-~x))-sqrt(pi))
+        @acrule(sqrt(~x)/(1-~x)^2 => sqrt(pi)*~x/(2*(1-~x)^(3/2)))
+        @acrule(sqrt((1-~x)/~x) => 2/sqrt(pi)*ellipe(~x))
+        @acrule(sqrt((1+~x)/~x) => 2*sqrt((1+~x)/pi)*ellipe(~x/(1+~x)))
+        #Gauss hypergeometric functions
+
+        # EXPONENTIAL AND RELATED FUNCTIONS
+        @acrule(exp(~x) => exp(~x)*erf(sqrt(~x)))
+        @acrule(exp(-~x) => 2/sqrt(pi)*dawson(sqrt(~x)))
 ]
 #=
 EXP_RELATED_FUN_RULES = [
