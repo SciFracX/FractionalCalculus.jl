@@ -66,4 +66,18 @@ SEMIDIFFRULES = [
 ]
 
 RULES = Chain(SEMIDIFFRULES)
+"""
+# Symbolic fractional differentiation
+
+    semidiff(fun)
+
+```semidiff``` uses SymbolicUtils.jl to compute symbolic fractional differentiation.
+
+### Example
+
+```julia-repl
+julia> semidiff(log(x))
+log(4x) / sqrt(πx)
+```
+"""
 semidiff(x) = RULES(x)

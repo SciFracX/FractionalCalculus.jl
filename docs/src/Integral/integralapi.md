@@ -28,3 +28,8 @@ FractionalCalculus.@fracint
 FractionalCalculus.@semifracint
 ```
 
+## Symbolic fractional integral
+
+```@docs
+FractionalCalculus.semiint
+```

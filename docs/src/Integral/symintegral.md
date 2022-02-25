@@ -1,4 +1,4 @@
-# Symbolic Fractioal Integral
+# Symbolic Fractional Integral
 
 Similiar with symbolic fractional differentiation in FractionalCalculus.jl, we first define fractional integral rules to implement symbolic fractional integral computing.
 

@@ -188,10 +188,6 @@ Fractional Integral:
 - [ ] Atangana-Baleanu fractional integral
 - [ ] ......
 
-## 🧙 About Symbolic differentiation and integration
-
-I am trying to find a way to support symbolic differentiation and integration features🤔.
-
 ## 📚 Reference
 
 FractionalCalculus.jl is built upon the hard work of many scientific researchers, I sincerely appreciate what they have done to help the development of science and technology.

@@ -56,3 +56,8 @@ FractionalCalculus.@fracdiff
 FractionalCalculus.@semifracdiff
 ```
 
+## Symbolic fractional differentiation
+
+```@docs
+FractionalCalculus.semidiff
+```

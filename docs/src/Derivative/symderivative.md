@@ -1,4 +1,4 @@
-# Symbolic Fractioal Differentiation
+# Symbolic Fractional Differentiation
 
 With the help of [SymbolicUtils.jl](https://github.com/JuliaSymbolics/SymbolicUtils.jl), FractionalCalculus.jl can compute symbolic fractional differentiation and integral now!
 
