@@ -11,11 +11,13 @@ makedocs(
         "index.md",
         "Fractional Derivative" => [
             "Derivative/derivative.md",
+            "Derivative/symderivative.md",
             "Derivative/derivativeapi.md",
             "Derivative/short_memory_effect.md"
         ],
         "Fractional Integral" => [
             "Integral/integral.md",
+            "Integral/symintegral.md",
             "Integral/integralapi.md"
         ],
         "Arbitrary Order Derivative" => "Derivative/arbitrary_order_derivative.md",
