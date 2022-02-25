@@ -30,6 +30,13 @@ SEMIINTRULES = [
         # EXPONENTIAL AND RELATED FUNCTIONS
         @acrule(exp(~x) => exp(~x)*erf(sqrt(~x)))
         @acrule(exp(-~x) => 2/sqrt(pi)*dawson(sqrt(~x)))
+        @acrule(exp(~x)*erf(sqrt(~x)) => exp(~x)-1)
+        @acrule(dawson(~x) => 1/2sqrt(pi)*(1-exp(-~x)))
+        @acrule(exp(~x)*erfc(sqrt(~x)) => 1-exp(~x)*erfc(sqrt(~x)))
+        @acrule(exp(~x)*erfc(-sqrt(~x) => exp(~x)*erfc(-~sqrt(~x))-1))
+        @acrule(erf(sqrt(~x)) => ~x*exp(-1/2*~x)*(besseli(1, 1/2*~x)+besseli(0, 1/2*~x)))
+        @acrule(exp(~x)/sqrt(~x) => sqrt(pi)*exp(1/2*~x)*besseli(0, 1/2*~x))
+        @acrule(exp(-~x)/sqrt(~x) => sqrt(pi)*exp(-1/2*~x)*besseli(0, 1/2*~x))
 ]
 #=
 EXP_RELATED_FUN_RULES = [
