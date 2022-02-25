@@ -11,6 +11,10 @@ include("./Integral/Integral.jl")
 export FracDiffAlg, FracIntAlg
 export fracdiff, fracint
 
+# Export symbolics computing APIs
+export semidiff, semiint
+export SEMIDIFFRULES, SEMIINTRULES
+
 # Export fractional derivative releating API
 export Caputo, GL, RLDiff, Hadamard
 

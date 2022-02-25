@@ -1,12 +1,10 @@
 
-CONST_POWERS_RULES = [
+SEMIINTRULES = [
         # CONSTANTS AND POWERS
         @acrule(sqrt(~x) => sqrt(pi)/2*~x)
-        @acrule((~x) => 4*~x^(3/2)/(3*sqrt(pi)))
+        #@acrule((~x) => 4*~x^(3/2)/(3*sqrt(pi)))
         @acrule((~x)^(~α) => gamma(~α+1)/gamma(~α+3/2)*(~x)^(~α+1/2))
-]
 
-BINOMIALS = [
         # BINOMIALS
         @acrule(sqrt(1+~x) => sqrt(~x/pi) + ((1+~x)*atan(sqrt(~x)))/sqrt(pi))
         @acrule(sqrt(1-~x) => sqrt(~x/pi) + ((1-~x)*atanh(sqrt(~x)))/sqrt(pi))
@@ -30,3 +28,6 @@ MISCELLANEOUS_FUN_RULES = [
 
 ]
 =#
+
+RULES = Chain(SEMIINTRULES)
+semiint(x) = RULES(x)

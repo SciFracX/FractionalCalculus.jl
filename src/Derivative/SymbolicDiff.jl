@@ -1,13 +1,11 @@
 incomplete_beta(z, a, b) = beta(a, b)*beta_inc(a, b, z)[1]
 
-CONST_POWERS_RULES = [
+SEMIDIFFRULES = [
         # CONSTANTS AND POWERS
         @acrule(sqrt(~x) => sqrt(pi)/2)
-        @acrule((~x) => 2*sqrt(~x/pi))
+        #@acrule((~x) => 2*sqrt(~x/pi))
         @acrule((~x)^(~α) => gamma(~α+1)/gamma(~α+1/2)*(~x)^(~α-1/2))
-]
-#=
-BINOMIALS = [
+
         # BINOMIALS
         @acrule(sqrt(1+~x) => 1/sqrt(pi*~x) + atan(sqrt(~x))/sqrt(pi))
         @acrule(sqrt(1-~x) => 1/sqrt(pi*~x) - atanh(sqrt(~x))/sqrt(pi))
@@ -26,15 +24,12 @@ BINOMIALS = [
         @acrule(1/(sqrt(~x)*(1-~x)) => sqrt(pi)/(2*(1-~x)^(3/2)))
         @acrule(sqrt(~x)/~x => sqrt(pi)/(2*(1+~x)^(3/2)))
         @acrule(sqrt(~x)/(-~x) => sqrt(pi)/(2*(1-~x)^(3/2)))
-        @acrule(~x^~p/(1-~x)^(~p+3/2) => ((~p+1/2+1/2*~x)*gamma(~p+1)*~x^(~p-1/2))/(gamma(~p+3/2)*(1-~x)^(2+~p)))
-        #@acrule(sqrt((1-~x)/~x) => (ellipe(~x)-ellipk(~k))/(~x*sqrt(pi)))
+        #@acrule((~x)^(~p)/(1-(~x))^((~p)+3/2) => (((~p)+1/2+1/2*(~x))*gamma(~p+1)*(~x)^((~p)-1/2))/(gamma((~p+3/2)*(1-(~x))^(2+(~p))))
+        @acrule(sqrt((1-~x)/~x) => (ellipe(~x)-ellipk(~k))/(~x*sqrt(pi)))
         @acrule(sqrt((1+~x)/~x) => ((1+~x)*ellipe(~x/(1+~x))-ellipk(~x/(1+~x)))/(~x*sqrt(pi*(1+~x))))
         #Gauss hypergeometric functions @acrule (~x)^(~p)/(1+~x)^~r => gamma(~p+1)/gamma(~p+1/2)*(~x)^(~p-1/2)*
 
 
-]
-
-EXP_RELATED_FUN_RULES = [
         # EXPONENTIAL AND RELATED FUNCTIONS
         @acrule(exp(~x) => 1/sqrt(pi*~x) + exp(~x)*erf(sqrt(~x)))
         @acrule(exp(-~x) => 1/sqrt(pi*~x) - 2/sqrt(pi)*dawson(sqrt(-~x)))
@@ -54,23 +49,21 @@ EXP_RELATED_FUN_RULES = [
         @acrule(atan(sqrt(~x)) => 1/2*sqrt(pi/(1+~x)))
         @acrule(asinh(sqrt(~x))/sqrt(1+~x) => sqrt(pi)/(2*(1+~x)))
         @acrule(atanh(sqrt(~x)) => 1/2*sqrt(pi/(1-~x)))
-]
 
-BESSEL_STRUVE_FUN_RULES = [
         @acrule(besselj(0, sqrt(~x)) => cos(sqrt(~x))/sqrt(pi*(~x)))
         @acrule(besselj(1, sqrt(~x))/sqrt(~x) => (cos(sqrt(~x))+sqrt(~x)*sin(sqrt(~x))-1)/(sqrt(~x)*(~x)^(3/2)))
         # Struve function @acrule besselj(~v, sqrt(~x))/(~x)^(~v/2) => 1/(2^(~v)*gamma(~v+1)*sqrt(pi*~x))-
         @acrule(sqrt(~x)*besselj(1, sqrt(~x)) => sin(sqrt(~x))/sqrt(pi))
-        @acrule((~x)^(~v/2)*besselj(sqrt(~x)) => ~x^(floor(~v/2)-1/4)*besselj(~v-1/2, sqrt(~x))/sqrt(2))
+        @acrule((~x)^(~v/2)*besselj(sqrt(~x)) => (~x)^((~v)/2-1/4)*besselj(~v-1/2, sqrt(~x))/sqrt(2))
         @acrule(besseli(0, sqrt(~x)) => cosh(sqrt(~x))/sqrt(pi*~x))
         @acrule(besseli(1, sqrt(~x))/sqrt(~x) => (cosh(sqrt(~x))-sqrt(~x)*sinh(sqrt(~x))-1)/(sqrt(pi)*(~x)^(3/2)))
         # Legendre function @acrule besseli(~v, sqrt(~x))/~x^(~v/2) => 1/(2^~v*gamma(~v+1)*sqrt(pi*~x))+
-]
-=#
-MISCELLANEOUS_FUN_RULES = [
-    @acrule(log(~x) => log(4*~x)/sqrt(pi*~x))
-    @acrule(sqrt(~x)*log(~x) => sqrt(pi)/2*(log(~x/4)+2))
-    @acrule(log(~x)/sqrt(~x) => sqrt(pi)/~x)
+
+        @acrule log(~x) => log(4*~x)/sqrt(pi*~x) 
+        @acrule(sqrt(~x)*log(~x) => sqrt(pi)/2*(log(~x/4)+2))
+        @acrule(log(~x)/sqrt(~x) => sqrt(pi)/~x)
+
 ]
 
-#RULES = Chain(SEMIDIFFRULES)
+RULES = Chain(SEMIDIFFRULES)
+semidiff(x) = RULES(x)
