@@ -26,17 +26,21 @@ SEMIINTRULES = [
         @acrule(sqrt((1-~x)/~x) => 2/sqrt(pi)*ellipe(~x))
         @acrule(sqrt((1+~x)/~x) => 2*sqrt((1+~x)/pi)*ellipe(~x/(1+~x)))
         #Gauss hypergeometric functions
-
+#=
         # EXPONENTIAL AND RELATED FUNCTIONS
         @acrule(exp(~x) => exp(~x)*erf(sqrt(~x)))
         @acrule(exp(-~x) => 2/sqrt(pi)*dawson(sqrt(~x)))
         @acrule(exp(~x)*erf(sqrt(~x)) => exp(~x)-1)
-        @acrule(dawson(~x) => 1/2sqrt(pi)*(1-exp(-~x)))
+        @acrule(dawson(~x) => 1/2*sqrt(pi)*(1-exp(-~x)))
         @acrule(exp(~x)*erfc(sqrt(~x)) => 1-exp(~x)*erfc(sqrt(~x)))
-        @acrule(exp(~x)*erfc(-sqrt(~x) => exp(~x)*erfc(-~sqrt(~x))-1))
+        @acrule(exp(~x)*erfc(-sqrt(~x)) => exp(~x)*erfc(~sqrt(~x))-1)
         @acrule(erf(sqrt(~x)) => ~x*exp(-1/2*~x)*(besseli(1, 1/2*~x)+besseli(0, 1/2*~x)))
         @acrule(exp(~x)/sqrt(~x) => sqrt(pi)*exp(1/2*~x)*besseli(0, 1/2*~x))
         @acrule(exp(-~x)/sqrt(~x) => sqrt(pi)*exp(-1/2*~x)*besseli(0, 1/2*~x))
+        @acrule(cosh(sqrt(~x)) => sqrt(pi)*besseli(0, sqrt(~x)))
+        # Struve function and Modified Struve function @acrule (1-cos(sqrt(~x)))/~x => sqrt(pi)/2*
+=#        
+        @acrule(log(~x) => 2*sqrt(~x/pi)*(log(4*~x-2)))
 ]
 #=
 EXP_RELATED_FUN_RULES = [
@@ -52,7 +56,7 @@ MISCELLANEOUS_FUN_RULES = [
 ]
 =#
 
-RULES = Chain(SEMIINTRULES)
+INTRULES = Chain(SEMIINTRULES)
 
 """
 # Symbolic fractional integral
@@ -68,4 +72,4 @@ julia> semiint(x^4)
 0.45851597901024005(x^4.5)
 ```
 """
-semiint(x) = RULES(x)
+semiint(x) = INTRULES(x)

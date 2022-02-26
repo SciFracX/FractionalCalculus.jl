@@ -61,13 +61,14 @@ SEMIDIFFRULES = [
         @acrule(besseli(1, sqrt(~x))/sqrt(~x) => (cosh(sqrt(~x))-sqrt(~x)*sinh(sqrt(~x))-1)/(sqrt(pi)*(~x)^(3/2)))
         # Legendre function @acrule besseli(~v, sqrt(~x))/~x^(~v/2) => 1/(2^~v*gamma(~v+1)*sqrt(pi*~x))+
 
-        @acrule log(~x) => log(4*~x)/sqrt(pi*~x) 
+        @acrule(log(~x) => log(4*~x)/sqrt(pi*~x))
         @acrule(sqrt(~x)*log(~x) => sqrt(pi)/2*(log(~x/4)+2))
         @acrule(log(~x)/sqrt(~x) => sqrt(pi)/~x)
 
 ]
 
-RULES = Chain(SEMIDIFFRULES)
+DIFFRULES = Chain(SEMIDIFFRULES)
+
 """
 # Symbolic fractional differentiation
 
@@ -82,4 +83,4 @@ julia> semidiff(log(x))
 log(4x) / sqrt(πx)
 ```
 """
-semidiff(x) = RULES(x)
+semidiff(x) = DIFFRULES(x)
