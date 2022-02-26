@@ -15,5 +15,5 @@ end
 @testset "Test DIFF CONSTANT AND POWERS" begin
     @syms x
     @eqtest semidiff(x^2) == 1.5045055561273502*(x^1.5)
-    @eqtest semidiff(log(x)) == log(4x) / sqrt(π*x)
+    @eqtest semidiff(log(x)) == log(4*x) / sqrt(π*x)
 end

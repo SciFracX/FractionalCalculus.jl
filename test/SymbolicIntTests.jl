@@ -14,6 +14,6 @@ end
 
 @testset "Test INT CONSTANT AND POWERS" begin
     @syms x
-    @eqtest semiint(x^3) == 0.51583047638652(x^3.5)
-    @eqtest semiint(log(x)) == 2log(4x - 2)*sqrt(0.3183098861837907x)
+    @eqtest semiint(x^3) == 0.51583047638652*(x^3.5)
+    @eqtest semiint(log(x)) == 2log(4*x - 2)*sqrt(0.3183098861837907*x)
 end
