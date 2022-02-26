@@ -152,9 +152,9 @@ Or arbitrary order derivative? A piece of cake!!😉
 
 -->
 
-## 🧙 Symbolic Fractional Differentiation and Integral
+## 🧙 Symbolic Fractional Differentiation and Integration
 
-FractionalCalculus.jl can do symbolic fractional differentiation and integral now!!
+FractionalCalculus.jl can do symbolic fractional differentiation and integration now!!
 
 ```julia
 julia> using FractionalCalculus, SymbolicUtils

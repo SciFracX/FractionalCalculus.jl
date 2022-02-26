@@ -1,6 +1,6 @@
-# Symbolic Fractional Integral
+# Symbolic Fractional Integration
 
-Similiar with symbolic fractional differentiation in FractionalCalculus.jl, we first define fractional integral rules to implement symbolic fractional integral computing.
+Similiar with symbolic fractional differentiation in FractionalCalculus.jl, we first define fractional integration rules to implement symbolic fractional integration computing.
 
 All we have to do is to call the ```semiint``` function:
 
