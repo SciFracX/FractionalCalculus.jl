@@ -52,6 +52,7 @@ SEMIDIFFRULES = [
         @acrule(asinh(sqrt(~x))/sqrt(1+~x) => sqrt(pi)/(2*(1+~x)))
         @acrule(atanh(sqrt(~x)) => 1/2*sqrt(pi/(1-~x)))
 
+        # BESSEL AND STRUVE FUNCTIONS
         @acrule(besselj(0, sqrt(~x)) => cos(sqrt(~x))/sqrt(pi*(~x)))
         @acrule(besselj(1, sqrt(~x))/sqrt(~x) => (cos(sqrt(~x))+sqrt(~x)*sin(sqrt(~x))-1)/(sqrt(~x)*(~x)^(3/2)))
         # Struve function @acrule besselj(~v, sqrt(~x))/(~x)^(~v/2) => 1/(2^(~v)*gamma(~v+1)*sqrt(pi*~x))-
@@ -60,7 +61,10 @@ SEMIDIFFRULES = [
         @acrule(besseli(0, sqrt(~x)) => cosh(sqrt(~x))/sqrt(pi*~x))
         @acrule(besseli(1, sqrt(~x))/sqrt(~x) => (cosh(sqrt(~x))-sqrt(~x)*sinh(sqrt(~x))-1)/(sqrt(pi)*(~x)^(3/2)))
         # Legendre function @acrule besseli(~v, sqrt(~x))/~x^(~v/2) => 1/(2^~v*gamma(~v+1)*sqrt(pi*~x))+
-
+        @acrule(sqrt(~x)*besseli(1, sqrt(~x)) => sinh(sqrt(~x))/sqrt(pi))
+        @acrule(exp(-~x)*besseli(0, ~x) => exp(-2*~x)/sqrt(pi*~x))
+        
+        # MISCELLANEOUS FUNCTIONS
         @acrule(log(~x) => log(4*~x)/sqrt(pi*~x))
         @acrule(sqrt(~x)*log(~x) => sqrt(pi)/2*(log(~x/4)+2))
         @acrule(log(~x)/sqrt(~x) => sqrt(pi)/~x)
