@@ -6,6 +6,7 @@ First we need to put FractionalCalculus.jl and SymbolicUtils.jl to our workspace
 
 ```julia
 julia> using FractionalCalculus, SymbolicUtils
+julia> @syms x
 ```
 
 Then, use ```semidiff``` function to compute symbolic fractional differentiation:
