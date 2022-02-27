@@ -20,7 +20,7 @@ makedocs(
             "Integral/symintegral.md",
             "Integral/integralapi.md"
         ],
-        "Arbitrary Order Derivative" => "Derivative/arbitrary_order_derivative.md",
+        #"Arbitrary Order Derivative" => "Derivative/arbitrary_order_derivative.md",
         "Example" => [
             "Example/derivative.md",
             "Example/integral.md"

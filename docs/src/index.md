@@ -37,12 +37,12 @@ pkg> add FractionalCalculus#master
 
 * High performance. FractionalCalculus.jl is highly optimized for high performance. It is written in Julia and deployed many optimization techniques to improve the performance.
 
+* Symbolic fractional differentiation and integration.
+
 !!! tip "Fractional Differential Equations"
 	Want to solve fractional differential equations with performant and effcient algorithms? Please see [FractionalDiffEq.jl](https://github.com/SciFracX/FractionalDiffEq.jl)
 
 ## Plans
-
-- Symbolic differentiation and integration
 
 - Add more visualization of how the fraction derivative and integral are changing based on Makie or Javis or Manim
 

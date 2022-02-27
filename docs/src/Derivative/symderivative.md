@@ -2,6 +2,14 @@
 
 With the help of [SymbolicUtils.jl](https://github.com/JuliaSymbolics/SymbolicUtils.jl), FractionalCalculus.jl can compute symbolic fractional differentiation and integral now!
 
+First we need to put FractionalCalculus.jl and SymbolicUtils.jl to our workspace:
+
+```julia
+julia> using FractionalCalculus, SymbolicUtils
+```
+
+Then, use ```semidiff``` function to compute symbolic fractional differentiation:
+
 ```julia-repl
 julia> semidiff(log(x))
 log(4x) / sqrt(πx)
