@@ -45,12 +45,6 @@ If you have already install Julia, you can install FractionalCalculus.jl in REPL
 pkg> add FractionalCalculus
 ```
 
-Or if you want to experience the latest version of FractionalCalculus.jl:
-
-```julia
-pkg> add FractionalCalculus#master
-```
-
 ## 🦸 Quick start
 
 ### Derivative
@@ -122,6 +116,8 @@ Current Algorithms
         └── RLInt_Cubic_Spline_Interp
 ```
 
+For detailed usage, please refer to [our manual](https://scifracx.org/FractionalCalculus.jl/dev/Derivative/derivativeapi/).
+
 ## 🖼️ Example
 
 Let's see examples here:
@@ -154,7 +150,7 @@ Or arbitrary order derivative? A piece of cake!!😉
 
 ## 🧙 Symbolic Fractional Differentiation and Integration
 
-FractionalCalculus.jl can do symbolic fractional differentiation and integration now!!
+Thanks to SymbolicUtils.jl, FractionalCalculus.jl can do symbolic fractional differentiation and integration now!!
 
 ```julia
 julia> using FractionalCalculus, SymbolicUtils
@@ -179,7 +175,7 @@ Fractional Derivative:
 - [ ] Caputo-Fabrizio fractional derivative
 - [ ] Atangana-Baleanu fractional derivative
 - [ ] Marchaud fractional derivative
-- [ ] Weyl  fractional derivative
+- [ ] Weyl fractional derivative
 - [ ] ......
 
 Fractional Integral:
