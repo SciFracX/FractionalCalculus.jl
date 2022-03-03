@@ -8,10 +8,6 @@ Hello there👋!
 
 FractionalCalculus.jl is a Julia package aiming at providing support for computing fractional derivative and fractional integral.
 
-```@contents
-Pages = ["index.md"]
-```
-
 !!! tip "Star Us"
 	If you think **FractionalCalculus.jl** is useful, please [star us on GitHub](httpd://github.com/SciFracX/FractionalCalculus.jl), it means a lot to us!
 
