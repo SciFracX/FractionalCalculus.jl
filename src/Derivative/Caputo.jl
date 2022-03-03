@@ -145,12 +145,17 @@ struct Caputo_High_Precision <: Caputo end
 
 
 """
-High order approximation for Caputo fractional derivative
+# Caputo sense fractional derivative high order approximation.
 
 !!! info
     By using ```Caputo_High_Order``` method, we can set ``0<\\alpha<2``
 
-### References
+### Example
+
+```julia-repl
+julia> fracdiff(x->x, 0.5, 1, 0.01, 2, Caputo_High_Order())
+1.1283791670955123
+```
 
 ```tex
 @article{Li2017HighOrderAT,
@@ -324,21 +329,22 @@ function fracdiff(y::FunctionAndNumber, α, t, p::Integer, ::Caputo_High_Precisi
     return dy
 end
 
-function fracdiff(f::FunctionAndNumber, α, T, n, p::Integer, ::Caputo_High_Order)
-    p = [n, p, α]
-    A = wj(p)
+function fracdiff(f::FunctionAndNumber, α, T, h, p::Integer, ::Caputo_High_Order)
+    n=round(Int, T/h)
+    ar = [n, p, α]
+    A = wj(ar)
     e = [n, T]
     B = fj(e, f)
     C = ones(1, n)
-    hh = ((n/T)^α)/(gamma(1-α))
+    hh = h^(-α)/(gamma(1-α))
     D = C*A*B*hh
     return D[1]
 end
 
 function wj(p)
-    n::Int64=p[1]
-    r=Int64(p[2])
-    a=p[3]
+    n::Int64 = p[1]
+    r::Int64 = p[2]
+    a = p[3]
     A=zeros(n, n+1)
     for iw=1:r-2
         for jw=1:iw+1
@@ -354,8 +360,8 @@ function wj(p)
 end
 
 function w(q)
-    i=q[1]
-    r=Int64(q[2])
+    i::Int64 = q[1]
+    r::Int64 = q[2]
     j=q[3]
     n=q[4]
     a=q[5]

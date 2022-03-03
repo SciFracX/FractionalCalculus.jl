@@ -36,7 +36,7 @@ end
 end
 
 @testset "Test Caputo High Order Fractional Derivative" begin
-    @test isapprox(fracdiff(x->x^8, 0.5, 1, 20, 3, Caputo_High_Order()), 2.8542562386883445; atol=1e-4)
+    @test isapprox(fracdiff(x->x^8, 0.5, 1, 0.05, 3, Caputo_High_Order()), 2.8542562386883445; atol=1e-4)
 end
 
 @testset "Test Grunwald-Letnikov Fractional Derivative" begin
