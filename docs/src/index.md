@@ -19,12 +19,6 @@ To install FractionalCalculus, please open Julia REPL and press`]` key to use pa
 pkg> add FractionalCalculus
 ```
 
-Or if you want to experience the latest version of FractionalCalculus.jl:
-
-```julia-repl
-pkg> add FractionalCalculus#master
-```
-
 ## Features
 
 * Feature-Rich. FractionalCalculus now has algorithms for **Caputo fractional derivative**, **Grunwald-Letnikov fractional derivative**, **Riesz fractional derivative**, **Hadamard fractional derivative** and **Riemann-Liouville fractional integral** support, more algorithms are planned to support to enrich the package ecosystem.
