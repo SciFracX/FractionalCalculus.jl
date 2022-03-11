@@ -190,7 +190,7 @@ function z̄ₘₖ(m, k, α)
     end
 end
 
-function c̄ⱼₖ(j, k, α)
+function c̄ⱼₖ(j, k::Int64, α)
     if k==0
         return (j-1)^(3-α)-j^(2-α)*(j-3+α)
     elseif 1 ≤ k ≤ j-1

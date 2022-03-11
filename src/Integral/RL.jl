@@ -261,39 +261,6 @@ function fracint(f::FunctionAndNumber, α, start_point, end_point::Real, h::Floa
     return result
 end
 
-
-#=
-These might be redundant, leave it here for now, maybe useful one day ¯\_(ツ)_/¯
-function fracint(f::Function, fd::Function, α, start_point, end_point, ::RL_Direct_First_Diff_Known)
-    #checks(f, α, start_point, end_point)
-    
-    #The fractional integral of number is relating with the end_point.
-    if typeof(f) <: Number
-        if f == 0
-            return 0
-        else
-            return 2*f*sqrt(end_point/pi)
-        end
-    end
-    
-    temp1 = f(start_point) .* (end_point-start_point) .^α
-    g(τ) = fd(τ) .* (end_point-τ) .^α
-    temp2 = quadgk(g, start_point, end_point)
-    result = (temp1 .+ temp2) ./ gamma(α+1)
-    return result
-end
-
-function fracint(f::FunctionAndNumber, α::Float64, start_point, end_point::AbstractArray, ::RL_Direct_First_Diff_Known)::Vector
-    ResultArray = Float64[]
-
-    for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracint(f, α, start_point, value, RL_Direct_First_Diff_Known())[1])
-    end
-    return ResultArray
-end
-=#
-
-
 function fracint(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::RL_Piecewise)::Float64
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing

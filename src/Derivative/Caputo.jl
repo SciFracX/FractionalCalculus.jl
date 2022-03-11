@@ -196,42 +196,6 @@ function fracdiff(f::FunctionAndNumber, α::Float64, start_point, end_point::Abs
     return result
 end
 
-#=
-These might be redundant, leave it here for now, maybe useful one day ¯\_(ツ)_/¯
-function fracdiff(fd::Function, α, start_point, end_point, ::Caputo_Direct_First_Diff_Known)
-
-    g(τ) = (end_point-τ) .^ (-α) * fd(τ)
-    result = quadgk(g, start_point, end_point) ./gamma(1-α)    
-    return result
-end
-
-function fracdiff(f::Function, α, start_point, end_point::AbstractArray, step_size, ::Caputo_Direct_First_Diff_Known)::Vector
-    ResultArray = Float64[]
-    for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracdiff(f, α, start_point, value, step_size, Caputo_Direct_First_Diff_Known()))
-    end
-    return ResultArray
-end
-
-
-function fracdiff(fd1::Function, fd2, α, start_point, end_point, ::Caputo_Direct_First_Second_Diff_Known)
-
-    temp1 = fd1(start_point) .* (end_point-start_point) .^ (1-α) ./ gamma(2-α)
-    g(τ) = fd2(τ) .* ((end_point-τ) .^ (1-α))
-    temp2 = quadgk(g, start_point, end_point) ./ gamma(2-α)
-    result = temp1 .+ temp2
-    return result
-end
-
-function fracdiff(f::Function, α::Float64, start_point, end_point::AbstractArray, h, ::Caputo_Direct_First_Second_Diff_Known)::Vector
-    ResultArray = Float64[]
-    for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracdiff(f, α, start_point, value, h, Caputo_Direct_First_Second_Diff_Known()))
-    end
-    return ResultArray
-end
-=#
-
 function fracdiff(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::Caputo_Piecewise)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -275,7 +239,6 @@ function fracdiff(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     N = round(Int, end_point/h)
-
     result = zero(Float64)
 
     @fastmath @inbounds @simd for i ∈ 0:N
@@ -330,48 +293,37 @@ function fracdiff(y::FunctionAndNumber, α, t, p::Integer, ::Caputo_High_Precisi
 end
 
 function fracdiff(f::FunctionAndNumber, α, T, h, p::Integer, ::Caputo_High_Order)
-    n=round(Int, T/h)
-    ar = [n, p, α]
-    A = wj(ar)
-    e = [n, T]
-    B = fj(e, f)
+    n::Int64 = round(Int, T/h)
+    A = wj(n, p, α)
+    B = fj(n, T, f)
     C = ones(1, n)
     hh = h^(-α)/(gamma(1-α))
     D = C*A*B*hh
     return D[1]
 end
 
-function wj(p)
-    n::Int64 = p[1]
-    r::Int64 = p[2]
-    a = p[3]
+function wj(n::Int64, r::Int64, α)
     A=zeros(n, n+1)
     for iw=1:r-2
         for jw=1:iw+1
-            A[iw, jw]=w([iw+1-jw, iw+1, iw, n, a])
+            A[iw, jw]=w(iw+1-jw, iw+1, iw, n, α)
         end
     end
     for iw=r-1:n
         for jw=iw-r+2:iw+1
-            A[iw, jw]=w([iw+1-jw, r, iw, n, a])
+            A[iw, jw]=w(iw+1-jw, r, iw, n, α)
         end
     end
     return A
 end
 
-function w(q)
-    i::Int64 = q[1]
-    r::Int64 = q[2]
-    j=q[3]
-    n=q[4]
-    a=q[5]
-
-    ar=ones(r-1)
-    br=ones(r-1)
-    for lj=1:r-2
-        jj=r-lj-1
-        kj=r-2
-        tj=i-1
+function w(i::Int64, r::Int64, j, n, a)
+    ar = ones(r-1)
+    br = ones(r-1)
+    for lj = 1:r-2
+        jj = r-lj-1
+        kj = r-2
+        tj = i-1
         aj = collect(Int64, 0:tj)
         bj = collect(Int64, tj+2:kj+1)
         cj = [aj; bj]
@@ -399,15 +351,12 @@ function w(q)
         k=k*(ar[l]*((n-j)^(l-a))-br[l]*((n-j+1)^(l-a)))
         s=s+k
     end
-    s=s*((-1)^(i+1))/(factorial(Int64(i))*factorial(Int64(r-1-i)))
+    s=s*((-1)^(i+1))/(factorial(i)*factorial(r-1-i))
     return s
 end
 
-function fj(e, fy)
-    n = Int64(e[1])
-    T = e[2]
-
-    B=zeros(n+1)
+function fj(n::Int64, T, fy)
+    B = zeros(n+1)
     for i2 = 1:n+1
         B[i2] = fy(T*(i2-1)/n)
     end

@@ -56,7 +56,7 @@ end
 #FIXME: Values are changing when h become smaller?
 function fracdiff(f, α, point, h, ::Riesz_Ortigueira)
     N = round(Int, point/h)
-    t=collect(0:h:point)
+    t = collect(0:h:point)
     return ranort(α, N+1, h)*f.(t)
 end
 
@@ -64,7 +64,6 @@ function ranort(alpha, N)
     k=collect(0:N-1)
     rc = ((-1)*ones(size(k))).^k.*gamma.(alpha+1).*(gamma.(alpha*0.5 .-k.+1).*gamma.(alpha*0.5 .+ k.+1)).^(-1)
     rc = rc*(cos(alpha*π*0.5))
-
     R = zeros(N, N)
 
     for m=1:N
@@ -78,7 +77,7 @@ function ranort(alpha, N)
     end
     return R
 end
-# Multiple dispatch for ranort
+# Dispatch for ranort
 function ranort(alpha, N, h)
     R = ranort(alpha, N)
     R = R*h^(-alpha)
