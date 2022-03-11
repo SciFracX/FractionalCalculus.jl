@@ -137,16 +137,6 @@ function eliminator(n, row)
     return @views temp[Not(row), :]
 end
 
-#Generate elements in Matrix.
-function omega(n, p)
-    omega = zeros(n+1)
-    omega[1] = 1
-    @fastmath @inbounds @simd for i ∈ 1:n
-        omega[i+1] = (1-(p+1)/i)*omega[i]
-    end
-    
-    return omega
-end
 function B(N, p)
     result = zeros(N, N)
     temp = omega(N, p)

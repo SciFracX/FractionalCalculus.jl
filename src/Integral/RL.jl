@@ -379,13 +379,6 @@ function fracint(f, α::Number, end_point, h::Float64, ::RLInt_Matrix)
     return J(N, α, h)*f.(tspan)
 end
 
-#=
-Fractional binomial coefficients
-
-```math
-g_k^{(\alpha)}=(-1)^k{\alpha\choose k}
-```
-=#
 function omega(n, p)
     omega = zeros(n+1)
     omega[1]=1
@@ -395,6 +388,7 @@ function omega(n, p)
     
     return omega
 end
+
 function J(N, p, h::Float64)
     result = zeros(N, N)
     temp = omega(N, -p)
