@@ -5,6 +5,7 @@ abstract type FracIntAlg end
 
 
 include("RL.jl")
+include("Hadamard.jl")
 
 include("SymbolicInt.jl")
 

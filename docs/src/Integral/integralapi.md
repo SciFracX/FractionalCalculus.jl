@@ -23,6 +23,12 @@ FractionalCalculus.RLInt_Rectangular
 FractionalCalculus.RLInt_Cubic_Spline_Interp
 ```
 
+## Hadamard sense fractional integral
+
+```@dcos
+FractionalCalculus.HadamardMat
+```
+
 ```@docs
 FractionalCalculus.@fracint
 FractionalCalculus.@semifracint

@@ -37,11 +37,14 @@ export Riesz_Symmetric, Riesz_Ortigueira
 export @fracdiff, @semifracdiff
 
 #Export fractional integral relating API
-export RLInt
+export RLInt, HadamardInt
+
+
 export RL_Direct, RL_Piecewise
 export RLInt_Approx, RL_LinearInterp, RLInt_Matrix
 export RLInt_Simpson, RLInt_Trapezoidal, RLInt_Rectangular, RLInt_Cubic_Spline_Interp
 
+export HadamardMat
 
 # Macros for convenient computing
 export @fracint, @semifracint

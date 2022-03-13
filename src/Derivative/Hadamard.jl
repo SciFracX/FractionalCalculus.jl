@@ -1,7 +1,7 @@
 """
 Hadamard sense fractional derivative algorithms.
 """
-abstract type Hadamard <: FracDiffAlg end
+abstract type HadamardDiff <: FracDiffAlg end
 
 
 """
@@ -30,7 +30,7 @@ julia> fracdiff(x->x, 0.5, 0, 1, 0.001, Hadamard_LRect())
 0.9738507879228357
 ```
 """
-struct Hadamard_LRect <: Hadamard end
+struct Hadamard_LRect <: HadamardDiff end
 
 """
 # Hadamard sense right rectangular approximating algorithm
@@ -46,7 +46,7 @@ julia> fracdiff(x->x, 0.5, 0, 1, 0.001, Hadamard_RRect())
 0.9738507879228337
 ```
 """
-struct Hadamard_RRect <: Hadamard end
+struct Hadamard_RRect <: HadamardDiff end
 
 """
 # Hadamard sense trapezoidal approximating algorithm
@@ -62,7 +62,7 @@ julia> fracdiff(x->x, 0.5, 0, 1, 0.001, Hadamard_Trap())
 0.9738507879228328
 ```
 """
-struct Hadamard_Trap <: Hadamard end
+struct Hadamard_Trap <: HadamardDiff end
 
 
 ################################################################

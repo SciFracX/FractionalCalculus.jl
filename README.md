@@ -104,16 +104,19 @@ Current Algorithms
 |        └── Riesz_Ortigueira
 |
 └── FracIntAlg
-    └── Riemann Liouville
-        ├── RL_Direct
-        ├── RL_Piecewise
-        ├── RL_LinearInterp
-        ├── RLInt_Approx
-        ├── RLInt_Matrix
-        ├── RLInt_Simpson
-        ├── RLInt_Trapezoidal
-        ├── RLInt_Rectangular
-        └── RLInt_Cubic_Spline_Interp
+    ├── Riemann Liouville
+    |   ├── RL_Direct
+    |   ├── RL_Piecewise
+    |   ├── RL_LinearInterp
+    |   ├── RLInt_Approx
+    |   ├── RLInt_Matrix
+    |   ├── RLInt_Simpson
+    |   ├── RLInt_Trapezoidal
+    |   ├── RLInt_Rectangular
+    |   └── RLInt_Cubic_Spline_Interp
+    |
+    └── Hadamard
+        └── HadamardMat
 ```
 
 For detailed usage, please refer to [our manual](https://scifracx.org/FractionalCalculus.jl/dev/Derivative/derivativeapi/).
