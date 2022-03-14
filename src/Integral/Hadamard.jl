@@ -4,6 +4,17 @@ abstract type HadamardInt <: FracIntAlg end
     fracint(f, α, a, b, mu, N,  HadamardMat())
 
 Compute Hadamard fractional integral.
+
+### References
+
+```tex
+@article{Xu2019SpectralCM,
+  title={Spectral Collocation Method for Fractional Differential/Integral Equations with Generalized Fractional Operator},
+  author={Qinwu Xu and Zhoushun Zheng},
+  journal={International Journal of Differential Equations},
+  year={2019}
+}
+```
 """
 struct HadamardMat <: HadamardInt end
 
@@ -40,7 +51,7 @@ function GFracMat(za, zb, N, α, w, invz)
     return rx, col_pt, M
 end
 
-function JacobiGL(alpha,beta,N)
+function JacobiGL(α,β,N)
     x = zeros(N+1, 1)
     if N==1
         x[1]=-1.0
@@ -48,23 +59,23 @@ function JacobiGL(alpha,beta,N)
         return x
     end
     
-    (xint, w) = JacobiGQ(alpha+1,beta+1,N-2)
+    (xint, _) = JacobiGQ(α+1,β+1,N-2)
     x = [-1 xint' 1]'
     return x
 end
     
-function JacobiGQ(alpha, beta, N)
+function JacobiGQ(α, β, N)
     if N==0
-        x[1] = -(alpha-beta)/(alpha+beta+2)
+        x[1] = -(α-β)/(α+β+2)
         w[1] = 2
         return x, w
     end
 
     J = zeros(N+1)
-    h1 = 2*collect(0:N).+alpha.+beta
-    J = diagm(-1/2*(alpha^2-beta^2)./(h1.+2)./h1) + 
-        diagm(1 => 2 ./(h1[1:N].+2).*sqrt.(collect(1:N).*(collect(1:N).+alpha.+beta).*(collect(1:N).+alpha).*(collect(1:N).+beta)./(h1[1:N].+1)./(h1[1:N].+3)))
-    if (alpha+beta<10*eps())
+    h1 = 2*collect(0:N).+α.+β
+    J = diagm(-1/2*(α^2-β^2)./(h1.+2)./h1) + 
+        diagm(1 => 2 ./(h1[1:N].+2).*sqrt.(collect(1:N).*(collect(1:N).+α.+β).*(collect(1:N).+α).*(collect(1:N).+β)./(h1[1:N].+1)./(h1[1:N].+3)))
+    if (α+β<10*eps())
         J[1, 1] = 0.0
     end
     J = J + J'
@@ -72,17 +83,17 @@ function JacobiGQ(alpha, beta, N)
     (D, V) = eigen(J)
     x = diagm(D)
 
-    w = V[1, :].^2*2^(alpha+beta+1)/(alpha+beta+1)*gamma(alpha+1)*gamma(beta+1)/gamma(alpha+beta+1)
+    w = V[1, :].^2*2^(α+β+1)/(α+β+1)*gamma(α+1)*gamma(β+1)/gamma(α+β+1)
     return diag(x), w
 end
 
-function Jac_Frac_Diff(x, a, b,N, alpha, output_type)
+function Jac_Frac_Diff(x, a, b,N, α, output_type)
     if size(x, 2) !== 1
         x=x'
     end
     L=length(x)
     
-    k = ceil(Int64, alpha)
+    k = ceil(Int64, α)
     d = gamma.(collect(0:N).+(k+a+b+1))./(2^k*gamma.(collect(0:N).+(a+b+1)))
     
     if output_type==0
@@ -90,10 +101,10 @@ function Jac_Frac_Diff(x, a, b,N, alpha, output_type)
             JFD = zeros(size(x))
             return JFD
         end
-        JFD = d[N+1]*Jac_Frac_Int(x,a+k,b+k,N-k,k-alpha,0)
+        JFD = d[N+1]*Jac_Frac_Int(x,a+k,b+k,N-k,k-α,0)
     else
         JFD = zeros(L, N+1)
-        JFD[:, k+1:N+1] = Jac_Frac_Int(x, a+k, b+k, N-k, k-alpha, 1)
+        JFD[:, k+1:N+1] = Jac_Frac_Int(x, a+k, b+k, N-k, k-α, 1)
         for j = k+1:N+1
             JFD[:, j] = d[j]*JFD[:, j]
         end
@@ -101,25 +112,25 @@ function Jac_Frac_Diff(x, a, b,N, alpha, output_type)
     return JFD
 end
 
-function Jac_Frac_Diff_Shift(x,a,b,N,alpha,min,Max,output_type)
+function Jac_Frac_Diff_Shift(x,a,b,N,α,min,Max,output_type)
     L=Max-min
     @. x=2*(x-min)/L-1
-    FJ = (2/L)^alpha*Jac_Frac_Diff(x,a,b,N,alpha,output_type)
+    FJ = (2/L)^α*Jac_Frac_Diff(x,a,b,N,α,output_type)
     return FJ
 end
 
 
-function Jac_Frac_Int(x,a,b,N::Int64,alpha,output_type)
+function Jac_Frac_Int(x,a,b,N::Int64,α,output_type)
     if size(x,2) !== 1
         x=x'
     end
     L=length(x)
     J = zeros(L, Int64(N+1))
-    @. J[:, 1] = (x+1)^alpha/gamma(alpha+1)
+    @. J[:, 1] = (x+1)^α/gamma(α+1)
     if N==0
         return J
     end
-    @. J[:, 2] = (a+b+2)/2*(x.*(x+1).^alpha/gamma(alpha+1)-alpha*(x+1).^(alpha+1)/gamma(alpha+2))+(a-b)/2*J[:, 1]
+    @. J[:, 2] = (a+b+2)/2*(x.*(x+1).^α/gamma(α+1)-α*(x+1).^(α+1)/gamma(α+2))+(a-b)/2*J[:, 1]
     if N==1
         return J
     end
@@ -132,8 +143,8 @@ function Jac_Frac_Int(x,a,b,N::Int64,alpha,output_type)
     Chatj(a, b, j) = 2*(j+a+b+1)./((2*j+a+b+1).*(2*j+a+b+2))
 
     for n=2:N
-        @. J[:, n+1] = (Aj(a,b,n-1)*x-Bj(a,b,n-1)-alpha*Aj(a,b,n-1)*Bhatj(a,b,n-1))*J[:, n]-(Cj(a, b, n-1) + alpha*Aj(a, b, n-1)*Ahatj(a, b, n-1)).*J[:, n-1] + Aj(a, b, n-1)*(Ahatj(a, b, n-1)*Jac_1[n-1]+Bhatj(a,b,n-1)*Jac_1[n]+Chatj(a,b,n-1)*Jac_1[n+1])*(x+1).^alpha/gamma(alpha)
-        @. J[:, n+1] =J[:, n+1]/(1+alpha*Aj(a,b,n-1)*Chatj(a,b,n-1))
+        @. J[:, n+1] = (Aj(a,b,n-1)*x-Bj(a,b,n-1)-α*Aj(a,b,n-1)*Bhatj(a,b,n-1))*J[:, n]-(Cj(a, b, n-1) + α*Aj(a, b, n-1)*Ahatj(a, b, n-1)).*J[:, n-1] + Aj(a, b, n-1)*(Ahatj(a, b, n-1)*Jac_1[n-1]+Bhatj(a,b,n-1)*Jac_1[n]+Chatj(a,b,n-1)*Jac_1[n+1])*(x+1).^α/gamma(α)
+        @. J[:, n+1] =J[:, n+1]/(1+α*Aj(a,b,n-1)*Chatj(a,b,n-1))
     end
     if output_type==0
         J=J[:, N+1]
