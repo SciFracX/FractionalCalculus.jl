@@ -1,7 +1,7 @@
 abstract type HadamardInt <: FracIntAlg end
 
 """
-    fracint(f, α, a, b, mu, N,  HadamardMat())
+    fracint(f, α, a, b, mu, N, HadamardMat())
 
 Compute Hadamard fractional integral.
 
@@ -35,7 +35,7 @@ function GFracMat(za, zb, N, α, w, invz)
     if α>0
     FM=Jac_Frac_Diff_Shift(col_pts,0,0,N,α,za,zb,1)
     else
-        FM=(2/(zb-za))^(α)*Jac_Frac_Int(r0*2-1, 0, 0, N, -α, 1)
+        FM=(2/(zb-za))^α*Jac_Frac_Int(r0*2-1, 0, 0, N, -α, 1)
         FM[1, :] .= 0
     end
 
@@ -44,7 +44,7 @@ function GFracMat(za, zb, N, α, w, invz)
     Vand = Jac_Va(interp_pts, 0, 0, N, 1)
 
     rx=invz.(col_pt)
-    WL=diagm(1 ./w.(rx))
+    WL = diagm(1 ./w.(rx))
     WL[1, 1]=0
     WR = diagm(w.(rx))
     M=WL*(FM/Vand)*WR
@@ -54,8 +54,8 @@ end
 function JacobiGL(α,β,N)
     x = zeros(N+1, 1)
     if N==1
-        x[1]=-1.0
-        x[2]=1.0
+        x[1] = -1.0
+        x[2] = 1.0
         return x
     end
     
@@ -75,7 +75,7 @@ function JacobiGQ(α, β, N)
     h1 = 2*collect(0:N).+α.+β
     J = diagm(-1/2*(α^2-β^2)./(h1.+2)./h1) + 
         diagm(1 => 2 ./(h1[1:N].+2).*sqrt.(collect(1:N).*(collect(1:N).+α.+β).*(collect(1:N).+α).*(collect(1:N).+β)./(h1[1:N].+1)./(h1[1:N].+3)))
-    if (α+β<10*eps())
+    if α+β < 10*eps()
         J[1, 1] = 0.0
     end
     J = J + J'
@@ -114,13 +114,13 @@ end
 
 function Jac_Frac_Diff_Shift(x,a,b,N,α,min,Max,output_type)
     L=Max-min
-    @. x=2*(x-min)/L-1
-    FJ = (2/L)^α*Jac_Frac_Diff(x,a,b,N,α,output_type)
+    x = 2 .*(x.-min)./L.-1
+    FJ = (2/L)^α*Jac_Frac_Diff(x, a, b, N, α, output_type)
     return FJ
 end
 
 
-function Jac_Frac_Int(x,a,b,N::Int64,α,output_type)
+function Jac_Frac_Int(x, a, b, N::Int64, α, output_type)
     if size(x,2) !== 1
         x=x'
     end
@@ -135,12 +135,12 @@ function Jac_Frac_Int(x,a,b,N::Int64,α,output_type)
         return J
     end
     Jac_1 = Jac_Va(-1, a, b, N, 1)
-    Aj(a, b, j) = (2*j+a+b+1).*(2*j+a+b+2)./(2*(j+1).*(j+a+b+1))
-    Bj(a, b, j) = (b.^2-a.^2).*(2*j+a+b+1)./(2*(j+1).*(j+a+b+1).*(2*j+a+b))
-    Cj(a, b, j) = (j+a).*(j+b).*(2*j+a+b+2)./((j+1).*(j+a+b+1).*(2*j+a+b))
-    Ahatj(a, b, j) = -2*(j+a).*(j+b)./((j+a+b).*(2*j+a+b).*(2*j+a+b+1))
-    Bhatj(a, b, j) = 2*(a-b)./((2*j+a+b).*(2*j+a+b+2))
-    Chatj(a, b, j) = 2*(j+a+b+1)./((2*j+a+b+1).*(2*j+a+b+2))
+    Aj(a, b, j) = @. (2*j+a+b+1)*(2*j+a+b+2)/(2*(j+1)*(j+a+b+1))
+    Bj(a, b, j) = @. (b^2-a^2)*(2*j+a+b+1)/(2*(j+1)*(j+a+b+1)*(2*j+a+b))
+    Cj(a, b, j) = @. (j+a)*(j+b)*(2*j+a+b+2)/((j+1)*(j+a+b+1)*(2*j+a+b))
+    Ahatj(a, b, j) = @. -2*(j+a)*(j+b)/((j+a+b)*(2*j+a+b)*(2*j+a+b+1))
+    Bhatj(a, b, j) = @. 2*(a-b)/((2*j+a+b)*(2*j+a+b+2))
+    Chatj(a, b, j) = @. 2*(j+a+b+1)/((2*j+a+b+1)*(2*j+a+b+2))
 
     for n=2:N
         @. J[:, n+1] = (Aj(a,b,n-1)*x-Bj(a,b,n-1)-α*Aj(a,b,n-1)*Bhatj(a,b,n-1))*J[:, n]-(Cj(a, b, n-1) + α*Aj(a, b, n-1)*Ahatj(a, b, n-1)).*J[:, n-1] + Aj(a, b, n-1)*(Ahatj(a, b, n-1)*Jac_1[n-1]+Bhatj(a,b,n-1)*Jac_1[n]+Chatj(a,b,n-1)*Jac_1[n+1])*(x+1).^α/gamma(α)
