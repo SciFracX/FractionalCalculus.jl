@@ -86,7 +86,7 @@ end
 
 
 @testset "Test Hadamard integral" begin
-    (a, b)=fracint(sin, 0.5, 1, 2, 1/3, 10, HadamardMat())
+    (a, b)=fracint(sin, 0.5, 1, 2, 1/3, 0.1, HadamardMat())
 
     @test isapprox(a, [ 1.0
     1.023136962522694

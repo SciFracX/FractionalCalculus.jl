@@ -1,7 +1,7 @@
 abstract type HadamardInt <: FracIntAlg end
 
 """
-    fracint(f, α, a, b, mu, N, HadamardMat())
+    fracint(f, α, a, b, mu, h, HadamardMat())
 
 Compute Hadamard fractional integral.
 
@@ -18,11 +18,12 @@ Compute Hadamard fractional integral.
 """
 struct HadamardMat <: HadamardInt end
 
-function fracint(g, α, a, b, mu, N, ::HadamardMat)
-    w(x)=x.^mu
+function fracint(g, α, a, b, μ, h, ::HadamardMat)
+    N = round(Int, (b-a)/h)
+    w(x)=x.^μ
     invz(x)=exp.(x)
     (rx, r, D) = GFracMat(log(a), log(b), N, α, w, invz)
-    Ga=a^mu.*g.(a)/gamma(1-α)*rx.^(-mu).*(log.(rx./a)).^(-α)
+    Ga=a^μ.*g.(a)/gamma(1-α)*rx.^(-μ).*(log.(rx./a)).^(-α)
     G=g.(rx)
     H=Ga+D*G
     return rx, H
