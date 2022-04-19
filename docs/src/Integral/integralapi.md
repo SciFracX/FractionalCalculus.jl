@@ -12,15 +12,15 @@ FractionalCalculus.fracint
 
 ```@docs
 FractionalCalculus.RLInt
-FractionalCalculus.RL_Direct
-FractionalCalculus.RL_Piecewise
-FractionalCalculus.RLInt_Approx
-FractionalCalculus.RL_LinearInterp
-FractionalCalculus.RLInt_Matrix
-FractionalCalculus.RLInt_Simpson
-FractionalCalculus.RLInt_Trapezoidal
-FractionalCalculus.RLInt_Rectangular
-FractionalCalculus.RLInt_Cubic_Spline_Interp
+FractionalCalculus.RLDirect
+FractionalCalculus.RLPiecewise
+FractionalCalculus.RLIn_Approx
+FractionalCalculus.RLLinearInterp
+FractionalCalculus.RLIntMatrix
+FractionalCalculus.RLIntSimpson
+FractionalCalculus.RLIntTrapezoidal
+FractionalCalculus.RLIntRectangular
+FractionalCalculus.RLIntCubicSplineInterp
 ```
 
 ## Hadamard sense fractional integral

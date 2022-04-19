@@ -11,44 +11,44 @@ FractionalCalculus.fracdiff
 ## Caputo Sense fractional derivative
 
 ```@docs
-FractionalCalculus.Caputo_Direct
-FractionalCalculus.Caputo_Piecewise
-FractionalCalculus.Caputo_Diethelm
-FractionalCalculus.Caputo_High_Precision
-FractionalCalculus.Caputo_High_Order
+FractionalCalculus.CaputoDirect
+FractionalCalculus.CaputoPiecewise
+FractionalCalculus.CaputoDiethelm
+FractionalCalculus.CaputoHighPrecision
+FractionalCalculus.CaputoHighOrder
 ```
 
 ## Grunwald Letnikov sense fractional derivative
 
 ```@docs
-FractionalCalculus.GL_Direct
-FractionalCalculus.GL_Finite_Difference
-FractionalCalculus.GL_Multiplicative_Additive
-FractionalCalculus.GL_Lagrange_Three_Point_Interp
+FractionalCalculus.GLDirect
+FractionalCalculus.GLFiniteDifference
+FractionalCalculus.GLMultiplicativeAdditive
+FractionalCalculus.GLLagrangeThreePointInterp
 ```
 
 ## Riemann Liouville sense fractional derivative
 
 ```@docs
-FractionalCalculus.RLDiff_Approx
-FractionalCalculus.RLDiff_Matrix
-FractionalCalculus.RL_G1
-FractionalCalculus.RL_D
+FractionalCalculus.RLDiffApprox
+FractionalCalculus.RLDiffMatrix
+FractionalCalculus.RLG1
+FractionalCalculus.RLD
 ```
 
 ## Hadamard sense fractional derivative
 
 ```@docs
-FractionalCalculus.Hadamard_LRect
-FractionalCalculus.Hadamard_RRect
-FractionalCalculus.Hadamard_Trap
+FractionalCalculus.HadamardLRect
+FractionalCalculus.HadamardRRect
+FractionalCalculus.HadamardTrap
 ```
 
 ## Riesz sense fractional derivative
 
 ```@docs
-FractionalCalculus.Riesz_Symmetric
-FractionalCalculus.Riesz_Ortigueira
+FractionalCalculus.RieszSymmetric
+FractionalCalculus.RieszOrtigueira
 ```
 
 ```@docs

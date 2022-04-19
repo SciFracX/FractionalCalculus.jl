@@ -75,45 +75,45 @@ This will return the estimated value with high precision.
 Current Algorithms
 ├── FracDiffAlg
 │   ├── Caputo
-|   |   ├── Caputo_Direct
-|   |   ├── Caputo_Piecewise
-|   |   ├── Caputo_Diethelm
-|   |   ├── Caputo_High_Precision
-|   |   └── Caputo_High_Order
+|   |   ├── CaputoDirect
+|   |   ├── CaputoPiecewise
+|   |   ├── CaputoDiethelm
+|   |   ├── CaputoHighPrecision
+|   |   └── CaputoHighOrder
 |   |
 │   ├── Grünwald Letnikov
-|   |   ├── GL_Direct
-|   |   ├── GL_Multiplicative_Additive
-|   |   ├── GL_Lagrange_Three_Point_Interp
-|   |   └── GL_High_Precision
+|   |   ├── GLDirect
+|   |   ├── GLMultiplicativeAdditive
+|   |   ├── GLLagrangeThreePointInterp
+|   |   └── GLHighPrecision
 |   |
 |   ├── Riemann Liouville
-|   |    ├── RLDiff_Approx
-|   |    ├── RL_Linear_Spline_Interp
-|   |    ├── RLDiff_Matrix
-|   |    ├── RL_G1
-|   |    └── RL_D
+|   |    ├── RLDiffApprox
+|   |    ├── RLLinearSplineInterp
+|   |    ├── RLDiffMatrix
+|   |    ├── RLG1
+|   |    └── RLD
 |   | 
 |   ├── Hadamard
-|   |    ├── Hadamard_LRect
-|   |    ├── Hadamard_RRect
-|   |    └── Hadamard_Trap
+|   |    ├── HadamardLRect
+|   |    ├── HadamardRRect
+|   |    └── HadamardTrap
 |   |
 |   └── Riesz
-|        ├── Riesz_Symmetric
-|        └── Riesz_Ortigueira
+|        ├── RieszSymmetric
+|        └── RieszOrtigueira
 |
 └── FracIntAlg
     ├── Riemann Liouville
-    |   ├── RL_Direct
-    |   ├── RL_Piecewise
-    |   ├── RL_LinearInterp
-    |   ├── RLInt_Approx
-    |   ├── RLInt_Matrix
-    |   ├── RLInt_Simpson
-    |   ├── RLInt_Trapezoidal
-    |   ├── RLInt_Rectangular
-    |   └── RLInt_Cubic_Spline_Interp
+    |   ├── RLDirect
+    |   ├── RLPiecewise
+    |   ├── RLLinearInterp
+    |   ├── RLIntApprox
+    |   ├── RLIntMatrix
+    |   ├── RLIntSimpson
+    |   ├── RLIntTrapezoidal
+    |   ├── RLIntRectangular
+    |   └── RLIntCubicSplineInterp
     |
     └── Hadamard
         └── HadamardMat

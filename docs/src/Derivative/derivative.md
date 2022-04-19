@@ -24,7 +24,7 @@ _tD^\alpha_bf(t)=\frac{d^n}{dt^n}\ _tD^{-(n-\alpha)}_bf(t)=\frac{d^n}{dt^n}\ _tI
 We can use **FractionalCalculus.jl** to compute Riemann Liouville sense $0.5$ order fractional derivative of $f(x)=x$ at $x=1$ with step size $0.0001$:
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 1, 0.0001, RLDiff_Approx())
+julia> fracdiff(x->x, 0.5, 1, 0.0001, RLDiffApprox())
 1.1283791670955168
 ```
 
@@ -40,7 +40,7 @@ In **FractionalCalculus.jl**, let's see, if you want to calculate the $0.5$ orde
 
 
 ```julia-repl
-julia>fracdiff(x->x, 0.5, 1, 0.0001, Caputo_Piecewise())
+julia>fracdiff(x->x, 0.5, 1, 0.0001, CaputoPiecewise())
 1.128379167055761
 ```
 
@@ -62,7 +62,7 @@ D^\alpha f(t)=\displaystyle \lim_{h\rightarrow0}\frac{1}{h^\alpha}\sum_{0\leq m\
 To compute the Grünwald Letnikov sense derivative, you can use FractionalCalculus.jl by:
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, collect(0:0.01:1), 2, GL_High_Precision())
+julia> fracdiff(x->x, 0.5, collect(0:0.01:1), 2, GLHighPrecision())
 101-element Vector{Float64}:
  0.0
  0.11283791670955126
@@ -101,10 +101,10 @@ The Riesz sense symmetric fractional derivative is defined by **Caputo** derivat
 
 ```
 
-In FractionalCalculus.jl, we can use the **Riesz_Symmetric** algorithm to compute the fractional derivative:
+In FractionalCalculus.jl, we can use the **RieszSymmetric** algorithm to compute the fractional derivative:
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 1, 0.01, Riesz_Symmetric())
+julia> fracdiff(x->x, 0.5, 1, 0.01, RieszSymmetric())
 ```
 
 ## Hadamard sense derivative
@@ -134,7 +134,7 @@ So we can know the Hadamard sense fractional derivative:
 To compute Hadamard fractional derivative, we can use the Hadamard relating algorithms in FractionalCalculus.jl:
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 0, 1, 0.01, Hadamard_LRect())
+julia> fracdiff(x->x, 0.5, 0, 1, 0.01, HadamardLRect())
 0.9165222777761635
 ```
 
