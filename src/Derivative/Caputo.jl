@@ -12,7 +12,7 @@ abstract type Caputo <: FracDiffAlg end
 ### Example: 
 
 ```julia-repl
-julia> fracdiff(x->x^5, 0.5, 0, 2.5, 0.0001, Caputo_Direct())
+julia> fracdiff(x->x^5, 0.5, 0, 2.5, 0.0001, CaputoDirect())
 ```
 
 Returns a tuple (**result**, **error**), which means the value of this derivative is 141.59714979764541, and the error estimate is 1.1532243848672914e-6.
@@ -30,12 +30,12 @@ Using the direct mathematic expression:
 
 As for the derivative inside the integral, we use the **Complex Step Differentiation** to obtain a more accurate value.
 """
-struct Caputo_Direct <: Caputo end
+struct CaputoDirect <: Caputo end
 
 """
 # Caputo sense fractional derivative with first derivative known.
 
-    fracdiff(fd, α, start_point, end_point, Caputo_Direct_First_Diff_Known())
+    fracdiff(fd, α, start_point, end_point, CaputoDirectFirstDiffKnown())
 
 If the first order derivative of a function is already known, we can use this method to compute the fractional order derivative more precisely.
 
@@ -44,13 +44,13 @@ The inout function should be the first order derivative of a function
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->5*x^4, 0.5, 0, 2.5, Caputo_Direct_First_Diff_Known())
+julia> fracdiff(x->5*x^4, 0.5, 0, 2.5, CaputoDirectFirstDiffKnown())
 ```
 Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
 
-Compared with **Caputo_Direct** method, this method don't need to specify step size, more precision are guaranteed.
+Compared with **CaputoDirect** method, this method don't need to specify step size, more precision are guaranteed.
 """
-struct Caputo_Direct_First_Diff_Known <: Caputo end
+struct CaputoDirectFirstDiffKnown <: Caputo end
 
 """
 # Caputo sense fractional derivative with first and second derivative known.
@@ -67,7 +67,7 @@ julia> fracdiff(x->5*x^4, x->20*x^3, 0.5, 0, 2.5, Caputo_Direct_First_Second_Dif
 ```
 Return the semi-derivative of ``f(x)=x^5`` at ``x=2.5``.
     
-Compared with **Caputo_Direct** method, this method don't need to specify step size, more precision are guaranteed.
+Compared with **CaputoDirect** method, this method don't need to specify step size, more precision are guaranteed.
 """
 struct Caputo_Direct_First_Second_Diff_Known <: Caputo end
 
@@ -75,14 +75,14 @@ struct Caputo_Direct_First_Second_Diff_Known <: Caputo end
 """
 # Caputo sense Piecewise algorithm
 
-    fracdiff(f, α, end_point, h, Caputo_Piecewise())
+    fracdiff(f, α, end_point, h, CaputoPiecewise())
 
 Using piecewise linear interpolation function to approximate input function and combining Caputo derivative then implement summation.
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x^5, 0.5, 2.5, 0.001, Caputo_Piecewise())
+julia> fracdiff(x->x^5, 0.5, 2.5, 0.001, CaputoPiecewise())
 ```
 
 Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
@@ -95,21 +95,21 @@ author = {Changpin Li and An Chen and Junjie Ye},
 ```
 
 """
-struct Caputo_Piecewise <: Caputo end
+struct CaputoPiecewise <: Caputo end
 
 
 
 """
 # Caputo sense Diethelm computation
     
-    fracdiff(f, α, end_point, h, Caputo_Diethelm())
+    fracdiff(f, α, end_point, h, CaputoDiethelm())
 
 Using quadrature weights(derived from product trapezoidal rule) to approximate the derivative.
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 1, 0.007, Caputo_Diethelm())
+julia> fracdiff(x->x, 0.5, 1, 0.007, CaputoDiethelm())
 1.128378318687192
 ```
 
@@ -128,19 +128,19 @@ doi = {10.1093/imanum/17.3.479},
 ```
 
 """
-struct Caputo_Diethelm <: Caputo end
+struct CaputoDiethelm <: Caputo end
 
 
 """
 # Caputo sense fractioal derivative with p-th order precision.
 
-    fracdiff(f, α, t, p, Caputo_High_Precision())
+    fracdiff(f, α, t, p, CaputoHighPrecision())
 
 Use the high precision algorithm to compute the Caputo sense fractional derivative.
 
 The **p** here is the grade of precision.
 """
-struct Caputo_High_Precision <: Caputo end
+struct CaputoHighPrecision <: Caputo end
 
 
 
@@ -148,12 +148,12 @@ struct Caputo_High_Precision <: Caputo end
 # Caputo sense fractional derivative high order approximation.
 
 !!! info
-    By using ```Caputo_High_Order``` method, we can set ``0<\\alpha<2``
+    By using ```CaputoHighOrder``` method, we can set ``0<\\alpha<2``
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 1, 0.01, 2, Caputo_High_Order())
+julia> fracdiff(x->x, 0.5, 1, 0.01, 2, CaputoHighOrder())
 1.1283791670955123
 ```
 
@@ -168,14 +168,14 @@ julia> fracdiff(x->x, 0.5, 1, 0.01, 2, Caputo_High_Order())
 }
 ```
 """
-struct Caputo_High_Order <: Caputo end
+struct CaputoHighOrder <: Caputo end
 ################################################################
 ###                    Type definition done                  ###
 ################################################################
 
 
 
-function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_point, h::Float64, ::Caputo_Direct)
+function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_point, h::Float64, ::CaputoDirect)
     #checks(f, α, start_point, end_point)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     #Using complex step differentiation to calculate the first order differentiation
@@ -184,19 +184,19 @@ function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_poin
     return result
 end
 
-function fracdiff(f::FunctionAndNumber, α::Float64, start_point, end_point::AbstractArray, h::Float64, ::Caputo_Direct)::Vector
+function fracdiff(f::FunctionAndNumber, α::Float64, start_point, end_point::AbstractArray, h::Float64, ::CaputoDirect)::Vector
     #=
     ResultArray = Float64[]
     for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracdiff(f, α, start_point, value, h, Caputo_Direct()))
+        append!(ResultArray, fracdiff(f, α, start_point, value, h, CaputoDirect()))
     end
     return ResultArray
     =#
-    result = map(x->fracdiff(f, α, start_point, x, h, Caputo_Direct())[1], end_point)
+    result = map(x->fracdiff(f, α, start_point, x, h, CaputoDirect())[1], end_point)
     return result
 end
 
-function fracdiff(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::Caputo_Piecewise)
+function fracdiff(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::CaputoPiecewise)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
     m = floor(Int, α)+1
@@ -217,17 +217,15 @@ function W₅(i, n, m, α)
     elseif i == n
         return 1
     else
-        (n-i-1)^(m-α+1) + (n-i+1)^(m-α+1) - 2*(n-i)^(m-α+1)
+        return (n-i-1)^(m-α+1) + (n-i+1)^(m-α+1) - 2*(n-i)^(m-α+1)
     end
 end
 # Deploy Complex Step Differentiation to compute the first order derivative.
-function first_order(f, point, h::Float64)
-    return imag(f(point + im*h))/h
-end
+first_order(f, point, h::Float64) = imag(f(point + im*h))/h
 
 
-function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::Caputo_Piecewise)::Vector
-    result = map(x->fracdiff(f, α, x, h, Caputo_Piecewise()), end_point)
+function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::CaputoPiecewise)::Vector
+    result = map(x->fracdiff(f, α, x, h, CaputoPiecewise()), end_point)
     return result
 end
 
@@ -235,7 +233,7 @@ end
 #=
 Caputo Diethelm algorithm
 =#
-function fracdiff(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float64, ::Caputo_Diethelm)
+function fracdiff(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float64, ::CaputoDiethelm)
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     N = round(Int, end_point/h)
@@ -257,8 +255,8 @@ function quadweights(n, N, α)
     end
 end
 
-function fracdiff(f, α::Float64, end_point::AbstractArray, h::Float64, ::Caputo_Diethelm)::Vector
-    result = map(x->fracdiff(f, α, x, h, Caputo_Diethelm()), end_point)
+function fracdiff(f, α::Float64, end_point::AbstractArray, h::Float64, ::CaputoDiethelm)::Vector
+    result = map(x->fracdiff(f, α, x, h, CaputoDiethelm()), end_point)
     return result
 end
 
@@ -266,13 +264,13 @@ end
 #=
 Caputo sense high precision algorithm
 =#
-function fracdiff(y::FunctionAndNumber, α, t, p::Integer, ::Caputo_High_Precision)
+function fracdiff(y::FunctionAndNumber, α, t, p::Integer, ::CaputoHighPrecision)
     h = t[2]-t[1]
     t = t[:]
     n = length(t)
     y = y.(t)
     q = ceil(Int, α)
-    r = Int64(max(p, q))
+    r::Int = max(p, q)
     R = reverse(Vandermonde(collect(0:(r-1)).*h))
     c = inv(R)*y[1:r]
     u = 0
@@ -292,7 +290,7 @@ function fracdiff(y::FunctionAndNumber, α, t, p::Integer, ::Caputo_High_Precisi
     return dy
 end
 
-function fracdiff(f::FunctionAndNumber, α, T, h, p::Integer, ::Caputo_High_Order)
+function fracdiff(f::FunctionAndNumber, α, T, h, p::Integer, ::CaputoHighOrder)
     n::Int64 = round(Int, T/h)
     A = wj(n, p, α)
     B = fj(n, T, f)

@@ -19,50 +19,50 @@ doi = {10.2139/ssrn.3281675}
 """
 # Hadamard sense left rectangular approximating algorithm
 
-    fracdiff(f, α, a, x, h, Hadamard_LRect())
+    fracdiff(f, α, a, x, h, HadamardLRect())
 
 Using finite part integral of **left rectangular formula** to compute the fractional hadamard derivative.
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 0, 1, 0.001, Hadamard_LRect())
+julia> fracdiff(x->x, 0.5, 0, 1, 0.001, HadamardLRect())
 0.9738507879228357
 ```
 """
-struct Hadamard_LRect <: HadamardDiff end
+struct HadamardLRect <: HadamardDiff end
 
 """
 # Hadamard sense right rectangular approximating algorithm
 
-    fracdiff(f, α, a, x, h, Hadamard_Trap())
+    fracdiff(f, α, a, x, h, HadamardTrap())
 
 Using finite part integral of **right rectangular formula** to compute the fractional hadamard derivative.
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 0, 1, 0.001, Hadamard_RRect())
+julia> fracdiff(x->x, 0.5, 0, 1, 0.001, HadamardRRect())
 0.9738507879228337
 ```
 """
-struct Hadamard_RRect <: HadamardDiff end
+struct HadamardRRect <: HadamardDiff end
 
 """
 # Hadamard sense trapezoidal approximating algorithm
 
-    fracdiff(f, α, a, x, h, Hadamard_Trap())
+    fracdiff(f, α, a, x, h, HadamardTrap())
 
 Using finite part integral of **trapezoidal formula** to compute the fractional hadamard derivative.
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 0, 1, 0.001, Hadamard_Trap())
+julia> fracdiff(x->x, 0.5, 0, 1, 0.001, HadamardTrap())
 0.9738507879228328
 ```
 """
-struct Hadamard_Trap <: HadamardDiff end
+struct HadamardTrap <: HadamardDiff end
 
 
 ################################################################
@@ -73,7 +73,7 @@ struct Hadamard_Trap <: HadamardDiff end
 #=
 Hadamard Left Rectangular computing algorithms
 =#
-function fracdiff(f::FunctionAndNumber, α, x₀, x, h::Float64, ::Hadamard_LRect)
+function fracdiff(f::FunctionAndNumber, α, x₀, x, h::Float64, ::HadamardLRect)
     typeof(f) <: Number ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
     x == 0 ? (return 0) : nothing
     N = round(Int, (x-x₀)/h)
@@ -96,7 +96,7 @@ end
 #=
 Hadamard Right Rectangular computing algorithm
 =#
-function fracdiff(f::FunctionAndNumber, α, x₀, x, h::Float64, ::Hadamard_RRect)
+function fracdiff(f::FunctionAndNumber, α, x₀, x, h::Float64, ::HadamardRRect)
     typeof(f) <: Number ? (x == 0 ? 0 : f/sqrt(pi*x)) : nothing
     N = round(Int, (x-x₀)/h)
     result = zero(Float64)
@@ -120,7 +120,7 @@ end
 #=
 Hadamard trapezoidal computing algorithm
 =#
-function fracdiff(f::FunctionAndNumber, α, x₀, x, h::Float64, ::Hadamard_Trap)
+function fracdiff(f::FunctionAndNumber, α, x₀, x, h::Float64, ::HadamardTrap)
     typeof(f) <: Number ? (x == 0 ? 0 : f/sqrt(pi*x)) : nothing
     N = round(Int, (x-x₀)/h)
 

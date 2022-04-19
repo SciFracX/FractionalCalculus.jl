@@ -7,27 +7,27 @@ abstract type RLDiff <: FracDiffAlg end
 """
 # Riemann Liouville sense derivative approximation
 
-    fracdiff(f, α, end_point, h, RLDiff_Approx())
+    fracdiff(f, α, end_point, h, RLDiffApprox())
 
 Using Linear interpolation to approximate fractional derivative in Riemann Liouville  fractional derivative sense.
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiff_Approx())
+julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiffApprox())
 141.59707906952633
 ```
 
 !!! warning
-    The RLDiff_Approx algorithm only support for 0 < α < 1.
+    The RLDiffApprox algorithm only support for 0 < α < 1.
 """
-struct RLDiff_Approx <: RLDiff end
+struct RLDiffApprox <: RLDiff end
 
 
 """
 # Riemann Liouville sense derivative using Triangular Strip Matrix to discrete and compute.
 
-    fracdiff(f, α, end_point, h, RLDiff_Matrix())
+    fracdiff(f, α, end_point, h, RLDiffMatrix())
 
 Using [Triangular Strip Matrix](https://en.wikipedia.org/wiki/Triangle_strip) to approximate fractional derivative.
 
@@ -48,27 +48,27 @@ author={Podlubny, Igor and Chechkin, Aleksei and Skovranek, Tomas and Chen, Yang
 }
 ```
 """
-struct RLDiff_Matrix <: RLDiff end
+struct RLDiffMatrix <: RLDiff end
 
 
 """
 # Riemann Liouville sense linear spline interpolation.
 
-    fracdiff(f, α, end_point, h, RL_Linear_Spline_Interp())
+    fracdiff(f, α, end_point, h, RLLinearSplineInterp())
 
 Using linear spline interpolation method to approximate the Riemann Liouville fractional derivative.
 """
-struct RL_Linear_Spline_Interp <: RLDiff end
+struct RLLinearSplineInterp <: RLDiff end
 
 """
 # Riemann Liouville sense G1 scheme
 
-    fracdiff(f, α, start_point, end_point, h, RL_G1())
+    fracdiff(f, α, start_point, end_point, h, RLG1())
 
 Remove the limit symbol in the definition of Grunwald-Letnikov fractional derivative, thereby leading to a discretization scheme in form of truncated series.
 
 !!! tip
-        **RL_G1** also can be used to compute fractional integral~
+        **RLG1** also can be used to compute fractional integral~
         ``+\\alpha`` for fractional derivative and ``-\\alpha`` for fractional integral.
 
 ```tex
@@ -79,12 +79,12 @@ Remove the limit symbol in the definition of Grunwald-Letnikov fractional deriva
 }
 ```
 """
-struct RL_G1 <: RLDiff end
+struct RLG1 <: RLDiff end
 
 """
 # Riemann Liouville sense D scheme
 
-        fracdiff(f, α, point, h, RL_D())
+        fracdiff(f, α, point, h, RLD())
 
 ```tex
 @inproceedings{Guo2015FractionalPD,
@@ -94,14 +94,14 @@ struct RL_G1 <: RLDiff end
 }
 ```
 """
-struct RL_D <: RLDiff end
+struct RLD <: RLDiff end
 
 ################################################################
 ###                    Type definition done                  ###
 ################################################################
 
 
-function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLDiff_Approx)
+function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLDiffApprox)
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -117,15 +117,15 @@ function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLDiff_Appr
     return result
 end
 
-function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::RLDiff_Approx)::Vector
-    result = map(x->fracdiff(f, α, x, h, RLDiff_Approx()), end_point)
+function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::RLDiffApprox)::Vector
+    result = map(x->fracdiff(f, α, x, h, RLDiffApprox()), end_point)
     return result
 end
 
 
 
 
-function fracdiff(f::Union{Function, Number}, α, end_point, h::Float64, ::RLDiff_Matrix)
+function fracdiff(f::Union{Function, Number}, α, end_point, h::Float64, ::RLDiffMatrix)
     N = round(Int, end_point/h+1)
     @views tspan = collect(0:h:end_point)
     return B(N, α, h)*f.(tspan)
@@ -163,7 +163,7 @@ Page 57
 
 Linear Spline Interpolation
 =#
-function fracdiff(f::FunctionAndNumber, α, x, h::Float64, ::RL_Linear_Spline_Interp)
+function fracdiff(f::FunctionAndNumber, α, x, h::Float64, ::RLLinearSplineInterp)
     typeof(f) <: Number ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
     x == 0 ? (return 0) : nothing
     N = round(Int, x/h)
@@ -200,12 +200,12 @@ function c̄ⱼₖ(j, k::Int64, α)
     end
 end
 
-function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::RL_Linear_Spline_Interp)::Vector
-    result = map(x->fracdiff(f, α, x, h, RL_Linear_Spline_Interp()), end_point)
+function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::RLLinearSplineInterp)::Vector
+    result = map(x->fracdiff(f, α, x, h, RLLinearSplineInterp()), end_point)
     return result
 end
 
-function fracdiff(f::FunctionAndNumber, α, start_point, end_point, h::Float64, ::RL_G1)
+function fracdiff(f::FunctionAndNumber, α, start_point, end_point, h::Float64, ::RLG1)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
 
@@ -219,7 +219,7 @@ function fracdiff(f::FunctionAndNumber, α, start_point, end_point, h::Float64, 
     return h^(-α)/gamma(-α)*result
 end
 
-function fracdiff(f::FunctionAndNumber, α, point, h::Float64, ::RL_D)
+function fracdiff(f::FunctionAndNumber, α, point, h::Float64, ::RLD)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return f/sqrt(pi*point))) : nothing
     point == 0 ? (return 0) : nothing
 

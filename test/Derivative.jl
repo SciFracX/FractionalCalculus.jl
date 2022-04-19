@@ -2,84 +2,84 @@ using FractionalCalculus
 using Test
 
 @testset "Test Caputo Direct Fractional Derivative" begin
-    @test isapprox(fracdiff(x->x, 0.5, 0, 1, 1e-8, Caputo_Direct())[1], 2/sqrt(pi); atol = 1e-5)
-    @test isapprox(fracdiff(x->x^5, 0.5, 0, 3.2, 1e-8, Caputo_Direct())[1], 4.300306216488329e2; atol = 1e-5)
-    @test isapprox(fracdiff(x->x^5, 0.25, 0, 3.2, 1e-8, Caputo_Direct())[1], 382.1228113951680; atol = 1e-5)
-    @test isapprox(fracdiff(x->(x-3)^3+(x+2)^2+5, 0.5, 0, 0.83, 1e-8, Caputo_Direct())[1], 23.899930581118699; atol = 1e-5)
-    @test isapprox(fracdiff(x->(x-3)^3+(x+2)^2+5, 0.25, 0, 0.83, 1e-8, Caputo_Direct())[1], 22.96354626572943; atol = 1e-5)
-    @test isapprox(fracdiff(x->cos(x), 0.5, 0, 0.34, 1e-8, Caputo_Direct())[1], -0.147174774607683; atol = 1e-5)
-    @test isapprox(fracdiff(x->cos(x), 0.25, 0, 0.34, 1e-8, Caputo_Direct())[1], -0.093074344902431; atol = 1e-5)
-    @test isapprox(fracdiff(x->exp(-x^2), 0.5, 0, 2.3, 1e-8, Caputo_Direct())[1], -0.505891017154289; atol = 1e-5)
-    @test isapprox(fracdiff(x->exp(-x^2), 0.25, 0, 2.3, 1e-8, Caputo_Direct())[1], -0.762927553656252; atol = 1e-5)
+    @test isapprox(fracdiff(x->x, 0.5, 0, 1, 1e-8, CaputoDirect())[1], 2/sqrt(pi); atol = 1e-5)
+    @test isapprox(fracdiff(x->x^5, 0.5, 0, 3.2, 1e-8, CaputoDirect())[1], 4.300306216488329e2; atol = 1e-5)
+    @test isapprox(fracdiff(x->x^5, 0.25, 0, 3.2, 1e-8, CaputoDirect())[1], 382.1228113951680; atol = 1e-5)
+    @test isapprox(fracdiff(x->(x-3)^3+(x+2)^2+5, 0.5, 0, 0.83, 1e-8, CaputoDirect())[1], 23.899930581118699; atol = 1e-5)
+    @test isapprox(fracdiff(x->(x-3)^3+(x+2)^2+5, 0.25, 0, 0.83, 1e-8, CaputoDirect())[1], 22.96354626572943; atol = 1e-5)
+    @test isapprox(fracdiff(x->cos(x), 0.5, 0, 0.34, 1e-8, CaputoDirect())[1], -0.147174774607683; atol = 1e-5)
+    @test isapprox(fracdiff(x->cos(x), 0.25, 0, 0.34, 1e-8, CaputoDirect())[1], -0.093074344902431; atol = 1e-5)
+    @test isapprox(fracdiff(x->exp(-x^2), 0.5, 0, 2.3, 1e-8, CaputoDirect())[1], -0.505891017154289; atol = 1e-5)
+    @test isapprox(fracdiff(x->exp(-x^2), 0.25, 0, 2.3, 1e-8, CaputoDirect())[1], -0.762927553656252; atol = 1e-5)
 
-    @test isapprox(fracdiff(x->x, 0.5, 0, [1, 2, 3], 0.0001, Caputo_Direct()), [2/sqrt(pi), 1.5957691216057408, 1.9544100476116828]; atol=1e-3)
+    @test isapprox(fracdiff(x->x, 0.5, 0, [1, 2, 3], 0.0001, CaputoDirect()), [2/sqrt(pi), 1.5957691216057408, 1.9544100476116828]; atol=1e-3)
 end
 
 @testset "Test Caputo Piecewise Fractional Derivative" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 1e-4, Caputo_Piecewise()), 2/sqrt(pi); atol = 1e-5)
-    @test isapprox(fracdiff(x->x^5, 0.5, 3.2, 1e-4, Caputo_Piecewise()), 4.300306216488329e2; atol = 1e-5)
-    @test isapprox(fracdiff(cos, 0.5, 0.34, 1e-4, Caputo_Piecewise()), -0.147174774607683; atol = 1e-5)
-    @test isapprox(fracdiff(x->exp(-x^2), 0.25, 2.3, 1e-3, Caputo_Piecewise()), -0.762927553656252; atol = 1e-5)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 1e-4, CaputoPiecewise()), 2/sqrt(pi); atol = 1e-5)
+    @test isapprox(fracdiff(x->x^5, 0.5, 3.2, 1e-4, CaputoPiecewise()), 4.300306216488329e2; atol = 1e-5)
+    @test isapprox(fracdiff(cos, 0.5, 0.34, 1e-4, CaputoPiecewise()), -0.147174774607683; atol = 1e-5)
+    @test isapprox(fracdiff(x->exp(-x^2), 0.25, 2.3, 1e-3, CaputoPiecewise()), -0.762927553656252; atol = 1e-5)
 end
 
 @testset "Test Caputo Piecewise Fractional Derivative" begin
-    @test isapprox(fracdiff(x->x, 0.5, [1, 2, 3], 1e-4, Caputo_Piecewise()), [1.1283791670557781, 1.5957691213491374, 1.9544100474864603])
+    @test isapprox(fracdiff(x->x, 0.5, [1, 2, 3], 1e-4, CaputoPiecewise()), [1.1283791670557781, 1.5957691213491374, 1.9544100474864603])
 end
 
 @testset "Test Caputo Diethelm Fractional Derivative" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 1e-4, Caputo_Diethelm()), 2/sqrt(pi); atol = 1e-5)
-    @test isapprox(fracdiff(x->x^5, 0.5, 3.2, 1e-5, Caputo_Diethelm()), 4.300306216488329e2; atol = 1e-5)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 1e-4, CaputoDiethelm()), 2/sqrt(pi); atol = 1e-5)
+    @test isapprox(fracdiff(x->x^5, 0.5, 3.2, 1e-5, CaputoDiethelm()), 4.300306216488329e2; atol = 1e-5)
 end
 
 @testset "Test Caputo Diethelm Fractional Derivative" begin
-    @test isapprox(fracdiff(x->x, 0.5, [1, 2, 3], 0.0001, Caputo_Diethelm()), [1.1283791670955023, 1.5957691216057386, 1.954410047611745])
+    @test isapprox(fracdiff(x->x, 0.5, [1, 2, 3], 0.0001, CaputoDiethelm()), [1.1283791670955023, 1.5957691216057386, 1.954410047611745])
 end
 
 @testset "Test Caputo High Order Fractional Derivative" begin
-    @test isapprox(fracdiff(x->x^8, 0.5, 1, 0.05, 3, Caputo_High_Order()), 2.8542562386883445; atol=1e-4)
+    @test isapprox(fracdiff(x->x^8, 0.5, 1, 0.05, 3, CaputoHighOrder()), 2.8542562386883445; atol=1e-4)
 end
 
 @testset "Test Grunwald-Letnikov Fractional Derivative" begin
-    @test isapprox(fracdiff(x->x, 0.5, 0, 0.5, GL_Direct())[1], 0.7978845583186518; atol = 1e-5)
-    @test isapprox(fracdiff(x->x^5, 0.5, 0, 3.2, GL_Direct())[1], 4.300306216488329e2; atol = 1e-5)
-    @test isapprox(fracdiff(x->x, 0.5, collect(0:0.01:1), 2, GL_High_Precision())[end], 2/sqrt(pi); atol = 1e-4)
+    @test isapprox(fracdiff(x->x, 0.5, 0, 0.5, GLDirect())[1], 0.7978845583186518; atol = 1e-5)
+    @test isapprox(fracdiff(x->x^5, 0.5, 0, 3.2, GLDirect())[1], 4.300306216488329e2; atol = 1e-5)
+    @test isapprox(fracdiff(x->x, 0.5, collect(0:0.01:1), 2, GLHighPrecision())[end], 2/sqrt(pi); atol = 1e-4)
 end
 
 @testset "Test GL_Multiplicative_Additive()" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 0.009, GL_Multiplicative_Additive()), 2/sqrt(pi); atol=1e-2)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.009, GLMultiplicativeAdditive()), 2/sqrt(pi); atol=1e-2)
 end
 
 @testset "Test GL_Lagrange_Three_Point_Interp" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 0.009, GL_Lagrange_Three_Point_Interp()), 2/sqrt(pi); atol=1e-2)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.009, GLLagrangeThreePointInterp()), 2/sqrt(pi); atol=1e-2)
 end
 
 @testset "Test GL_Finite_Difference" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 0.009, GL_Finite_Difference()), 2/sqrt(pi); atol=1e-2)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.009, GLFiniteDifference()), 2/sqrt(pi); atol=1e-2)
 end
 
 @testset "Test Grunwald Letnikov Lagrange_Three_Point_Interp" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 0.01, GL_Lagrange_Three_Point_Interp()), 2/sqrt(pi); atol=1e-4)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.01, GLLagrangeThreePointInterp()), 2/sqrt(pi); atol=1e-4)
 end
 
 @testset "Test RLDiff Matrix Fractional Deriavtive" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLDiff_Matrix())[end], 2/sqrt(pi); atol = 1e-3)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLDiffMatrix())[end], 2/sqrt(pi); atol = 1e-3)
 end
 
 @testset "Test RLDiff Approx" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLDiff_Approx()), 2/sqrt(pi); atol = 1e-4)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLDiffApprox()), 2/sqrt(pi); atol = 1e-4)
 
     # Test Array input end point
-    result = fracdiff(x->x, 0.5, [1, 2, 3], 0.001, RLDiff_Approx())
+    result = fracdiff(x->x, 0.5, [1, 2, 3], 0.001, RLDiffApprox())
     @test isapprox(result[1], 2/sqrt(pi); atol=1e-4)
     @test isapprox(result[2], 1.5957691216057306; atol=1e-4)
     @test isapprox(result[3], 1.954410047611678; atol=1e-4)
 end
 
 @testset "Test RL Linear Spline Interpolation" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 0.0001, RL_Linear_Spline_Interp()), 2/sqrt(pi); atol = 1e-4)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.0001, RLLinearSplineInterp()), 2/sqrt(pi); atol = 1e-4)
 
     # Test Array input end point
-    result = fracdiff(x->x, 0.5, [1, 2, 3], 0.001, RL_Linear_Spline_Interp())
+    result = fracdiff(x->x, 0.5, [1, 2, 3], 0.001, RLLinearSplineInterp())
     @test isapprox(result[1], 2/sqrt(pi); atol=1e-4)
     @test isapprox(result[2], 1.5957691216057306; atol=1e-4)
     @test isapprox(result[3], 1.954410047611678; atol=1e-4)
@@ -87,24 +87,24 @@ end
 
 
 @testset "Test RL_G1 method" begin
-    @test isapprox(fracdiff(x->x, 0.5, 0, 1, 0.006, RL_G1()), 2/sqrt(pi); atol=1e-2)
+    @test isapprox(fracdiff(x->x, 0.5, 0, 1, 0.006, RLG1()), 2/sqrt(pi); atol=1e-2)
 end
 
 @testset "Test RL_D method" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RL_D()), 2/sqrt(pi); atol=1e-4)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLD()), 2/sqrt(pi); atol=1e-4)
 end
 
 @testset "Test Hadamard Fractional Derivative" begin
-    @test isapprox(fracdiff(log, 0.5, 1, 2, 1/4000000, Hadamard_LRect()), 0.9391460; atol=1e-4)
-    @test isapprox(fracdiff(log, 0.3, 1, 2, 1/4000000, Hadamard_LRect()), 0.8514935; atol=1e-4)
-    @test isapprox(fracdiff(log, 0.5, 1, 2, 1/4000000, Hadamard_RRect()), 0.9391460; atol=1e-4)
-    @test isapprox(fracdiff(log, 0.3, 1, 2, 1/4000000, Hadamard_RRect()), 0.8514936; atol=1e-4)
-    @test isapprox(fracdiff(log, 0.5, 1, 2, 1/4000000, Hadamard_Trap()), 0.9391460; atol=1e-4)
-    @test isapprox(fracdiff(log, 0.3, 1, 2, 1/4000000, Hadamard_Trap()), 0.8514935; atol=1e-4)
+    @test isapprox(fracdiff(log, 0.5, 1, 2, 1/4000000, HadamardLRect()), 0.9391460; atol=1e-4)
+    @test isapprox(fracdiff(log, 0.3, 1, 2, 1/4000000, HadamardLRect()), 0.8514935; atol=1e-4)
+    @test isapprox(fracdiff(log, 0.5, 1, 2, 1/4000000, HadamardRRect()), 0.9391460; atol=1e-4)
+    @test isapprox(fracdiff(log, 0.3, 1, 2, 1/4000000, HadamardRRect()), 0.8514936; atol=1e-4)
+    @test isapprox(fracdiff(log, 0.5, 1, 2, 1/4000000, HadamardTrap()), 0.9391460; atol=1e-4)
+    @test isapprox(fracdiff(log, 0.3, 1, 2, 1/4000000, HadamardTrap()), 0.8514935; atol=1e-4)
 end
 
 @testset "Test Riesz Symmetric fractional derivative" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 0.5, Riesz_Symmetric()), [0.2651650429449553; 0.2651650429449553; -0.39774756441743303]; atol=1e-2)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.5, RieszSymmetric()), [0.2651650429449553; 0.2651650429449553; -0.39774756441743303]; atol=1e-2)
 end
 
 @testset "Test macros" begin

@@ -8,12 +8,12 @@ abstract type GL <: FracDiffAlg end
 """
 # Grünwald–Letnikov sense fractional dervivative.
 
-    fracdiff(f, α, start_point, end_point, GL_Direct())
+    fracdiff(f, α, start_point, end_point, GLDirect())
 
 ### Example:
 
 ```julia-repl
-julia> fracdiff(x->x^5, 0, 0.5, GL_Direct())
+julia> fracdiff(x->x^5, 0, 0.5, GLDirect())
 ```
 
 !!! info "Scope"
@@ -23,7 +23,7 @@ Please refer to [Grünwald–Letnikov derivative](https://en.wikipedia.org/wiki/
 
 Grunwald Letnikov direct compute method to obtain fractional derivative, precision are guaranteed but cause more memory allocation and compilation time.
 """
-struct GL_Direct <: GL end
+struct GLDirect <: GL end
 
 
 
@@ -31,14 +31,14 @@ struct GL_Direct <: GL end
 """
 # Grünwald Letnikov sense Multiplicative and Addtive approximation
 
-    fracdiff(f, α, end_point, h, GL_Multiplicative_Additive())
+    fracdiff(f, α, end_point, h, GLMultiplicativeAdditive())
 
 Grünwald–Letnikov multiplication-addition-multiplication-addition··· method to approximate fractional derivative.
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 1, 0.007, GL_Multiplicative_Additive())
+julia> fracdiff(x->x, 0.5, 1, 0.007, GLMultiplicativeAdditive())
 1.127403405642918
 ```
 
@@ -49,46 +49,46 @@ author={Oldham, Keith B. and Spanier, Jerome},
 year={1984}} 
 ```
 """
-struct GL_Multiplicative_Additive <: GL end
+struct GLMultiplicativeAdditive <: GL end
 
 
 
 """
 # Grünwald Letnikov sense three point interpolation
 
-    fracdiff(f, α, end_point, h, GL_Lagrange_Three_Point_Interp())
+    fracdiff(f, α, end_point, h, GLLagrangeThreePointInterp())
 
 Using Lagrange three poitns interpolation to approximate the fractional derivative.
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 1, 0.006, GL_Lagrange_Three_Point_Interp())
+julia> fracdiff(x->x, 0.5, 1, 0.006, GLLagrangeThreePointInterp())
 1.1261297605404632
 ```
 """
-struct GL_Lagrange_Three_Point_Interp <: GL end
+struct GLLagrangeThreePointInterp <: GL end
 
 """
 # Grünwald Letnikov sense finite difference approximation
 
-    fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, h, ::GL_Finite_Difference)::Vector
+    fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, h, ::GLFiniteDifference)::Vector
 
 Use finite difference method to obtain Grünwald Letnikov sense fractional derivative.
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 1, 0.01, GL_Finite_Difference())
+julia> fracdiff(x->x, 0.5, 1, 0.01, GLFiniteDifference())
 1.1269695801851276
 ```
 """
-struct GL_Finite_Difference <: GL end
+struct GLFiniteDifference <: GL end
 
 """
 # Grünwald Letnikov sense derivative approximation
 
-    fracdiff(f, α, point, p, GL_High_Precision())
+    fracdiff(f, α, point, p, GLHighPrecision())
 
 Use the high precision algorithms to compute the Grunwald letnikov fractional derivative.
 
@@ -97,7 +97,7 @@ The **p** here is the grade of precision.
 !!! note
     The value interval passing in the function should be a array!
 """
-struct GL_High_Precision <: GL end
+struct GLHighPrecision <: GL end
 
 
 ################################################################
@@ -108,7 +108,7 @@ struct GL_High_Precision <: GL end
 #=
 Grunwald Letnikov direct method
 =#
-function fracdiff(f::FunctionAndNumber, α::Float64, start_point, end_point, ::GL_Direct)
+function fracdiff(f::FunctionAndNumber, α::Float64, start_point, end_point, ::GLDirect)
     #checks(f, α, start_point, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -122,7 +122,7 @@ end
 
 #TODO: Use the improved alg!! This algorithm is not accurate
 #This algorithm is not so good, still more to do
-function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::GL_Multiplicative_Additive)::Float64
+function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::GLMultiplicativeAdditive)::Float64
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     summation = zero(Float64)
     n = round(Int, end_point/h)
@@ -135,10 +135,10 @@ function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::GL_Multipli
     return result
 end
 #=
-function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::GL_Multiplicative_Additive)::Vector
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::GLMultiplicativeAdditive)::Vector
     ResultArray = Float64[]
     for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracdiff(f, α, value, h, GL_Multiplicative_Additive()))
+        append!(ResultArray, fracdiff(f, α, value, h, GLMultiplicativeAdditive()))
     end
     return ResultArray
 end
@@ -146,7 +146,7 @@ end
 
 #TODO: This algorithm is same with the above one, not accurate!!!
 #This algorithm is not so good, still more to do
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::GL_Lagrange_Three_Point_Interp)::Float64
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::GLLagrangeThreePointInterp)::Float64
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     n = round(Int, end_point/h)
@@ -161,16 +161,16 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64
     return result
 end
 #=
-function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::GL_Lagrange_Three_Point_Interp)::Vector
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h, ::GLLagrangeThreePointInterp)::Vector
     ResultArray = Float64[]
     for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracdiff(f, α, value, h, GL_Lagrange_Three_Point_Interp()))
+        append!(ResultArray, fracdiff(f, α, value, h, GLLagrangeThreePointInterp()))
     end
     return ResultArray
 end
 =#
 
-function fracdiff(f::Union{Number, Function}, α::Float64, end_point, h::Float64, ::GL_Finite_Difference)::Float64
+function fracdiff(f::Union{Number, Function}, α::Float64, end_point, h::Float64, ::GLFiniteDifference)::Float64
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     n = round(Int, end_point/h)
     result = zero(Float64)
@@ -183,11 +183,11 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point, h::Float64
     return result1
 end
 #=
-function fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, h, ::GL_Finite_Difference)::Vector
+function fracdiff(f::Union{Function, Number}, α::AbstractArray, end_point, h, ::GLFiniteDifference)::Vector
     ResultArray = Float64[]
 
     for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracint(f, α, value, h, GL_Finite_Difference()))
+        append!(ResultArray, fracint(f, α, value, h, GLFiniteDifference()))
     end
     return ResultArray    
 end
@@ -195,7 +195,7 @@ end
 
 
 
-function fracdiff(f, α, t, p, ::GL_High_Precision)
+function fracdiff(f, α, t, p, ::GLHighPrecision)
     if isa(f, Function)
         y=f.(t)
     elseif isa(f, Vector)

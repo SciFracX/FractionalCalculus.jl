@@ -8,7 +8,7 @@ abstract type RLInt <: FracIntAlg end
 """
 # Riemann Liouville sense direct compute
 
-    fracint(f::Function, α, start_point, end_point, h, RL_Direct())
+    fracint(f::Function, α, start_point, end_point, h, RLDirect())
 
 Riemann_Liouville fractional integral using complex step differentiation.
 
@@ -21,28 +21,28 @@ By using [QuadGK](https://github.com/JuliaMath/QuadGK.jl) calculate the integrat
 ### Example: 
 
 ```julia-repl
-julia> fracint(x->x^5, 0.5, 0, 2.5, 1e-8, RL_Direct())
+julia> fracint(x->x^5, 0.5, 0, 2.5, 1e-8, RLDirect())
 (64.36234189727955, 7.742994054849976e-7)
 ```
 
 Returns a tuple (1.1639316474512205, 1.0183453796725215e-8), which contains the value of this derivative is 1.1639316474512205, and the error estimate is 1.0183453796725215e-8
 """
-struct RL_Direct <: RLInt end
+struct RLDirect <: RLInt end
 #=
 """
 # Riemann Liouville sense fractional integral with first diff known.
 
-    fracint(f, fd, α, start_point, end_point, RL_Direct_First_Diff_Known())
+    fracint(f, fd, α, start_point, end_point, RLDirect_First_Diff_Known())
 
 ### Example
 
 ```julia-repl
-julia> fracint(x->x^5, x->5*x^4, 0.5, 0, 2.5, RL_Direct_First_Diff_Known())
+julia> fracint(x->x^5, x->5*x^4, 0.5, 0, 2.5, RLDirect_First_Diff_Known())
 ```
 
 With first derivative known, we can use the Riemann Liouville sense to obtain the fractional integral more effcient.
 """
-struct RL_Direct_First_Diff_Known <: RLInt end
+struct RLDirect_First_Diff_Known <: RLInt end
 =#
 """
 @article{LI20113352,
@@ -54,12 +54,12 @@ author = {Changpin Li and An Chen and Junjie Ye},
 """
 # Riemann Liouville sense fractional integral using piecewise interpolation.
     
-    fracint(f, α, end_point, h, RL_Piecewise())
+    fracint(f, α, end_point, h, RLPiecewise())
     
 ### Example
     
 ```julia-repl
-julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_Piecewise())
+julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLPiecewise())
 64.36234206345209
 ```
     
@@ -73,7 +73,7 @@ Using piecewise linear interpolation:
     
 Constitute the original function with the interpolation and implement the summation.
 """
-struct RL_Piecewise <: RLInt end
+struct RLPiecewise <: RLInt end
 
 
 """
@@ -86,37 +86,37 @@ year={1984}}
 """
 # Riemann Liouville sense fractional integral approximation.
 
-    fracint(f, α, end_point, h, RLInt_Approx())
+    fracint(f, α, end_point, h, RLIntApprox())
 
 ### Example
 
 ```julia-repl
-julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Approx())
+julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLIntApprox())
 64.36229646291393
 ```
 
 Using the **Staircase approximation** to approximate the original function and implement the summation.
 """
-struct RLInt_Approx <: RLInt end
+struct RLIntApprox <: RLInt end
 
 
 """
 # Riemann Liouville sense fractional integral using **Linear interpolation**.
 
-    fracint(f, α, end_point, h, RL_LinearInterp())
+    fracint(f, α, end_point, h, RLLinearInterp())
 
 ### Example
 
 ```julia-repl
-julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RL_LinearInterp())
+julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLLinearInterp())
 64.36234206434942
 ```
 
-**RL_LinearInterp** is more complex compared with *RLInt_Approx* but more precise.
+**RLLinearInterp** is more complex compared with *RLIntApprox* but more precise.
 
-Deploying the [Linear Interpolation](https://en.wikipedia.org/wiki/Linear_interpolation) between ``f_{j+1}`` and ``f_j``, **RL_LinearInterp** method is more precise than **RLInt_Approx**.
+Deploying the [Linear Interpolation](https://en.wikipedia.org/wiki/Linear_interpolation) between ``f_{j+1}`` and ``f_j``, **RLLinearInterp** method is more precise than **RLIntApprox**.
 """
-struct RL_LinearInterp <: RLInt end
+struct RLLinearInterp <: RLInt end
 
 
 """
@@ -131,14 +131,14 @@ author={Podlubny, Igor and Chechkin, Aleksei and Skovranek, Tomas and Chen, Yang
 """
 # Riemann Liouville sense integral using Triangular Strip Matrix to discrete.
 
-    fracint(f, α, end_point, h, RLInt_Matrix())
+    fracint(f, α, end_point, h, RLIntMatrix())
 
 Using Triangular Strip Matrix to approximate fractional integral.
 
 ### Example
 
 ```julia-repl
-julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLInt_Matrix())
+julia> fracint(x->x^5, 0.5, 2.5, 0.0001, RLIntMatrix())
 ```
 
 !!! info
@@ -150,7 +150,7 @@ Try to set α as an integer, arbitrary integer of course! I promise you would en
 
 Using [Triangular Strip Matrix](https://en.wikipedia.org/wiki/Triangle_strip) to discrete the integral.
 """
-struct RLInt_Matrix <: RLInt end
+struct RLIntMatrix <: RLInt end
 
 
 """
@@ -159,7 +159,7 @@ struct RLInt_Matrix <: RLInt end
 ### Example
 
 ```julia-repl
-julia> fracint(x->x, 0.5, 1, 0.000001, RLInt_Simpson())
+julia> fracint(x->x, 0.5, 1, 0.000001, RLIntSimpson())
 0.7516516520541335
 ```
 
@@ -173,7 +173,7 @@ julia> fracint(x->x, 0.5, 1, 0.000001, RLInt_Simpson())
 
 Using fractional Simpson's formula to discrete fractional integral.
 """
-struct RLInt_Simpson <: RLInt end
+struct RLIntSimpson <: RLInt end
 
 
 """
@@ -182,14 +182,14 @@ struct RLInt_Simpson <: RLInt end
 ### Example
 
 ```julia-repl
-julia> fracint(x->x, 0.5, 1, 0.001, RLInt_Trapezoidal())
+julia> fracint(x->x, 0.5, 1, 0.001, RLIntTrapezoidal())
 0.7522527780636226
 ```
 
 《Numerical methods for fractional calculus》.
 Using Trapezoidal method to approximate fractional integral
 """
-struct RLInt_Trapezoidal <: RLInt end
+struct RLIntTrapezoidal <: RLInt end
 
 
 """
@@ -198,11 +198,11 @@ struct RLInt_Trapezoidal <: RLInt end
 ### Example
 
 ```julia-repl
-julia> fracint(x->x, 0.5, 1, 0.001, RLInt_Rectangular())
+julia> fracint(x->x, 0.5, 1, 0.001, RLIntRectangular())
 0.7516812175993778
 ```
 """
-struct RLInt_Rectangular <: RLInt end
+struct RLIntRectangular <: RLInt end
 
 """
 # Riemann Liouville sense fractional integral using cubic spline interpolation to approximate.
@@ -210,18 +210,18 @@ struct RLInt_Rectangular <: RLInt end
 ### Example
 
 ```julia-repl
-julia> fracint(x->x, 0.5, 1, 0.0001, RLInt_Cubic_Spline_Interp())
+julia> fracint(x->x, 0.5, 1, 0.0001, RLIntCubicSplineInterp())
 0.7529119186452693
 ```
 
 Error estimate of this method is ``\\mathcal{O(h^4)}``, it is determined by the error of the cubic spline interpolation.
 
 !!! warning "Set h as 0.001 or bigger"
-    For some reason, in the **RLInt_Cubic_Spline_Interp** method, set **h** as 0.001 would get better result.
+    For some reason, in the **RLIntCubicSplineInterp** method, set **h** as 0.001 would get better result.
 
 > Numerical Methods for Fractional Calculus Page 34
 """
-struct RLInt_Cubic_Spline_Interp <: RLInt end
+struct RLIntCubicSplineInterp <: RLInt end
 
 ####################################
 ###     Type definition done     ###
@@ -248,7 +248,7 @@ function checks(f, α, start_point, end_point)
     end
 end
 
-function fracint(f::FunctionAndNumber, α, start_point, end_point::Real, h::Float64, ::RL_Direct)
+function fracint(f::FunctionAndNumber, α, start_point, end_point::Real, h::Float64, ::RLDirect)
     #checks(f, α, start_point, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -261,7 +261,7 @@ function fracint(f::FunctionAndNumber, α, start_point, end_point::Real, h::Floa
     return result
 end
 
-function fracint(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::RL_Piecewise)::Float64
+function fracint(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::RLPiecewise)::Float64
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -287,13 +287,13 @@ function W(i, n, α)
 end
 
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RL_Piecewise)::Vector
-    result = map(x->fracint(f, α, x, h, RL_Piecewise()), end_point)
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLPiecewise)::Vector
+    result = map(x->fracint(f, α, x, h, RLPiecewise()), end_point)
     return result
 end
 
 
-function fracint(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::RLInt_Approx)::Float64
+function fracint(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::RLIntApprox)::Float64
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -309,15 +309,15 @@ function fracint(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::RLI
     return result1
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLInt_Approx)::Vector
-    result = map(x->fracint(f, α, x, h, RLInt_Approx()), end_point)
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLIntApprox)::Vector
+    result = map(x->fracint(f, α, x, h, RLIntApprox()), end_point)
     return result
 end
 
 
 
 
-function fracint(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float64, ::RL_LinearInterp)::Float64
+function fracint(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float64, ::RLLinearInterp)::Float64
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
 
@@ -333,14 +333,14 @@ function fracint(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float6
     return result1
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RL_LinearInterp)::Vector
-    result = map(x->fracint(f, α, x, h, RL_LinearInterp()), end_point)
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLLinearInterp)::Vector
+    result = map(x->fracint(f, α, x, h, RLLinearInterp()), end_point)
     return result
 end
 
 
 
-function fracint(f, α::Number, end_point, h::Float64, ::RLInt_Matrix)
+function fracint(f, α::Number, end_point, h::Float64, ::RLIntMatrix)
     N = round(Int, end_point/h+1)
     tspan = collect(0:h:end_point)
     return J(N, α, h)*f.(tspan)
@@ -369,9 +369,9 @@ end
 
 
 #=
-RLInt_Simpson Algorithm
+RLIntSimpson Algorithm
 =#
-function fracint(f, α, point, h::Float64, ::RLInt_Simpson)
+function fracint(f, α, point, h::Float64, ::RLIntSimpson)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 
@@ -403,15 +403,15 @@ function ĉₖₙ(k, n, α)
     return ((α+2)*((n+1-k)^(1+α)+(n-k)^(1+α))-2*((n+1-k)^(2+α)-(n-k)^(2+α)))
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLInt_Simpson)::Vector
-    result = map(x->fracint(f, α, x, h, RLInt_Simpson()), end_point)
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLIntSimpson)::Vector
+    result = map(x->fracint(f, α, x, h, RLIntSimpson()), end_point)
     return result
 end
 
 #=
-RLInt_Trapezoidal Algorithm
+RLIntTrapezoidal Algorithm
 =#
-function fracint(f::FunctionAndNumber, α, point, h::Float64, ::RLInt_Trapezoidal)
+function fracint(f::FunctionAndNumber, α, point, h::Float64, ::RLIntTrapezoidal)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 
@@ -436,7 +436,7 @@ function aₖₙ(k, n, α)
 end
 
 
-function fracint(f::Union{Number, Function}, α, point, h::Float64, ::RLInt_Rectangular)
+function fracint(f::Union{Number, Function}, α, point, h::Float64, ::RLIntRectangular)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 
@@ -454,15 +454,15 @@ function bₖ(k, α)
     return (k+1)^α-k^α
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLInt_Rectangular)::Vector
-    result = map(x->fracint(f, α, x, h, RLInt_Rectangular()), end_point)
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLIntRectangular)::Vector
+    result = map(x->fracint(f, α, x, h, RLIntRectangular()), end_point)
     return result
 end
 
 #=
-RLInt_Cubic_Spline_Interp Algorithm, when h is 0.01 behave best
+RLIntCubicSplineInterp Algorithm, when h is 0.01 behave best
 =#
-function fracint(f, α, point, h::Float64, ::RLInt_Cubic_Spline_Interp)
+function fracint(f, α, point, h::Float64, ::RLIntCubicSplineInterp)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
     
@@ -495,7 +495,7 @@ function êⱼₙ(j, n, α)
     end
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLInt_Cubic_Spline_Interp)::Vector
-    result = map(x->fracint(f, α, x, h, RLInt_Cubic_Spline_Interp()), end_point)
+function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLIntCubicSplineInterp)::Vector
+    result = map(x->fracint(f, α, x, h, RLIntCubicSplineInterp()), end_point)
     return result
 end

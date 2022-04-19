@@ -19,19 +19,19 @@ export SEMIDIFFRULES, SEMIINTRULES
 export Caputo, GL, RLDiff, Hadamard
 
 # Caputo sense fractional derivative
-export Caputo_Direct, Caputo_Piecewise, Caputo_Diethelm, Caputo_High_Precision, Caputo_High_Order
+export CaputoDirect, CaputoPiecewise, CaputoDiethelm, CaputoHighPrecision, CaputoHighOrder
 
 # Grünwald Letnikov sense fractional derivative
-export GL_Direct, GL_Multiplicative_Additive, GL_Lagrange_Three_Point_Interp, GL_Finite_Difference, GL_High_Precision
+export GLDirect, GLMultiplicativeAdditive, GLLagrangeThreePointInterp, GLFiniteDifference, GLHighPrecision
 
 # Riemann Liouville sense fractional derivative
-export RLDiff_Approx, RLDiff_Matrix, RL_Linear_Spline_Interp, RL_G1, RL_D
+export RLDiffApprox, RLDiffMatrix, RLLinearSplineInterp, RLG1, RLD
 
 # Hadamard sense fractional derivative
-export Hadamard_LRect, Hadamard_RRect, Hadamard_Trap
+export HadamardLRect, HadamardRRect, HadamardTrap
 
 # Riesz sense fractional derivative
-export Riesz_Symmetric, Riesz_Ortigueira
+export RieszSymmetric, RieszOrtigueira
 
 # Macros for convenient computing
 export @fracdiff, @semifracdiff
@@ -40,9 +40,9 @@ export @fracdiff, @semifracdiff
 export RLInt, HadamardInt
 
 
-export RL_Direct, RL_Piecewise
-export RLInt_Approx, RL_LinearInterp, RLInt_Matrix
-export RLInt_Simpson, RLInt_Trapezoidal, RLInt_Rectangular, RLInt_Cubic_Spline_Interp
+export RLDirect, RLPiecewise
+export RLIntApprox, RLLinearInterp, RLIntMatrix
+export RLIntSimpson, RLIntTrapezoidal, RLIntRectangular, RLIntCubicSplineInterp
 
 export HadamardMat
 

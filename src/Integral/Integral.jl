@@ -39,7 +39,7 @@ julia> @fracint(x->x, 0.5, 1)
 ```
 """
 macro fracint(f, α, point)
-    return :(fracint($f, $α, $point, 0.0001, RLInt_Approx()))
+    return :(fracint($f, $α, $point, 0.0001, RLIntApprox()))
 end
 
 """
@@ -53,5 +53,5 @@ julia> @semifracint(x->x, 1)
 ```
 """
 macro semifracint(f, point)
-    return :(fracint($f, 0.5, $point, 0.0001, RLInt_Approx()))
+    return :(fracint($f, 0.5, $point, 0.0001, RLIntApprox()))
 end

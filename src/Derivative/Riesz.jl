@@ -6,40 +6,40 @@ abstract type Riesz <: FracDiffAlg end
 """
 # Riesz sense symmetric fractional derivative algorithm.
 
-    fracdiff(f, α, end_point, h, Riesz_Symmetric())
+    fracdiff(f, α, end_point, h, RieszSymmetric())
 
 Compute fractional derivative of Riesz sense using Triangular Strip Matrix algorithm.
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 1, 0.01, Riesz_Symmetric())
+julia> fracdiff(x->x, 0.5, 1, 0.01, RieszSymmetric())
 ```
 """
-struct Riesz_Symmetric <: Riesz end
+struct RieszSymmetric <: Riesz end
 
 
 """
 # Riesz sense Ortigueira definition fractional derivative
 
-    fracdiff(f, α, end_point, h, Riesz_Ortigueira())
+    fracdiff(f, α, end_point, h, RieszOrtigueira())
 
 Ortigueira's definition of the symmetric Riesz derivative via centred differences
 
 ### Usage
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 1, 0.01, Riesz_Ortigueira())
+julia> fracdiff(x->x, 0.5, 1, 0.01, RieszOrtigueira())
 ```
 """
-struct Riesz_Ortigueira <: Riesz end
+struct RieszOrtigueira <: Riesz end
 
 ################################################################
 ###                    Type definition done                  ###
 ################################################################
 
 
-function fracdiff(f::FunctionAndNumber, α, end_point, h, ::Riesz_Symmetric)
+function fracdiff(f::FunctionAndNumber, α, end_point, h, ::RieszSymmetric)
     N=floor(Int, end_point/h)
 
     mat = RieszMatrix(α, N+1, h)
@@ -54,7 +54,7 @@ function RieszMatrix(α, N, h)
 end
 
 #FIXME: Values are changing when h become smaller?
-function fracdiff(f, α, point, h, ::Riesz_Ortigueira)
+function fracdiff(f, α, point, h, ::RieszOrtigueira)
     N = round(Int, point/h)
     t = collect(0:h:point)
     return ranort(α, N+1, h)*f.(t)
