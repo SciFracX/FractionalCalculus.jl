@@ -52,7 +52,7 @@ pkg> add FractionalCalculus
 To compute the fractional derivative in a specific point, for example, compute <img src="https://latex.codecogs.com/svg.image?\inline&space;\alpha=0.2" title="\inline \alpha=0.2" /> derivative of <img src="https://latex.codecogs.com/svg.image?\inline&space;f(x)=x" title="\inline f(x)=x" /> in <img src="https://latex.codecogs.com/svg.image?\inline&space;x=1" title="\inline x=1" /> with step size <img src="https://latex.codecogs.com/svg.image?\inline&space;h=0.0001" title="\inline h=0.0001" /> using **Riemann Liouville** sense:
 
 ```julia
-julia> fracdiff(x->x, 0.2, 1, 0.0001, RLDiff_Approx())
+julia> fracdiff(x->x, 0.2, 1, 0.0001, RLDiffApprox())
 1.0736712740308347
 ```
 
@@ -63,7 +63,7 @@ This will return the estimated value with high precision.
 To compute the fractional integral in a specific point, for example, compute the semi integral of <img src="https://latex.codecogs.com/svg.image?\inline&space;f(x)=x" title="\inline f(x)=x" /> in <img src="https://latex.codecogs.com/svg.image?\inline&space;x=1" title="\inline x=1" />  with step size <img src="https://latex.codecogs.com/svg.image?\inline&space;h=0.0001" title="\inline h=0.0001" /> using **Riemann-Liouville** sense:
 
 ```julia
-julia> fracint(x->x, 0.5, 1, 0.0001, RLInt_Approx())
+julia> fracint(x->x, 0.5, 1, 0.0001, RLIntApprox())
 0.7522525439593486
 ```
 
