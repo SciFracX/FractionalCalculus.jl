@@ -315,7 +315,7 @@ function wj(n::Int64, r::Int64, α)
     return A
 end
 
-function w(i::Int64, r::Int64, j, n, a)
+function w(i::Int64, r, j, n, a)
     ar = ones(r-1)
     br = ones(r-1)
     for lj = 1:r-2

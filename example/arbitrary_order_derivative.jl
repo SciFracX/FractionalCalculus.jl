@@ -8,7 +8,7 @@ s="\$D^{3.6}x^5\$"
 
 tspan=collect(0:0.01:6)
 
-result=fracdiff(x->x^5, 3.6, 6, 0.01, RLDiff_Matrix())
+result=fracdiff(x->x^5, 3.6, 6, 0.01, RLDiffMatrix())
 
 plot(tspan, result, title=s, legend=:bottomright, label="Numerical")
 plot!(tspan, target, lw=3, ls=:dash, label="Analytical")
