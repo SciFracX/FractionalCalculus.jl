@@ -1,4 +1,16 @@
+using SymbolicUtils, SpecialFunctions
+using SymbolicUtils.Rewriters
+using Symbolics
+
 incomplete_beta(z, a, b) = beta(a, b)*beta_inc(a, b, z)[1]
+
+# These are direct computing, we need to change to the numerical methods in http://www.mymathlib.com/c_source/functions/fresnel_sin_cos_integrals/fresnel_auxiliary_sine_integral.c
+auxiliaryfresnelsin(x) = sqrt(2/pi)*quadgk(t->exp(-2x*t)*sin(t^2), 0, Inf)[1]
+auxiliaryfresnelcos(x) = sqrt(2/pi)*quadgk(t->exp(-2x*t)*cos(t^2), 0, Inf)[1]
+
+@register incomplete_beta(z::Number, a::Number, b::Number)
+@register auxiliaryfresnelcos(x::Number)
+@register auxiliaryfresnelsin(x::Number)
 
 SEMIDIFFRULES = [
         # CONSTANTS AND POWERS
@@ -43,8 +55,8 @@ SEMIDIFFRULES = [
         @acrule(exp(-~x)/sqrt(~x) => 1/2*sqrt(pi)*exp(-1/2*~x)*(besseli(1, 1/2*~x)-besseli(0, 1/2*~x)) )
         @acrule(cosh(sqrt(~x))/sqrt(~x) => sqrt(pi/~x)*besseli(1, sqrt(~x))/2)
         # Struve function and Modified Struve function @acrule (1-cos(sqrt(~x)))/~x => sqrt(pi)/2*
-        #@acrule(sin(~x) => sin(~x+pi/4)-sqrt(2)*gres)
-        #@acrule(cos(~x))
+        @acrule(sin(~x) => sin(~x+pi/4)-sqrt(2)*(auxiliaryfresnelcos(sqrt(2*~x/π))))
+        @acrule(cos(~x) => 1/(sqrt(π*~x))+cos(~x+1/4*π)-sqrt(2)*auxiliaryfresnelsin(sqrt(2*~x/π)))
         @acrule(sinh(~x) => dawson(sqrt(~x))/sqrt(pi)-(exp(~x)*erf(sqrt(~x)))/2)
         @acrule(cosh(~x) => 1/sqrt(pi*~x)+exp(~x)*erf(sqrt(~x))/2-dawson(sqrt(~x))/sqrt(pi))
         @acrule(asin(sqrt(~x))/sqrt(1-~x) => sqrt(pi)/(2*(1-~x)))
@@ -83,6 +95,8 @@ DIFFRULES = Chain(SEMIDIFFRULES)
 ### Example
 
 ```julia-repl
+julia> using SymbolicUtils
+julia> @syms x
 julia> semidiff(log(x))
 log(4x) / sqrt(πx)
 ```

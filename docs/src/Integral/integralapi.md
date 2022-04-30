@@ -14,7 +14,7 @@ FractionalCalculus.fracint
 FractionalCalculus.RLInt
 FractionalCalculus.RLDirect
 FractionalCalculus.RLPiecewise
-FractionalCalculus.RLIn_Approx
+FractionalCalculus.RLIntApprox
 FractionalCalculus.RLLinearInterp
 FractionalCalculus.RLIntMatrix
 FractionalCalculus.RLIntSimpson

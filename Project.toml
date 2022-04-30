@@ -11,6 +11,7 @@ QuadGK = "1fd47b50-473d-5c70-9696-f719f8f3bcdc"
 SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 SpecialMatrices = "928aab9d-ef52-54ac-8ca1-acd7ca42c160"
 SymbolicUtils = "d1185830-fcd6-423d-90d6-eec64667417b"
+Symbolics = "0c5d862f-8b57-4792-8d23-62f2024744c7"
 
 [compat]
 InvertedIndices = "1.1"
@@ -18,6 +19,7 @@ QuadGK = "2.4.2"
 SpecialFunctions = "1.6.2, 2"
 SpecialMatrices = "2.0.0"
 SymbolicUtils = "0.19.7"
+Symbolics = "4.4"
 julia = "1.0"
 
 [extras]

@@ -4,6 +4,7 @@ using QuadGK
 using SpecialFunctions: gamma
 using LinearAlgebra, InvertedIndices, SpecialMatrices
 using SymbolicUtils, SymbolicUtils.Rewriters
+using Symbolics
 
 include("./Derivative/Derivative.jl")
 include("./Integral/Integral.jl")

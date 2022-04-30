@@ -1,3 +1,6 @@
+using SymbolicUtils, SpecialFunctions
+using SymbolicUtils.Rewriters
+using Symbolics
 
 SEMIINTRULES = [
         # CONSTANTS AND POWERS
@@ -88,6 +91,8 @@ INTRULES = Chain(SEMIINTRULES)
 ### Example
 
 ```julia-repl
+julia> using SymbolicUtils
+julia> @syms x
 julia> semiint(x^4)
 0.45851597901024005(x^4.5)
 ```
