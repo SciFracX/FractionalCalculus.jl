@@ -8,15 +8,15 @@ Incomplete_beta(z, a, b) = beta(a, b)*beta_inc(a, b, z)[1]
 AuxiliaryFresnelSin(x) = sqrt(2/pi)*quadgk(t->exp(-2x*t)*sin(t^2), 0, Inf)[1]
 AuxiliaryFresnelCos(x) = sqrt(2/pi)*quadgk(t->exp(-2x*t)*cos(t^2), 0, Inf)[1]
 
-@register Incomplete_beta(z::Number, a::Number, b::Number)
-@register AuxiliaryFresnelCos(x::Number)
-@register AuxiliaryFresnelSin(x::Number)
-@register Hypergeometric1F1(a::Number, b::Number, c::Number, z::Number)
-@register Struve(p::Number, x::Number)# Here p is the order of Struve function
-@register MStruve(p::Number, x::Number)# Here p is the order of modified Struve function
-@register Legendre(p::Number, x::Number)# Here p is the order of Legendre function
-@register SinIntegral(x::Number)
-@register HyperSinIntegral(x::Number)
+@register_symbolic Incomplete_beta(z::Number, a::Number, b::Number)
+@register_symbolic AuxiliaryFresnelCos(x::Number)
+@register_symbolic AuxiliaryFresnelSin(x::Number)
+@register_symbolic Hypergeometric1F1(a::Number, b::Number, c::Number, z::Number)
+@register_symbolic Struve(p::Number, x::Number)# Here p is the order of Struve function
+@register_symbolic MStruve(p::Number, x::Number)# Here p is the order of modified Struve function
+@register_symbolic Legendre(p::Number, x::Number)# Here p is the order of Legendre function
+@register_symbolic SinIntegral(x::Number)
+@register_symbolic HyperSinIntegral(x::Number)
 
 
 
