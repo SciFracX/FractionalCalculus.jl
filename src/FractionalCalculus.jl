@@ -15,6 +15,7 @@ export fracdiff, fracint
 # Export symbolics computing APIs
 export semidiff, semiint
 export SEMIDIFFRULES, SEMIINTRULES
+export Incomplete_beta, AuxiliaryFresnelSin, AuxiliaryFresnelCos, Struve, MStruve, Legendre, SinIntegral, HyperSinIntegral, Hypergeometric1F1
 
 # Export fractional derivative releating API
 export Caputo, GL, RLDiff, Hadamard
