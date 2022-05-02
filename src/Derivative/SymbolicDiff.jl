@@ -115,7 +115,7 @@ DIFFRULES = Chain(SEMIDIFFRULES)
 
     semidiff(fun)
 
-```semidiff``` uses SymbolicUtils.jl to compute symbolic fractional differentiation.
+```semidiff``` uses SymbolicUtils.jl and Symbolics.jl to compute symbolic fractional differentiation.
 
 ### Example
 
@@ -126,8 +126,4 @@ julia> semidiff(log(x))
 log(4x) / sqrt(πx)
 ```
 """
-function semidiff(x)
-    D = x.dict
-    
-    DIFFRULES(x)
-end
+semidiff(x) = DIFFRULES(x)

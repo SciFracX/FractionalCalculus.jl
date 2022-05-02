@@ -1,10 +1,10 @@
 # Symbolic Fractional Differentiation
 
-With the help of [SymbolicUtils.jl](https://github.com/JuliaSymbolics/SymbolicUtils.jl), FractionalCalculus.jl can compute symbolic fractional differentiation and integral now!
+With the help of [SymbolicUtils.jl](https://github.com/JuliaSymbolics/SymbolicUtils.jl) and [Symbolics.jl](https://github.com/JuliaSymbolics/Symbolics.jl), FractionalCalculus.jl can compute symbolic fractional differentiation and integral now!
 
-First we need to put FractionalCalculus.jl and SymbolicUtils.jl to our workspace:
+First we need to import FractionalCalculus.jl and SymbolicUtils.jl to our workspace:
 
-```julia
+```julia-repl
 julia> using FractionalCalculus, SymbolicUtils
 julia> @syms x
 ```

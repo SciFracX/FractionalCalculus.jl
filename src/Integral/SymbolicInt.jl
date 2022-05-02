@@ -91,19 +91,6 @@ SEMIINTRULES = [
         @acrule ellipk(~x) => sqrt(pi)*asin(sqrt(~x))
         @acrule ellipe(~x) => sqrt(pi*(~x)*(1-~x))/2 + sqrt(pi)*asin(sqrt(~x))/2
 ]
-#=
-EXP_RELATED_FUN_RULES = [
-
-]
-
-BESSEL_STRUVE_FUN_RULES = [
-
-]
-
-MISCELLANEOUS_FUN_RULES = [
-
-]
-=#
 
 INTRULES = Chain(SEMIINTRULES)
 
@@ -112,7 +99,7 @@ INTRULES = Chain(SEMIINTRULES)
 
     semiint(fun)
 
-```semiint``` uses SymbolicUtils.jl to compute symbolic fractional integral.
+```semiint``` uses SymbolicUtils.jl and Symbolics.jl to compute symbolic fractional integral.
 
 ### Example
 
