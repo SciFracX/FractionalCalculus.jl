@@ -126,4 +126,8 @@ julia> semidiff(log(x))
 log(4x) / sqrt(πx)
 ```
 """
-semidiff(x) = DIFFRULES(x)
+function semidiff(x)
+    D = x.dict
+    
+    DIFFRULES(x)
+end
