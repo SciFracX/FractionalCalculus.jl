@@ -99,9 +99,12 @@ Current Algorithms
 |   |    ├── HadamardRRect
 |   |    └── HadamardTrap
 |   |
-|   └── Riesz
-|        ├── RieszSymmetric
-|        └── RieszOrtigueira
+|   ├── Riesz
+|   |    ├── RieszSymmetric
+|   |    └── RieszOrtigueira
+|   |
+|   └── Caputo-Fabrizio
+|        └── CaputoFabrizioAS
 |
 └── FracIntAlg
     ├── Riemann Liouville
@@ -175,7 +178,7 @@ Fractional Derivative:
 - [x] Riemann-Liouville fractional derivative 
 - [x] Riesz fractional derivative
 - [x] Hadamard  fractional derivative
-- [ ] Caputo-Fabrizio fractional derivative
+- [x] Caputo-Fabrizio fractional derivative
 - [ ] Atangana-Baleanu fractional derivative
 - [ ] Marchaud fractional derivative
 - [ ] Weyl fractional derivative

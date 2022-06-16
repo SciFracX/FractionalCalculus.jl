@@ -35,6 +35,9 @@ export HadamardLRect, HadamardRRect, HadamardTrap
 # Riesz sense fractional derivative
 export RieszSymmetric, RieszOrtigueira
 
+# Caputo-Fabrizio sense fractional derivative
+export CaputoFabrizio, CaputoFabrizioAS
+
 # Macros for convenient computing
 export @fracdiff, @semifracdiff
 

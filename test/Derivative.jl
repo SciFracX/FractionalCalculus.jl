@@ -107,6 +107,11 @@ end
     @test isapprox(fracdiff(x->x, 0.5, 1, 0.5, RieszSymmetric()), [0.2651650429449553; 0.2651650429449553; -0.39774756441743303]; atol=1e-2)
 end
 
+@testset "Test Caputo-Fabrizio fractional derivative" begin
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.00001, CaputoFabrizioAS()), 0.9887564512257243; atol=1e-6)
+    @test isapprox(fracdiff(x->x^2, 0.5, 1, 0.0000001, CaputoFabrizioAS()), 1.1508665775147289; atol=1e-6)
+end
+
 @testset "Test macros" begin
     @test isapprox(@fracdiff(x->x, 0.5, 1), 1.1283791670955126; atol=1e-4)
     @test isapprox(@fracdiff(x->x^5, 0.5, 3.2), 4.300306216488329e2; atol=1e-2)

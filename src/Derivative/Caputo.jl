@@ -39,7 +39,7 @@ struct CaputoDirect <: Caputo end
 
 If the first order derivative of a function is already known, we can use this method to compute the fractional order derivative more precisely.
 
-The inout function should be the first order derivative of a function
+The input function should be the first order derivative of a function
 
 ### Example
 
@@ -204,7 +204,7 @@ function fracdiff(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::Ca
     summation = zero(Float64)
     n = floor(Int, end_point/h)
 
-    @fastmath @inbounds @simd for i ∈ 0:n
+    @fastmath @inbounds @simd for i in 0:n
         summation += W₅(i, n, m, α)*first_order(f, i*h, h)
     end
 
@@ -239,7 +239,7 @@ function fracdiff(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float
     N = round(Int, end_point/h)
     result = zero(Float64)
 
-    @fastmath @inbounds @simd for i ∈ 0:N
+    @fastmath @inbounds @simd for i in 0:N
         result += quadweights(i, N, α)*(f(end_point-i*h) - f(0))
     end
 
@@ -279,7 +279,7 @@ function fracdiff(y::FunctionAndNumber, α, t, p::Integer, ::CaputoHighPrecision
         u = u.+c[i]*t.^(i-1)
     end
     if q < r
-        for i = (q+1):p
+        for i in (q+1):p
             du = du.+c[i]*t.^(i-1-α)*gamma(1)/gamma(i-α)
         end
     end
@@ -303,7 +303,7 @@ end
 function wj(n::Int64, r::Int64, α)
     A=zeros(n, n+1)
     for iw=1:r-2
-        for jw=1:iw+1
+        for jw in 1:iw+1
             A[iw, jw]=w(iw+1-jw, iw+1, iw, n, α)
         end
     end
@@ -318,7 +318,7 @@ end
 function w(i::Int64, r, j, n, a)
     ar = ones(r-1)
     br = ones(r-1)
-    for lj = 1:r-2
+    for lj in 1:r-2
         jj = r-lj-1
         kj = r-2
         tj = i-1
@@ -332,7 +332,7 @@ function w(i::Int64, r, j, n, a)
         pj = binomial.(fj, jj)
         sj = 1
         tj = 1
-        for m = 1:jj
+        for m in 1:jj
             sj = sj.*yj[:, m]
             tj = tj.*pj[:, m]
             ar[lj] = sum(sj)

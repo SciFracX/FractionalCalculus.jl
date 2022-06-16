@@ -10,6 +10,7 @@ include("GL.jl")
 include("Hadamard.jl")
 include("Riesz.jl")
 include("RL.jl")
+include("CaputoFabrizio.jl")
 
 include("SymbolicDiff.jl")
 
