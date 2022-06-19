@@ -138,6 +138,22 @@ julia> fracdiff(x->x, 0.5, 0, 1, 0.01, HadamardLRect())
 0.9165222777761635
 ```
 
+## Caputo-Fabrizio sense derivative
+
+Caputo-Fabrizio sense fractional order derivative is defined by:
+
+```math
+{^{CF}_0D^\alpha_t u(t)}=\frac{M(\alpha)}{1-\alpha}\int^t_0\frac{d}{d\tau}u(\tau)\exp[-\frac{\alpha}{1-\alpha}(t-\tau)]d\tau
+```
+
+To compute the Caputo-Fabrizio sense derivative, we can use the ```CaputoFabrizioAS``` algorithm in FractionalCalculus.jl:
+
+```julia-repl
+julia> fracdiff(x->x, 0.5, 1, 0.01, CaputoFabrizioAS())
+0.9887564512257243
+```
+
+
 !!! note
 	Here we need to specify the **start point** and **end point**
 
