@@ -103,8 +103,11 @@ Current Algorithms
 |   |    ├── RieszSymmetric
 |   |    └── RieszOrtigueira
 |   |
-|   └── Caputo-Fabrizio
-|        └── CaputoFabrizioAS
+|   ├── Caputo-Fabrizio
+|   |    └── CaputoFabrizioAS
+|   |
+|   └── Atanagana Baleanu
+|        └── AtanganaSeda
 |
 └── FracIntAlg
     ├── Riemann Liouville
@@ -179,14 +182,14 @@ Fractional Derivative:
 - [x] Riesz fractional derivative
 - [x] Hadamard  fractional derivative
 - [x] Caputo-Fabrizio fractional derivative
-- [ ] Atangana-Baleanu fractional derivative
+- [x] Atangana-Baleanu fractional derivative
 - [ ] Marchaud fractional derivative
 - [ ] Weyl fractional derivative
 - [ ] ......
 
 Fractional Integral:
 - [x] Riemann-Liouville fractional integral
-- [ ] Hadamard fractional integral
+- [x] Hadamard fractional integral
 - [ ] Atangana-Baleanu fractional integral
 - [ ] ......
 

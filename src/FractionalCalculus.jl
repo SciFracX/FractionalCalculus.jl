@@ -8,6 +8,7 @@ using Symbolics
 
 include("./Derivative/Derivative.jl")
 include("./Integral/Integral.jl")
+include("./Derivative/mlfun.jl")
 
 export FracDiffAlg, FracIntAlg
 export fracdiff, fracint
@@ -35,6 +36,8 @@ export HadamardLRect, HadamardRRect, HadamardTrap
 # Riesz sense fractional derivative
 export RieszSymmetric, RieszOrtigueira
 
+export AtanganaBaleanu, AtanganaSeda
+
 # Caputo-Fabrizio sense fractional derivative
 export CaputoFabrizio, CaputoFabrizioAS
 
@@ -56,5 +59,7 @@ export @fracint, @semifracint
 
 # Auxiliary functions
 export RieszMatrix, omega, B, genfun, first_order
+
+export mittleff
 
 end

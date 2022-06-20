@@ -153,6 +153,21 @@ julia> fracdiff(x->x, 0.5, 1, 0.01, CaputoFabrizioAS())
 0.9887564512257243
 ```
 
+## Atangana-Baleanu sense derivative
+
+Atangana-Baleanu sense fractional order derivative is defined by:
+
+```math
+{^{ABC}_0D^\alpha_t f(t)}=\frac{AB(\alpha)}{1-\alpha}\int^t_0\frac{d}{d\tau}f(\tau)E_\alpha[-\frac{\alpha}{1-\alpha}(t-\tau)^\alpha]d\tau
+```
+
+To compute the Atangana-Baleanu sense derivative, we can use the ```AtanganaSeda``` algorithm in FractionalCalculus.jl:
+
+```julia-repl
+julia> fracdiff(x->x, 0.5, 1, 0.01, AtanganaSeda())
+-0.8696378200415389
+```
+
 
 !!! note
 	Here we need to specify the **start point** and **end point**

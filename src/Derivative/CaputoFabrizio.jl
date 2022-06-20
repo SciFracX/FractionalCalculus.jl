@@ -1,7 +1,7 @@
 """
 Caputo-Fabrizio sense fractional derivative algorithms
 """
-abstract type CaputoFabrizio end
+abstract type CaputoFabrizio <: FracDiffAlg end
 
 """
 # Atangana Seda algorithm for approximating Caputo-Fabrizio fractional Derivatives

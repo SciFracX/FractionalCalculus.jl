@@ -112,6 +112,10 @@ end
     @test isapprox(fracdiff(x->x^2, 0.5, 1, 0.0000001, CaputoFabrizioAS()), 1.1508665775147289; atol=1e-6)
 end
 
+@testset "Test Atangana-Baleanu Caputo sense fractional derivative" begin
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.00001, AtanganaSeda()), -0.8696378200415389; atol=1e-3)
+end
+
 @testset "Test macros" begin
     @test isapprox(@fracdiff(x->x, 0.5, 1), 1.1283791670955126; atol=1e-4)
     @test isapprox(@fracdiff(x->x^5, 0.5, 3.2), 4.300306216488329e2; atol=1e-2)
@@ -125,4 +129,8 @@ end
     @test isapprox(genfun(2), [1.5 -2 0.5]; atol=1e-3)
     @test isapprox(first_order(exp, 2, 1e-6), exp(2); atol=1e-5)
     @test isapprox(first_order(sin, 2, 1e-6), cos(2); atol=1e-5)
+end
+
+@testset "Test Mittag Leffler function" begin
+    @test isapprox(mittleff(2, 2, 1), sinh(1); atol=1e-5)
 end
