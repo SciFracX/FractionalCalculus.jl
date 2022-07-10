@@ -21,12 +21,15 @@ AuxiliaryFresnelCos(x) = sqrt(2/pi)*quadgk(t->exp(-2x*t)*cos(t^2), 0, Inf)[1]
 
 
 SEMIDIFFRULES = [
+
+        @acrule ~x * +(~~ys) => sum(map(y-> ~x * y, ~~ys));
         # CONSTANTS AND POWERS
         @acrule sqrt(~x) => sqrt(pi)/2
         #@acrule((~x) => 2*sqrt(~x/pi))
         @acrule (~x)^(~α) => gamma(~α+1)/gamma(~α+1/2)*(~x)^(~α-1/2)
 
         # BINOMIALS
+        @acrule 1/sqrt(~x) => 0
         @acrule sqrt(1+~x) => 1/sqrt(pi*~x) + atan(sqrt(~x))/sqrt(pi)
         @acrule sqrt(1-~x) => 1/sqrt(pi*~x) - atanh(sqrt(~x))/sqrt(pi)
         @acrule 1/sqrt(1+~x) => 1/(sqrt(pi*~x)*(1+~x))

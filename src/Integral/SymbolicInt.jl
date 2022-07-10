@@ -9,6 +9,7 @@ SEMIINTRULES = [
         @acrule (~x)^(~α) => gamma(~α+1)/gamma(~α+3/2)*(~x)^(~α+1/2)
 
         # BINOMIALS
+        @acrule 1/sqrt(~x) => sqrt(π)
         @acrule sqrt(1+~x) => sqrt(~x/pi) + ((1+~x)*atan(sqrt(~x)))/sqrt(pi)
         @acrule sqrt(1-~x) => sqrt(~x/pi) + ((1-~x)*atanh(sqrt(~x)))/sqrt(pi)
         @acrule 1/sqrt(1+~x) => 2/sqrt(pi)*atan(sqrt(~x))
