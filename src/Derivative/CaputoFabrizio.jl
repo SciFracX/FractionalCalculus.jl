@@ -12,6 +12,13 @@ abstract type CaputoFabrizio <: FracDiffAlg end
 
 ```julia-repl
 julia> fracdiff(x->x, 0.5, 1, 0.001, CaputoFabrizioAS())
+0.9893315392351845
+```
+
+### Reference
+
+```tex
+Fractional Stochastic Differential Equations
 ```
 """
 struct CaputoFabrizioAS <: CaputoFabrizio end

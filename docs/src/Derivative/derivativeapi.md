@@ -51,6 +51,20 @@ FractionalCalculus.RieszSymmetric
 FractionalCalculus.RieszOrtigueira
 ```
 
+## Atangana Baleanu sense fractional derivative
+
+```@docs
+FractionalCalculus.AtanganaSeda
+```
+
+## Caputo Fabrizio sense fractional derivative
+
+```@docs
+FractionalCalculus.CaputoFabrizioAS
+```
+
+
+
 ```@docs
 FractionalCalculus.@fracdiff
 FractionalCalculus.@semifracdiff

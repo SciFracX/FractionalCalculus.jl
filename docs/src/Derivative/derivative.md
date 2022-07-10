@@ -143,7 +143,9 @@ julia> fracdiff(x->x, 0.5, 0, 1, 0.01, HadamardLRect())
 Caputo-Fabrizio sense fractional order derivative is defined by:
 
 ```math
-{^{CF}_0D^\alpha_t u(t)}=\frac{M(\alpha)}{1-\alpha}\int^t_0\frac{d}{d\tau}u(\tau)\exp[-\frac{\alpha}{1-\alpha}(t-\tau)]d\tau
+{^{CF}_0D^\alpha_t u(t)}=\frac{M(\alpha)}{1-\alpha}\int^t_0\frac{d}{d\tau}u(\tau)\exp[-\frac{\alpha}{1-\alpha}(t-\tau)]d\tau\\
+
+M(\alpha)=1-\alpha+\alpha/\Gamma(\alpha)
 ```
 
 To compute the Caputo-Fabrizio sense derivative, we can use the ```CaputoFabrizioAS``` algorithm in FractionalCalculus.jl:
@@ -158,7 +160,9 @@ julia> fracdiff(x->x, 0.5, 1, 0.01, CaputoFabrizioAS())
 Atangana-Baleanu sense fractional order derivative is defined by:
 
 ```math
-{^{ABC}_0D^\alpha_t f(t)}=\frac{AB(\alpha)}{1-\alpha}\int^t_0\frac{d}{d\tau}f(\tau)E_\alpha[-\frac{\alpha}{1-\alpha}(t-\tau)^\alpha]d\tau
+{^{ABC}_0D^\alpha_t f(t)}=\frac{AB(\alpha)}{1-\alpha}\int^t_0\frac{d}{d\tau}f(\tau)E_\alpha[-\frac{\alpha}{1-\alpha}(t-\tau)^\alpha]d\tau\\
+
+AB(\alpha)=1-\alpha+\alpha/\Gamma(\alpha)
 ```
 
 To compute the Atangana-Baleanu sense derivative, we can use the ```AtanganaSeda``` algorithm in FractionalCalculus.jl:
