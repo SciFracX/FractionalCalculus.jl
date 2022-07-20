@@ -138,6 +138,9 @@ julia> fracdiff(x->x, 0.5, 0, 1, 0.01, HadamardLRect())
 0.9165222777761635
 ```
 
+!!! note "Non-singular kernel"
+	When we are using the "fractional derivative" with non-singular kernel, like Caputo-Fabrizio and Atangana-Baleanu-Caputo sense, we should know these operators are in fact integer order operators, for more details we recommend you to read the paper [Why Fractional Derivatives with Nonsingular Kernels Should Not Be Used](https://link.springer.com/article/10.1515/fca-2020-0032)
+
 ## Caputo-Fabrizio sense derivative
 
 Caputo-Fabrizio sense fractional order derivative is defined by:
