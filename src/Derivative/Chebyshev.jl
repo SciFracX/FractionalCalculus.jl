@@ -31,18 +31,15 @@ function _chebyshev_a(::Type{K}, f::Function, n::Integer) where {K<:Number}
     a = Vector{K}(undef, n + 1)
 
     for k = 0:n
-        ρ = zero(K)
         τ = 1 < k < n ? 2k : 1
+        ρ = zero(K)
 
         for l = 0:n
             x::K = 2 * cos(π * l / n) - 1
             y::K = cos((π * k * l) / n)
+            z::K = f(x) * y
 
-            ρ += if 1 < l < n
-                f(x) * y
-            else
-                f(x) * y / 2
-            end
+            ρ += 1 < l < n ? z : z / 2
         end
 
         a[k+1] = (τ / n) * ρ
@@ -76,9 +73,6 @@ end
 function fracdiff(_f::Union{Function,K}, α::K, s::K, n::Integer, ::ChebyshevSeriesUnit) where {K<:Number}
     @assert 0 < α < 1
 
-    # ~ Aliasing ~ #
-    U = _chebyshev_U
-
     # ~ Step 1: f(x); given
     f = _f isa K ? (::K) -> _f : _f
 
@@ -89,8 +83,8 @@ function fracdiff(_f::Union{Function,K}, α::K, s::K, n::Integer, ::ChebyshevSer
     b = _chebyshev_b(α, s, a, n)
 
     # ~ Compute Chebyshev Polynomials
-    U_0 = U(-1, n) # Uₖ(2x - 1) ~ x = 0; k = 0, 1, ..., n - 1
-    U_s = U(2s - 1, n) # Uₖ(2x - 1) ~ x = s; k = 0, 1, ..., n - 1
+    U_0 = _chebyshev_U(-1, n) # Uₖ(2x - 1) ~ x = 0; k = 0, 1, ..., n - 1
+    U_s = _chebyshev_U(2s - 1, n) # Uₖ(2x - 1) ~ x = s; k = 0, 1, ..., n - 1
 
     # ~ Step 4: Compute the value of fₙ'(s)
     df_s = 2 * sum(k * a[k+1] * U_s[k] for k = 1:n)
