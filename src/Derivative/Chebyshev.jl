@@ -59,8 +59,9 @@ function _chebyshev_b(α::K, s::K, a::Vector{K}, n::Integer) where {K<:Number}
         x::K = 2(2s - 1) * b[k+1]
         y::K = (1 - (1 - α) / (k + 2)) * b[k+2]
         z::K = 8(k + 1) * a[k+2]
+        w::K = (1 + (1 - α) / k)
 
-        b[k] = (x - y + z) / (1 + (1 - α) / k)
+        b[k] = (x - y + z) / w
     end
 
     return b
@@ -83,19 +84,22 @@ function fracdiff(_f::Union{Function,K}, α::K, s::K, n::Integer, ::ChebyshevSer
     b = _chebyshev_b(α, s, a, n)
 
     # ~ Compute Chebyshev Polynomials
-    U_0 = _chebyshev_U(-1, n) # Uₖ(2x - 1) ~ x = 0; k = 0, 1, ..., n - 1
+    U_0 = _chebyshev_U(-1, n)     # Uₖ(2x - 1) ~ x = 0; k = 0, 1, ..., n - 1
     U_s = _chebyshev_U(2s - 1, n) # Uₖ(2x - 1) ~ x = s; k = 0, 1, ..., n - 1
 
     # ~ Step 4: Compute the value of fₙ'(s)
     df_s = 2 * sum(k * a[k+1] * U_s[k] for k = 1:n)
 
     # ~ Step 5: Compute the value of F(x) at x = 0 and x = s
+    #      bₖ   bₖ₊₂
+    # cₖ = -- - ----; k = 1, ..., n - 1
+    #      4k   4k+2
     c = _chebyshev_c(b, n)
 
     F_0 = c'U_0[2:n]
     F_s = c'U_s[2:n]
 
-    # ~ Step 6: Compute the value of ∂ᵅf(s)
+    # ~ Step 6: Compute the value of Dᵅf(s)
     return f(zero(K)) * s^(-α) + ((df_s / (1 - α)) - F_s + F_0) * s^(1 - α)
 end
 
