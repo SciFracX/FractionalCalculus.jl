@@ -2,7 +2,8 @@ module FractionalCalculus
 
 using QuadGK
 using SpecialFunctions: gamma
-using LinearAlgebra, InvertedIndices, SpecialMatrices
+using LinearAlgebra, InvertedIndices
+using SpecialMatrices: Vandermonde
 using SymbolicUtils, SymbolicUtils.Rewriters
 using Symbolics
 
