@@ -24,7 +24,7 @@ _tD^\alpha_bf(t)=\frac{d^n}{dt^n}\ _tD^{-(n-\alpha)}_bf(t)=\frac{d^n}{dt^n}\ _tI
 We can use **FractionalCalculus.jl** to compute Riemann Liouville sense $0.5$ order fractional derivative of $f(x)=x$ at $x=1$ with step size $0.0001$:
 
 ```julia-repl
-julia> fracdiff(x->x, 0.5, 1, 0.0001, RLDiffApprox())
+julia> fracdiff(x->x, 0.5, 1, 0.0001, RLDiffL1())
 1.1283791670955168
 ```
 

@@ -52,7 +52,7 @@ pkg> add FractionalCalculus
 To compute the fractional derivative in a specific point, for example, compute $ \alpha=0.2 $ derivative of $ f(x)=x $ in $ x=1 $ with step size $ h=0.0001 $ using **Riemann Liouville** sense:
 
 ```julia
-julia> fracdiff(x->x, 0.2, 1, 0.0001, RLDiffApprox())
+julia> fracdiff(x->x, 0.2, 1, 0.0001, RLDiffL1())
 1.0736712740308347
 ```
 
@@ -88,7 +88,7 @@ Current Algorithms
 |   |   └── GLHighPrecision
 |   |
 |   ├── Riemann Liouville
-|   |    ├── RLDiffApprox
+|   |    ├── RLDiffL1
 |   |    ├── RLLinearSplineInterp
 |   |    ├── RLDiffMatrix
 |   |    ├── RLG1

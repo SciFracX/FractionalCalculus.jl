@@ -1,5 +1,9 @@
-using FractionalCalculus
+using FractionalCalculus, SpecialFunctions
 using Test
+
+half_derivative_of_sqrt_x_at_1 = sqrt(π)/2
+half_derivative_of_x_square_minus_1_at_1 = 5/(3*sqrt(π))
+half_derivative_of_exp_at_1 = ℯ*erf(1)+1/sqrt(π)
 
 @testset "Test Caputo Direct Fractional Derivative" begin
     @test isapprox(fracdiff(x->x, 0.5, 0, 1, 1e-8, CaputoDirect())[1], 2/sqrt(pi); atol = 1e-5)
@@ -66,10 +70,10 @@ end
 end
 
 @testset "Test RLDiff Approx" begin
-    @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLDiffApprox()), 2/sqrt(pi); atol = 1e-4)
+    @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLDiffL1()), 2/sqrt(pi); atol = 1e-4)
 
     # Test Array input end point
-    result = fracdiff(x->x, 0.5, [1, 2, 3], 0.001, RLDiffApprox())
+    result = fracdiff(x->x, 0.5, [1, 2, 3], 0.001, RLDiffL1())
     @test isapprox(result[1], 2/sqrt(pi); atol=1e-4)
     @test isapprox(result[2], 1.5957691216057306; atol=1e-4)
     @test isapprox(result[3], 1.954410047611678; atol=1e-4)

@@ -23,7 +23,7 @@ include("SymbolicDiff.jl")
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x^2, 0.5, 1, 0.001, RLDiff_Approx())
+julia> fracdiff(x->x^2, 0.5, 1, 0.001, RLDiffL1())
 1.5044908143658473
 ```
 

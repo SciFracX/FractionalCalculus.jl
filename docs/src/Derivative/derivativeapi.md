@@ -30,7 +30,7 @@ FractionalCalculus.GLLagrangeThreePointInterp
 ## Riemann Liouville sense fractional derivative
 
 ```@docs
-FractionalCalculus.RLDiffApprox
+FractionalCalculus.L1
 FractionalCalculus.RLDiffMatrix
 FractionalCalculus.RLG1
 FractionalCalculus.RLD

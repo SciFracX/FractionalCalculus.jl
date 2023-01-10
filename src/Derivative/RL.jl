@@ -96,12 +96,14 @@ struct RLG1 <: RLDiff end
 """
 struct RLD <: RLDiff end
 
+
+struct RLDiffL2C <: RLDiff end
 ################################################################
 ###                    Type definition done                  ###
 ################################################################
 
-
-function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLDiffApprox)
+# Riemann Liouville sense L1 method
+function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLDiffL1)
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -167,15 +169,11 @@ function fracdiff(f::FunctionAndNumber, α, x, h::Float64, ::RLLinearSplineInter
     typeof(f) <: Number ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
     x == 0 ? (return 0) : nothing
     N = round(Int, x/h)
-
     result = 0
-
     @fastmath @inbounds @simd for k = 0:(N+1)
         result += z̄ₘₖ(N, k, α)*f(k*h)
     end
-
     return 1/(gamma(4-α)h^α)*result
-
 end
 
 function z̄ₘₖ(m, k, α)
@@ -219,6 +217,8 @@ function fracdiff(f::FunctionAndNumber, α, start_point, end_point, h::Float64, 
     return h^(-α)/gamma(-α)*result
 end
 
+fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLG1) = fracdiff(f::FunctionAndNumber, α, 0, end_point, h::Float64, ::RLG1)
+
 function fracdiff(f::FunctionAndNumber, α, point, h::Float64, ::RLD)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return f/sqrt(pi*point))) : nothing
     point == 0 ? (return 0) : nothing
@@ -244,4 +244,34 @@ function ωₖₙ(n, k, α)
         temp = (α-1)*n^(-α)-(n-1)^(1-α)+n^(1-α)
     end
     return n^α/(α*(1-α))*temp
+end
+
+function fracdiff(f::FunctionAndNumber, α, point, h, ::RLDiffL2C)
+    N = round(Int, point/h)
+    temp = 0
+    for k=-1:N+1
+        temp += Ŵ(k, α, N)*f((N-k)*h)
+    end
+end
+
+function Ŵ(k::Int64, α, N::Int64)
+    expo = 2-α
+    if k == -1
+        return 1
+    elseif k == 0
+        return 2^expo-2
+    elseif k == 1
+        return 3^expo-2^expo
+    elseif 2 ≤ k ≤ N-2
+        return (k+2)^expo - 2*(k+1)^expo + 2*(k-1)^expo - (k-2)^expo
+    elseif k == N-1
+        return -N^expo-(N-3)^expo + 2*(N-2)^expo
+    elseif k == N
+        return -N^expo + 2*(N-1)^expo-(N-2)^expo
+    elseif k == N+1
+        return N^expo - (N-1)^expo
+    end
+end
+function fracdiff(f::FunctionAndNumber, α, point, h, ::RLDiffL2C)
+    
 end
