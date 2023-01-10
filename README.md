@@ -49,7 +49,7 @@ pkg> add FractionalCalculus
 
 ### Derivative
 
-To compute the fractional derivative in a specific point, for example, compute $ \alpha=0.2 $ derivative of $ f(x)=x $ in $ x=1 $ with step size $ h=0.0001 $ using **Riemann Liouville** sense:
+To compute the fractional derivative in a specific point, for example, compute $\alpha = 0.2$ derivative of $f(x) = x$ in $x = 1$ with step size $h = 0.0001$ using **Riemann Liouville** sense:
 
 ```julia
 julia> fracdiff(x->x, 0.2, 1, 0.0001, RLDiffL1())
@@ -60,7 +60,7 @@ This will return the estimated value with high precision.
 
 ### Integral
 
-To compute the fractional integral in a specific point, for example, compute the semi integral of $ f(x)=x $ in $ x=1 $  with step size $ h=0.0001 $ using **Riemann-Liouville** sense:
+To compute the fractional integral in a specific point, for example, compute the semi integral of $f(x) = x$ in $x = 1$  with step size $h = 0.0001$ using **Riemann-Liouville** sense:
 
 ```julia
 julia> fracint(x->x, 0.5, 1, 0.0001, RLIntApprox())
@@ -131,21 +131,21 @@ For detailed usage, please refer to [our manual](https://scifracx.org/Fractional
 
 Let's see examples here:
 
-Compute the semi-derivative of $ f(x)=x $ in the interval $ [0, 1] $:
+Compute the semi-derivative of $f(x) = x$ in the interval $\left[0, 1\right]$:
 
 ![Plot](/docs/src/assets/semiderivativeplot.png)
 
 We can see the computing retains high precision⬆️.
 
-Compute different order derivative of $ f(x)=x $:
+Compute different order derivative of $f(x) = x$:
 
 ![Different Order](/docs/src/assets/different_order_x_derivative.png)
 
-Also different order derivative of $ f(x)=\sin(x) $:
+Also different order derivative of $f(x) = \sin(x)$:
 
 ![Different Order of sin](/docs/src/assets/different_order_sin_derivative.png)
 
-And also different order integral of $ f(x)=x $:
+And also different order integral of $f(x) = x$:
 
 ![Different Order Of x](/docs/src/assets/different_order_x_integral.png)
 
