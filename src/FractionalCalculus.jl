@@ -29,7 +29,7 @@ export CaputoDirect, CaputoPiecewise, CaputoDiethelm, CaputoHighPrecision, Caput
 export GLDirect, GLMultiplicativeAdditive, GLLagrangeThreePointInterp, GLFiniteDifference, GLHighPrecision
 
 # Riemann Liouville sense fractional derivative
-export RLDiffApprox, RLDiffMatrix, RLLinearSplineInterp, RLG1, RLD
+export RLDiffL1, RLDiffMatrix, RLLinearSplineInterp, RLG1, RLD
 
 # Hadamard sense fractional derivative
 export HadamardLRect, HadamardRRect, HadamardTrap

@@ -49,7 +49,7 @@ julia> @fracdiff(x->x, 0.5, 1)
 ```
 """
 macro fracdiff(f, α, point)
-    return :(fracdiff($f, $α, $point, 0.0001, RLDiffApprox()))
+    return :(fracdiff($f, $α, $point, 0.0001, RLDiffL1()))
 end
 
 """
@@ -63,6 +63,6 @@ julia> @semifracdiff(x->x, 1)
 ```
 """
 macro semifracdiff(f::Union{Number, Function}, point)
-    return :(fracdiff($f, 0.5, $point, 0.0001, RLDiffApprox()))
+    return :(fracdiff($f, 0.5, $point, 0.0001, RLDiffL1()))
 end
 

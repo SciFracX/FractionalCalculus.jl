@@ -7,21 +7,21 @@ abstract type RLDiff <: FracDiffAlg end
 """
 # Riemann Liouville sense derivative approximation
 
-    fracdiff(f, α, end_point, h, RLDiffApprox())
+    fracdiff(f, α, end_point, h, RLDiffL1())
 
-Using Linear interpolation to approximate fractional derivative in Riemann Liouville  fractional derivative sense.
+Using the L1 algorithm Linear interpolation to approximate fractional derivative in Riemann Liouville  fractional derivative sense.
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiffApprox())
+julia> fracdiff(x->x^5, 0.5, 2.5, 0.0001, RLDiffL1())
 141.59707906952633
 ```
 
 !!! warning
-    The RLDiffApprox algorithm only support for 0 < α < 1.
+    The RLDiffL1 algorithm only support for 0 < α < 1.
 """
-struct RLDiffApprox <: RLDiff end
+struct RLDiffL1 <: RLDiff end
 
 
 """
@@ -103,7 +103,7 @@ struct RLDiffL2C <: RLDiff end
 ################################################################
 
 # Riemann Liouville sense L1 method
-function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLDiffL1)
+function fracdiff(f::FunctionAndNumber, α::Float64, end_point::T, h::Float64, ::RLDiffL1) where T<:Number
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -119,8 +119,8 @@ function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLDiffL1)
     return result
 end
 
-function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::RLDiffApprox)::Vector
-    result = map(x->fracdiff(f, α, x, h, RLDiffApprox()), end_point)
+function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::RLDiffL1)::Vector
+    result = map(x->fracdiff(f, α, x, h, RLDiffL1()), end_point)
     return result
 end
 
@@ -217,7 +217,7 @@ function fracdiff(f::FunctionAndNumber, α, start_point, end_point, h::Float64, 
     return h^(-α)/gamma(-α)*result
 end
 
-fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLG1) = fracdiff(f::FunctionAndNumber, α, 0, end_point, h::Float64, ::RLG1)
+fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLG1) = fracdiff(f::FunctionAndNumber, α, 0, end_point, h::Float64, RLG1())
 
 function fracdiff(f::FunctionAndNumber, α, point, h::Float64, ::RLD)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return f/sqrt(pi*point))) : nothing
@@ -272,6 +272,8 @@ function Ŵ(k::Int64, α, N::Int64)
         return N^expo - (N-1)^expo
     end
 end
+#=
 function fracdiff(f::FunctionAndNumber, α, point, h, ::RLDiffL2C)
     
 end
+=#

@@ -117,7 +117,7 @@ function fracdiff(f::FunctionAndNumber, α::Float64, start_point, end_point, ::G
     return result
 end
 
-fracdiff(f::FunctionAndNumber, α::Float64, end_point, ::GLDirect) = fracdiff(f::FunctionAndNumber, α::Float64, 0, end_point, ::GLDirect)
+fracdiff(f::FunctionAndNumber, α::Float64, end_point, ::GLDirect) = fracdiff(f::FunctionAndNumber, α::Float64, 0, end_point, GLDirect())
 
 
 #TODO: Use the improved alg!! This algorithm is not accurate

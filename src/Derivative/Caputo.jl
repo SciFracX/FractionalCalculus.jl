@@ -196,7 +196,9 @@ function fracdiff(f::FunctionAndNumber, α::Float64, start_point, end_point::Abs
     return result
 end
 
-fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::CaputoDirect) = fracdiff(f::Union{Function, Number}, α::Float64, 0, end_point, h::Float64, ::CaputoDirect)
+function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::CaputoDirect)
+    fracdiff(f::Union{Function, Number}, α::Float64, 0, end_point, h::Float64, CaputoDirect())
+end
 
 function fracdiff(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::CaputoPiecewise)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing

@@ -69,7 +69,7 @@ end
     @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLDiffMatrix())[end], 2/sqrt(pi); atol = 1e-3)
 end
 
-@testset "Test RLDiff Approx" begin
+@testset "Test RLDiffL1" begin
     @test isapprox(fracdiff(x->x, 0.5, 1, 0.001, RLDiffL1()), 2/sqrt(pi); atol = 1e-4)
 
     # Test Array input end point
