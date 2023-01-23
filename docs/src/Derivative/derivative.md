@@ -40,7 +40,7 @@ In **FractionalCalculus.jl**, let's see, if you want to calculate the $0.5$ orde
 
 
 ```julia-repl
-julia>fracdiff(x->x, 0.5, 1, 0.0001, CaputoPiecewise())
+julia>fracdiff(x->x, 0.5, 1, 0.0001, CaputoTrap())
 1.128379167055761
 ```
 

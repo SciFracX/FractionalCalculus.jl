@@ -75,14 +75,14 @@ struct Caputo_Direct_First_Second_Diff_Known <: Caputo end
 """
 # Caputo sense Piecewise algorithm
 
-    fracdiff(f, α, end_point, h, CaputoPiecewise())
+    fracdiff(f, α, end_point, h, CaputoTrap())
 
 Using piecewise linear interpolation function to approximate input function and combining Caputo derivative then implement summation.
 
 ### Example
 
 ```julia-repl
-julia> fracdiff(x->x^5, 0.5, 2.5, 0.001, CaputoPiecewise())
+julia> fracdiff(x->x^5, 0.5, 2.5, 0.001, CaputoTrap())
 ```
 
 Return the fractional derivative of ``f(x)=x^5`` at point ``x=2.5``.
@@ -95,7 +95,7 @@ author = {Changpin Li and An Chen and Junjie Ye},
 ```
 
 """
-struct CaputoPiecewise <: Caputo end
+struct CaputoTrap <: Caputo end
 
 
 
@@ -175,33 +175,44 @@ struct CaputoHighOrder <: Caputo end
 
 
 
-function fracdiff(f::Union{Function, Number}, α::Float64, start_point, end_point, h::Float64, ::CaputoDirect)
+function fracdiff(f::Union{Function, Number},
+                  α::Float64,
+                  start_point::Number,
+                  end_point::Number,
+                  h::Float64,
+                  ::CaputoDirect) :: Float64
     #checks(f, α, start_point, end_point)
-    typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
+    isa(f, Number) ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     #Using complex step differentiation to calculate the first order differentiation
     g(τ) = imag(f(τ+1*im*h) ./ h) ./ ((end_point-τ) .^α)
     result = quadgk(g, start_point, end_point) ./gamma(1-α)
     return result
 end
 
-function fracdiff(f::FunctionAndNumber, α::Float64, start_point, end_point::AbstractArray, h::Float64, ::CaputoDirect)::Vector
-    #=
-    ResultArray = Float64[]
-    for (_, value) in enumerate(end_point)
-        append!(ResultArray, fracdiff(f, α, start_point, value, h, CaputoDirect()))
-    end
-    return ResultArray
-    =#
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  start_point::Number,
+                  end_point::AbstractArray,
+                  h::Float64,
+                  ::CaputoDirect)::Vector
     result = map(x->fracdiff(f, α, start_point, x, h, CaputoDirect())[1], end_point)
     return result
 end
 
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::CaputoDirect)
-    fracdiff(f::Union{Function, Number}, α::Float64, 0, end_point, h::Float64, CaputoDirect())
+function fracdiff(f::Union{Function, Number},
+                  α::Float64,
+                  end_point::Float64,
+                  h::Float64,
+                  ::CaputoDirect)
+    fracdiff(f, α, 0, end_point, h, CaputoDirect())
 end
 
-function fracdiff(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::CaputoPiecewise)
-    typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  end_point::Float64,
+                  h::Float64,
+                  ::CaputoTrap)
+    isa(f, Number) ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
     m = floor(Int, α)+1
 
@@ -215,6 +226,7 @@ function fracdiff(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::Ca
     result = summation*h^(m-α)/gamma(m-α+2)
     return result
 end
+
 function W₅(i, n, m, α)
     if i == 0
         return n^(m-α)*(m-α+1-n) + (n-1)^(m-α+1)
@@ -228,8 +240,12 @@ end
 first_order(f, point, h::Float64) = imag(f(point + im*h))/h
 
 
-function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::CaputoPiecewise)::Vector
-    result = map(x->fracdiff(f, α, x, h, CaputoPiecewise()), end_point)
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  end_point::AbstractArray,
+                  h::Float64,
+                  ::CaputoTrap)::Vector
+    result = map(x->fracdiff(f, α, x, h, CaputoTrap()), end_point)
     return result
 end
 
@@ -237,9 +253,13 @@ end
 #=
 Caputo Diethelm algorithm
 =#
-function fracdiff(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float64, ::CaputoDiethelm)
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  end_point::Number,
+                  h::Float64,
+                  ::CaputoDiethelm)
     #checks(f, α, 0, end_point)
-    typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
+    isa(f, Number) ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     N = round(Int, end_point/h)
     result = zero(Float64)
 
@@ -249,7 +269,8 @@ function fracdiff(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float
 
     return result*h^(-α)/gamma(2-α)
 end
-function quadweights(n, N, α)
+
+function quadweights(n::Int64, N::Int64, α::Float64)
     if n == 0
         return 1
     elseif  0 < n < N
@@ -259,7 +280,11 @@ function quadweights(n, N, α)
     end
 end
 
-function fracdiff(f, α::Float64, end_point::AbstractArray, h::Float64, ::CaputoDiethelm)::Vector
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  end_point::AbstractArray,
+                  h::Float64,
+                  ::CaputoDiethelm)::Vector
     result = map(x->fracdiff(f, α, x, h, CaputoDiethelm()), end_point)
     return result
 end
@@ -294,7 +319,12 @@ function fracdiff(y::FunctionAndNumber, α, t, p::Integer, ::CaputoHighPrecision
     return dy
 end
 
-function fracdiff(f::FunctionAndNumber, α, T, h, p::Integer, ::CaputoHighOrder)
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  T::Number,
+                  h::Float64,
+                  p::Integer,
+                  ::CaputoHighOrder)
     n::Int64 = round(Int, T/h)
     A = wj(n, p, α)
     B = fj(n, T, f)
@@ -304,8 +334,8 @@ function fracdiff(f::FunctionAndNumber, α, T, h, p::Integer, ::CaputoHighOrder)
     return D[1]
 end
 
-function wj(n::Int64, r::Int64, α)
-    A=zeros(n, n+1)
+function wj(n::Int64, r::Int64, α::Float64)
+    A = zeros(Float64, n, n+1)
     for iw=1:r-2
         for jw in 1:iw+1
             A[iw, jw]=w(iw+1-jw, iw+1, iw, n, α)

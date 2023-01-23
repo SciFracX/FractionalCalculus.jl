@@ -12,7 +12,7 @@ FractionalCalculus.fracdiff
 
 ```@docs
 FractionalCalculus.CaputoDirect
-FractionalCalculus.CaputoPiecewise
+FractionalCalculus.CaputoTrap
 FractionalCalculus.CaputoDiethelm
 FractionalCalculus.CaputoHighPrecision
 FractionalCalculus.CaputoHighOrder

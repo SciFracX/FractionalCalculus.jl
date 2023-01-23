@@ -76,7 +76,7 @@ Current Algorithms
 ├── FracDiffAlg
 │   ├── Caputo
 |   |   ├── CaputoDirect
-|   |   ├── CaputoPiecewise
+|   |   ├── CaputoTrap
 |   |   ├── CaputoDiethelm
 |   |   ├── CaputoHighPrecision
 |   |   └── CaputoHighOrder

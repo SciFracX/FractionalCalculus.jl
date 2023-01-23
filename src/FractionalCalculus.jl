@@ -23,7 +23,7 @@ export Incomplete_beta, AuxiliaryFresnelSin, AuxiliaryFresnelCos, Struve, MStruv
 export Caputo, GL, RLDiff, Hadamard
 
 # Caputo sense fractional derivative
-export CaputoDirect, CaputoPiecewise, CaputoDiethelm, CaputoHighPrecision, CaputoHighOrder
+export CaputoDirect, CaputoTrap, CaputoDiethelm, CaputoHighPrecision, CaputoHighOrder
 
 # Grünwald Letnikov sense fractional derivative
 export GLDirect, GLMultiplicativeAdditive, GLLagrangeThreePointInterp, GLFiniteDifference, GLHighPrecision
