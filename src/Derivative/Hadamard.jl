@@ -148,4 +148,4 @@ function fracdiff(f::FunctionAndNumber,
     return 1/gamma(1-α)*result
 end
 
-function fracdiff(f, α, x, h, ::HadamardTrap) = fracdiff(f, α, 0, x, h, HadamardTrap())
+fracdiff(f, α, x, h, ::HadamardTrap) = fracdiff(f, α, 0, x, h, HadamardTrap())
