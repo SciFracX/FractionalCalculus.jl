@@ -179,6 +179,10 @@ struct CaputoL1 <: Caputo end
 L2 method used only for the case when the order is 1 ≤ α ≤ 2
 """
 struct CaputoL2 <: Caputo end
+
+#=
+struct CaputoL2C <: Caputo end
+=#
 ################################################################
 ###                    Type definition done                  ###
 ################################################################
@@ -451,3 +455,32 @@ function wkcoeff(k::Int64, n::Int64, alpha::Float64)
         return n^(2-alpha)-(n-1)^(2-alpha)
     end
 end
+
+#=
+function fracdiff(f, alpha, end_point, h, ::CaputoL2C)
+    n = round(Int, end_point/h)
+    result = zero(Float64)
+    for k=-1:n+1
+        result += ŴK(k, n, alpha)*f((n-k)*h)
+    end
+    return h^(-alpha)/(2*gamma(3-alpha)) * result
+end
+
+function ŴK(k, n, alpha)
+    if k == -1
+        return 1
+    elseif k == 0
+        return 2^(2-alpha)-2
+    elseif k == 1
+        return 3^(2-alpha)-2^(2-alpha)
+    elseif 2 ≤ k ≤ n-2
+        return (k+2)^(2-alpha) - 2*(k+1)^(2-alpha) + 2*(k-1)^(2-alpha) - (k-2)^(2-alpha)
+    elseif k == n-1
+        return -n^(2-alpha) - (n-3)^(2-alpha) + 2*(n-2)^(2-alpha)
+    elseif k == n
+        return -n^(2-alpha) + 2*(n-1)^(2-alpha) - (n-2)^(2-alpha)
+    elseif k == n+1
+        return n^(2-alpha) - (n-1)^(2-alpha)
+    end
+end
+=#

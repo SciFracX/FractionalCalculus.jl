@@ -97,6 +97,8 @@ struct RLG1 <: RLDiff end
 struct RLD <: RLDiff end
 
 
+struct RLDiffL2 <: RLDiff end
+
 struct RLDiffL2C <: RLDiff end
 ################################################################
 ###                    Type definition done                  ###
@@ -302,3 +304,29 @@ function fracdiff(f::FunctionAndNumber, α, point, h, ::RLDiffL2C)
     
 end
 =#
+
+
+function fracdiff(f, alpha, point, h, ::RLDiffL2)
+    n = round(Int64, point/h)
+
+    result = zero(Float64)
+    for k=-1:n
+        result += WK(k, alpha, n)*f((n-k)*h)
+    end
+
+    return f(0)*point^(-alpha)/gamma(1-alpha) + derivative(f, 0)*point^(1-alpha)/gamma(2-alpha) + h^(-alpha)/gamma(3-alpha)*result
+end
+
+function WK(k, alpha, n)
+    if k == -1
+        return 1
+    elseif k == 0
+        return 2^(2-alpha)-3
+    elseif 1 ≤ k ≤ n-2
+        return (k+2)^(2-alpha) - 3*(k+1)^(2-alpha) + 3*k^(2-alpha) - (k-1)^(2-alpha)
+    elseif k == n-1
+        return -2*n^(2-alpha) + 3*(n-1)^(2-alpha) - (n-2)^(2-alpha)
+    elseif k == n
+        return n^(2-alpha) - (n-1)^(2-alpha)
+    end
+end
