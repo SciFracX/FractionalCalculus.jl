@@ -169,6 +169,16 @@ julia> fracdiff(x->x, 0.5, 1, 0.01, 2, CaputoHighOrder())
 ```
 """
 struct CaputoHighOrder <: Caputo end
+
+"""
+L1 method used only for the case when the order is 0 ≤ α ≤ 1
+"""
+struct CaputoL1 <: Caputo end
+
+"""
+L2 method used only for the case when the order is 1 ≤ α ≤ 2
+"""
+struct CaputoL2 <: Caputo end
 ################################################################
 ###                    Type definition done                  ###
 ################################################################
@@ -178,11 +188,11 @@ struct CaputoHighOrder <: Caputo end
 function fracdiff(f::Union{Function, Number},
                   α::Float64,
                   start_point::Number,
-                  end_point::Number,
+                  end_point::Real,
                   h::Float64,
                   ::CaputoDirect) :: Float64
     #checks(f, α, start_point, end_point)
-    isa(f, Number) ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
+    isa(f, Real) ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     #Using complex step differentiation to calculate the first order differentiation
     g(τ) = imag(f(τ+1*im*h) ./ h) ./ ((end_point-τ) .^α)
     result = quadgk(g, start_point, end_point) ./gamma(1-α)
@@ -191,7 +201,7 @@ end
 
 function fracdiff(f::FunctionAndNumber,
                   α::Float64,
-                  start_point::Number,
+                  start_point::Real,
                   end_point::AbstractArray,
                   h::Float64,
                   ::CaputoDirect)::Vector
@@ -201,7 +211,7 @@ end
 
 function fracdiff(f::Union{Function, Number},
                   α::Float64,
-                  end_point::Float64,
+                  end_point::Real,
                   h::Float64,
                   ::CaputoDirect)
     fracdiff(f, α, 0, end_point, h, CaputoDirect())
@@ -209,7 +219,7 @@ end
 
 function fracdiff(f::FunctionAndNumber,
                   α::Float64,
-                  end_point::Float64,
+                  end_point::Real,
                   h::Float64,
                   ::CaputoTrap)
     isa(f, Number) ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
@@ -255,11 +265,11 @@ Caputo Diethelm algorithm
 =#
 function fracdiff(f::FunctionAndNumber,
                   α::Float64,
-                  end_point::Number,
+                  end_point::Real,
                   h::Float64,
                   ::CaputoDiethelm)
     #checks(f, α, 0, end_point)
-    isa(f, Number) ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
+    isa(f, Real) ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     N = round(Int, end_point/h)
     result = zero(Float64)
 
@@ -393,4 +403,51 @@ function fj(n::Int64, T, fy)
         B[i2] = fy(T*(i2-1)/n)
     end
     return B
+end
+
+function fracdiff(f::FunctionAndNumber,
+                  alpha::Float64,
+                  end_point::Real,
+                  h::Float64,
+                  ::CaputoL1)
+    result = zero(Float64)
+    n = floor(Int, end_point/h)
+
+    for k=0:n-1
+        result += bk(n-k-1, alpha)*(f((k+1)*h)-f(k*h))
+    end
+    return h^(-alpha)/gamma(2-alpha)*result
+end
+
+function bk(k, alpha)
+    return (k+1)^(1-alpha)-k^(1-alpha)
+end
+
+
+function fracdiff(f::FunctionAndNumber,
+                  alpha::Float64,
+                  end_point::Real,
+                  h::Float64,
+                  ::CaputoL2)
+    result = zero(Float64)
+    n = round(Int, end_point/h)
+
+    for k=-1:n
+        result += wkcoeff(k, n, alpha)*f((n-k)*h)
+    end
+    return h^(-alpha)/gamma(3-alpha)*result
+end
+
+function wkcoeff(k::Int64, n::Int64, alpha::Float64)
+    if k == -1
+        return 1
+    elseif k == 0
+        return 2^(2-alpha)-3
+    elseif 1 ≤ k ≤ n-2
+        (k+2)^(2-alpha)-3*(k+1)^(2-alpha)+3*k^(2-alpha)-(k-1)^(2-alpha)
+    elseif k == n-1
+        return -2*n^(2-alpha)+3*(n-1)^(2-alpha)-(n-2)^(2-alpha)
+    elseif k == n
+        return n^(2-alpha)-(n-1)^(2-alpha)
+    end
 end

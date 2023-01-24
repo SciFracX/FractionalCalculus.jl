@@ -39,7 +39,11 @@ struct RieszOrtigueira <: Riesz end
 ################################################################
 
 
-function fracdiff(f::FunctionAndNumber, α, end_point, h, ::RieszSymmetric)
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  end_point::Real,
+                  h::Float64,
+                  ::RieszSymmetric)
     N=floor(Int, end_point/h)
 
     mat = RieszMatrix(α, N+1, h)

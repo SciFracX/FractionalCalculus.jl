@@ -108,7 +108,11 @@ struct GLHighPrecision <: GL end
 #=
 Grunwald Letnikov direct method
 =#
-function fracdiff(f::FunctionAndNumber, α::Float64, start_point, end_point, ::GLDirect)
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  start_point::Real,
+                  end_point::Real,
+                  ::GLDirect)::Float64
     #checks(f, α, start_point, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -146,7 +150,11 @@ end
 
 #TODO: This algorithm is same with the above one, not accurate!!!
 #This algorithm is not so good, still more to do
-function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64, ::GLLagrangeThreePointInterp)::Float64
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  end_point::Real,
+                  h::Float64,
+                  ::GLLagrangeThreePointInterp)::Float64
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     n = round(Int, end_point/h)
@@ -157,7 +165,6 @@ function fracdiff(f::Union{Function, Number}, α::Float64, end_point, h::Float64
     end
 
     result = summation*end_point^(-α)*n^α/gamma(-α)
-
     return result
 end
 #=
@@ -170,7 +177,11 @@ function fracdiff(f::Union{Number, Function}, α::Float64, end_point::AbstractAr
 end
 =#
 
-function fracdiff(f::Union{Number, Function}, α::Float64, end_point, h::Float64, ::GLFiniteDifference)::Float64
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  end_point::Real,
+                  h::Float64,
+                  ::GLFiniteDifference)::Float64
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     n = round(Int, end_point/h)
     result = zero(Float64)
@@ -195,7 +206,11 @@ end
 
 
 
-function fracdiff(f, α, t, p, ::GLHighPrecision)
+function fracdiff(f::Union{Function, Number, Vector},
+                  α::Float64,
+                  t,
+                  p::Int64,
+                  ::GLHighPrecision)
     if isa(f, Function)
         y=f.(t)
     elseif isa(f, Vector)

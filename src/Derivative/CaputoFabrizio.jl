@@ -23,7 +23,11 @@ Fractional Stochastic Differential Equations
 """
 struct CaputoFabrizioAS <: CaputoFabrizio end
 
-function fracdiff(f, α, point, h, ::CaputoFabrizioAS)
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  point::Real,
+                  h::Float64,
+                  ::CaputoFabrizioAS)
     M = 1-α+α/gamma(α)
     n::Int = round(Int, point/h)
     result = zero(Float64)

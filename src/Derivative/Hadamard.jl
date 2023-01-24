@@ -73,7 +73,12 @@ struct HadamardTrap <: HadamardDiff end
 #=
 Hadamard Left Rectangular computing algorithms
 =#
-function fracdiff(f::FunctionAndNumber, α, x₀, x, h::Float64, ::HadamardLRect)
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  x₀,
+                  x::Real,
+                  h::Float64,
+                  ::HadamardLRect)
     typeof(f) <: Number ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
     x == 0 ? (return 0) : nothing
     N = round(Int, (x-x₀)/h)
@@ -85,7 +90,7 @@ function fracdiff(f::FunctionAndNumber, α, x₀, x, h::Float64, ::HadamardLRect
 
     return 1/gamma(1-α)*result
 end
-function LRectCoeff(i, n, h, α, x₀)
+function LRectCoeff(i::Int64, n::Int64, h::Float64, α::Float64, x₀)
     if 0 ≤ i ≤ n-2
         return ((log((x₀+n*h)/(x₀+i*h)))^(-α) - (log((x₀+n*h)/(x₀+(i+1)*h)))^(-α))
     elseif i == n-1
@@ -96,7 +101,12 @@ end
 #=
 Hadamard Right Rectangular computing algorithm
 =#
-function fracdiff(f::FunctionAndNumber, α, x₀, x, h::Float64, ::HadamardRRect)
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  x₀::Real,
+                  x::Real,
+                  h::Float64,
+                  ::HadamardRRect)
     typeof(f) <: Number ? (x == 0 ? 0 : f/sqrt(pi*x)) : nothing
     N = round(Int, (x-x₀)/h)
     result = zero(Float64)
@@ -107,7 +117,7 @@ function fracdiff(f::FunctionAndNumber, α, x₀, x, h::Float64, ::HadamardRRect
 
     return 1/gamma(1-α)*result
 end
-function RRectCoeff(i, n, h, α, x₀)
+function RRectCoeff(i::Int64, n::Int64, h::Float64, α::Float64, x₀::Real)
     if i == 0
         return 1/2*LRectCoeff(i, n, h, α, x₀)
     elseif 1 ≤ i ≤ n-1
@@ -120,7 +130,12 @@ end
 #=
 Hadamard trapezoidal computing algorithm
 =#
-function fracdiff(f::FunctionAndNumber, α, x₀, x, h::Float64, ::HadamardTrap)
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  x₀::Real,
+                  x::Real,
+                  h::Float64,
+                  ::HadamardTrap)
     typeof(f) <: Number ? (x == 0 ? 0 : f/sqrt(pi*x)) : nothing
     N = round(Int, (x-x₀)/h)
 
@@ -132,3 +147,5 @@ function fracdiff(f::FunctionAndNumber, α, x₀, x, h::Float64, ::HadamardTrap)
 
     return 1/gamma(1-α)*result
 end
+
+function fracdiff(f, α, x, h, ::HadamardTrap) = fracdiff(f, α, 0, x, h, HadamardTrap())

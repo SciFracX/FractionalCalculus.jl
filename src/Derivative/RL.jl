@@ -103,9 +103,13 @@ struct RLDiffL2C <: RLDiff end
 ################################################################
 
 # Riemann Liouville sense L1 method
-function fracdiff(f::FunctionAndNumber, α::Float64, end_point::T, h::Float64, ::RLDiffL1) where T<:Number
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  end_point::Real,
+                  h::Float64,
+                  ::RLDiffL1)
     #checks(f, α, 0, end_point)
-    typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
+    typeof(f) <: Real ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
 
     summation = 0
@@ -127,7 +131,11 @@ end
 
 
 
-function fracdiff(f::Union{Function, Number}, α, end_point, h::Float64, ::RLDiffMatrix)
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  end_point::Real,
+                  h::Float64,
+                  ::RLDiffMatrix)
     N = round(Int, end_point/h+1)
     @views tspan = collect(0:h:end_point)
     return B(N, α, h)*f.(tspan)
@@ -165,8 +173,12 @@ Page 57
 
 Linear Spline Interpolation
 =#
-function fracdiff(f::FunctionAndNumber, α, x, h::Float64, ::RLLinearSplineInterp)
-    typeof(f) <: Number ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  x::Real,
+                  h::Float64,
+                  ::RLLinearSplineInterp)
+    typeof(f) <: Real ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
     x == 0 ? (return 0) : nothing
     N = round(Int, x/h)
     result = 0
@@ -203,7 +215,12 @@ function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h
     return result
 end
 
-function fracdiff(f::FunctionAndNumber, α, start_point, end_point, h::Float64, ::RLG1)
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  start_point::Real,
+                  end_point::Real,
+                  h::Float64,
+                  ::RLG1)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
 
@@ -219,8 +236,12 @@ end
 
 fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLG1) = fracdiff(f::FunctionAndNumber, α, 0, end_point, h::Float64, RLG1())
 
-function fracdiff(f::FunctionAndNumber, α, point, h::Float64, ::RLD)
-    typeof(f) <: Number ? (point == 0 ? (return 0) : (return f/sqrt(pi*point))) : nothing
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  point::Real,
+                  h::Float64,
+                  ::RLD)
+    typeof(f) <: Real ? (point == 0 ? (return 0) : (return f/sqrt(pi*point))) : nothing
     point == 0 ? (return 0) : nothing
 
     N = round(Int, point/h)
@@ -245,8 +266,12 @@ function ωₖₙ(n, k, α)
     end
     return n^α/(α*(1-α))*temp
 end
-
-function fracdiff(f::FunctionAndNumber, α, point, h, ::RLDiffL2C)
+#TODO: Change all of the styles and Real
+function fracdiff(f::FunctionAndNumber,
+                  α::Float64,
+                  point::Real,
+                  h::Float64,
+                  ::RLDiffL2C)
     N = round(Int, point/h)
     temp = 0
     for k=-1:N+1
