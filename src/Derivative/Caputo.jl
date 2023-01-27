@@ -200,8 +200,10 @@ function fracdiff(f::Union{Function, Number},
     #Using complex step differentiation to calculate the first order differentiation
     g(τ) = imag(f(τ+1*im*h) ./ h) ./ ((end_point-τ) .^α)
     result = quadgk(g, start_point, end_point) ./gamma(1-α)
-    return result
+    # quadgk return a Tuple (integral, abserr)
+    return result[1]
 end
+fracdiff(f, α, end_point, h, ::CaputoDirect) = fracdiff(f, α, 0, end_point, h, CaputoDirect())
 
 function fracdiff(f::FunctionAndNumber,
                   α::Float64,

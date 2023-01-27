@@ -117,7 +117,7 @@ function fracdiff(f::FunctionAndNumber,
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
     g(τ) = (f(end_point)-f(τ)) ./ (end_point - τ) .^ (1+α)
-    result = f(end_point)/(gamma(1-α) .* (end_point - start_point) .^ α) .+ quadgk(g, start_point, end_point) .* α ./ gamma(1-α)
+    result = f(end_point)/(gamma(1-α) .* (end_point - start_point) .^ α) .+ (quadgk(g, start_point, end_point) .* α ./ gamma(1-α))[1]
     return result
 end
 

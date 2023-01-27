@@ -268,20 +268,20 @@ function ωₖₙ(n, k, α)
     end
     return n^α/(α*(1-α))*temp
 end
-#TODO: Change all of the styles and Real
+
 function fracdiff(f::FunctionAndNumber,
                   α::Float64,
                   point::Real,
                   h::Float64,
                   ::RLDiffL2C)
     N = round(Int, point/h)
-    temp = 0
+    temp = zero(Float64)
     for k=-1:N+1
         temp += Ŵ(k, α, N)*f((N-k)*h)
     end
 end
 
-function Ŵ(k::Int64, α, N::Int64)
+function Ŵ(k::Int64, α::Float64, N::Int64)
     expo = 2-α
     if k == -1
         return 1
@@ -306,9 +306,13 @@ end
 =#
 
 
-function fracdiff(f, alpha, point, h, ::RLDiffL2)
-    n = round(Int64, point/h)
+function fracdiff(f::FunctionAndNumber,
+                  alpha::Float64,
+                  point::Real,
+                  h::Float64,
+                  ::RLDiffL2)
 
+    n = round(Int64, point/h)
     result = zero(Float64)
     for k=-1:n
         result += WK(k, alpha, n)*f((n-k)*h)
@@ -317,7 +321,7 @@ function fracdiff(f, alpha, point, h, ::RLDiffL2)
     return f(0)*point^(-alpha)/gamma(1-alpha) + derivative(f, 0)*point^(1-alpha)/gamma(2-alpha) + h^(-alpha)/gamma(3-alpha)*result
 end
 
-function WK(k, alpha, n)
+function WK(k::Int64, alpha::Float64, n::Int64)
     if k == -1
         return 1
     elseif k == 0
