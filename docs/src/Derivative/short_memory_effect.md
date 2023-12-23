@@ -8,7 +8,7 @@ Which means in the interval $[t-L, t]$, $L$ is the "memory length".
 _aD^\alpha_t f(t)\approx _{t-L}D^\alpha_t f(t)
 ```
 
-By deploying the **Short Memory Effect**, we can reduce our numerical cost while retain the precision in a way.
+By deploying the **Short Memory Effect**, we can reduce our numerical cost while retaining the precision in a way.
 
 !!! info "Short memory effect in FDE"
-    Want to see how the short memory is used in fractional differential equations? Please see [short memory effect in FDE](http://scifracx.org/FractionalDiffEq.jl/dev/system_of_FDE/#Short-memory-effect-in-FDE)
+    Want to see how short memory is used in fractional differential equations? Please see [the short memory effect in FDE](http://scifracx.org/FractionalDiffEq.jl/dev/system_of_FDE/#Short-memory-effect-in-FDE)
