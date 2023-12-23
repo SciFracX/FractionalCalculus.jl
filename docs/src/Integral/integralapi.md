@@ -1,6 +1,6 @@
 # Fractional integral API
 
-FractionalCalculus.jl has a disciplinary type system, by specifying which type you want to use, you can use the relating algorithm to compute fractional differentiation and fractional integral. 
+FractionalCalculus.jl has a disciplinary type system, by specifying which type you want to use, you can use the related algorithm to compute fractional differentiation and fractional integral. 
 
 This page contains all of the existing API we can use for computing fractional integral.
 

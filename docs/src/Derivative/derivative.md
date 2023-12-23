@@ -4,7 +4,7 @@
 Pages = ["derivative.md"]
 ```
 
-To get start with fractional derivative, you need to know that unlike Newtonian derivatives, fractional derivative is defined via integral.
+To get started with fractional derivatives, you need to know that unlike Newtonian derivatives, fractional derivative is defined via integral.
 
 !!! tip "Non-Local Operators"
 	It is noteworthy that the fractional derivatives are not local operators, which means that we cannot calculate the fractional derivative solely on the basis of function values of $f(x)$ taken from neighborhood of the point $x$. Instead, we have to take the entire history of $f(x)$ (i.e., all function values $f(x)$ for $0<x<a$) into account.
@@ -30,13 +30,13 @@ julia> fracdiff(x->x, 0.5, 1, 0.0001, RLDiffL1())
 
 ## Caputo sense derivative
 
-There many types of definitions of fractional derivative, Caputo is one of these useful definitions. The Caputo fractional derivative is first be proposed in [Michele Caputo's Paper](https://doi.org/10.1111/j.1365-246X.1967.tb02303.x), 
+There are many types of definitions of fractional derivatives, Caputo is one of these useful definitions. The Caputo fractional derivative is first proposed in [Michele Caputo's Paper](https://doi.org/10.1111/j.1365-246X.1967.tb02303.x), 
 
 ```math
 ^CD_t^\alpha f(t) = \frac{1}{\Gamma(n-\alpha)}\int_0^t\frac{f^{(n)}(\tau)d\tau}{(t-\tau)^{\alpha+1-n}}, n=\lceil{\alpha}\rceil
 ```
 
-In **FractionalCalculus.jl**, let's see, if you want to calculate the $0.5$ order fractional derivative of $f(x)=x$ at a $x=1$ with step size $0.0001$, simply typing these:
+In **FractionalCalculus.jl**, let's see, if you want to calculate the $0.5$ order fractional derivative of $f(x)=x$ at a $x=1$ with step size $0.0001$, simply type these:
 
 
 ```julia-repl
@@ -85,10 +85,10 @@ julia> fracdiff(x->x, 0.5, collect(0:0.01:1), 2, GLHighPrecision())
  1.1283791670955126
 ```
 
-Here, we use the high precision algorithm, the fourth parameter means we set the precision order as **p=2**. The returned result means the derivative on the interval $[0, 1]$.
+Here, we use the high-precision algorithm, the fourth parameter means we set the precision order as **p=2**. The returned result means the derivative on the interval $[0, 1]$.
 
 !!! info
-	If the function ``f(t)`` is suitably smooth, then the Grünwald Letnikov sense derivative and the Riemann Liouville sense derivative is equivalent.
+	If the function ``f(t)`` is suitably smooth, then the Grünwald Letnikov sense derivative and the Riemann Liouville sense derivative are equivalent.
 
 ## Riesz sense derivative
 
@@ -179,4 +179,4 @@ julia> fracdiff(x->x, 0.5, 1, 0.01, AtanganaSeda())
 !!! note
 	Here we need to specify the **start point** and **end point**
 
-There are different approximating methods being used in the computing, choose the one you need😉
+There are different approximating methods being used in computing, choose the one you need😉
