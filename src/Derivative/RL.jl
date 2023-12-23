@@ -96,9 +96,14 @@ struct RLG1 <: RLDiff end
 """
 struct RLD <: RLDiff end
 
-
+"""
+RLDiffL2
+"""
 struct RLDiffL2 <: RLDiff end
 
+"""
+RLDiffL2C
+"""
 struct RLDiffL2C <: RLDiff end
 ################################################################
 ###                    Type definition done                  ###
