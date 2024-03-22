@@ -19,7 +19,7 @@ half_derivative_of_exp_at_1 = ℯ*erf(1)+1/sqrt(π)
     @test isapprox(fracdiff(x->x, 0.5, 0, [1, 2, 3], 0.0001, CaputoDirect()), [2/sqrt(pi), 1.5957691216057408, 1.9544100476116828]; atol=1e-3)
 end
 
-@testset "Test Caputo  Trapezoidal Fractional Derivative" begin
+@testset "Test Caputo Trapezoidal Fractional Derivative" begin
     @test isapprox(fracdiff(x->x, 0.5, 1, 1e-4, CaputoTrap()), 2/sqrt(pi); atol = 1e-5)
     @test isapprox(fracdiff(x->x^5, 0.5, 3.2, 1e-4, CaputoTrap()), 4.300306216488329e2; atol = 1e-5)
     @test isapprox(fracdiff(cos, 0.5, 0.34, 1e-4, CaputoTrap()), -0.147174774607683; atol = 1e-5)
@@ -33,9 +33,6 @@ end
 @testset "Test Caputo Diethelm Fractional Derivative" begin
     @test isapprox(fracdiff(x->x, 0.5, 1, 1e-4, CaputoDiethelm()), 2/sqrt(pi); atol = 1e-5)
     @test isapprox(fracdiff(x->x^5, 0.5, 3.2, 1e-5, CaputoDiethelm()), 4.300306216488329e2; atol = 1e-5)
-end
-
-@testset "Test Caputo Diethelm Fractional Derivative" begin
     @test isapprox(fracdiff(x->x, 0.5, [1, 2, 3], 0.0001, CaputoDiethelm()), [1.1283791670955023, 1.5957691216057386, 1.954410047611745])
 end
 

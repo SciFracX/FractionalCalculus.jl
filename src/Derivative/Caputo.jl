@@ -271,10 +271,10 @@ end
 Caputo Diethelm algorithm
 =#
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
-                  end_point::Real,
-                  h::Float64,
-                  ::CaputoDiethelm)
+                  α::T,
+                  end_point::T,
+                  h::T,
+                  ::CaputoDiethelm) where {T <: Real}
     #checks(f, α, 0, end_point)
     isa(f, Real) ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     N = round(Int, end_point/h)
@@ -287,7 +287,7 @@ function fracdiff(f::FunctionAndNumber,
     return result*h^(-α)/gamma(2-α)
 end
 
-function quadweights(n::Int64, N::Int64, α::Float64)
+function quadweights(n::T, N::T, α::P) where {T <: Integer, P <: Real}
     if n == 0
         return 1
     elseif  0 < n < N
@@ -298,10 +298,10 @@ function quadweights(n::Int64, N::Int64, α::Float64)
 end
 
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
-                  end_point::AbstractArray,
-                  h::Float64,
-                  ::CaputoDiethelm)::Vector
+                  α::T,
+                  end_point::AbstractArray{T},
+                  h::T,
+                  ::CaputoDiethelm) where {T <: Real}
     result = map(x->fracdiff(f, α, x, h, CaputoDiethelm()), end_point)
     return result
 end
