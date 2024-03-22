@@ -198,7 +198,8 @@ function fracdiff(f::Union{Function, Number},
     #checks(f, α, start_point, end_point)
     isa(f, Real) ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     #Using complex step differentiation to calculate the first order differentiation
-    g(τ) = imag(f(τ+1*im*h) ./ h) ./ ((end_point-τ) .^α)
+    #g(τ) = imag(f(τ+1*im*h) ./ h) ./ ((end_point-τ) .^α)
+    g(τ) = ForwardDiff.derivative(f, τ) ./ ((end_point-τ) .^α)
     result = quadgk(g, start_point, end_point) ./gamma(1-α)
     # quadgk return a Tuple (integral, abserr)
     return result[1]

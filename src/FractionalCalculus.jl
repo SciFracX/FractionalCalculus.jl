@@ -6,6 +6,7 @@ using LinearAlgebra, InvertedIndices
 using SpecialMatrices: Vandermonde
 using SymbolicUtils, SymbolicUtils.Rewriters
 using Symbolics
+using ForwardDiff
 
 include("./Derivative/Derivative.jl")
 include("./Integral/Integral.jl")
@@ -23,13 +24,13 @@ export Incomplete_beta, AuxiliaryFresnelSin, AuxiliaryFresnelCos, Struve, MStruv
 export Caputo, GL, RLDiff, Hadamard
 
 # Caputo sense fractional derivative
-export CaputoDirect, CaputoTrap, CaputoDiethelm, CaputoHighPrecision, CaputoHighOrder
+export CaputoDirect, CaputoTrap, CaputoDiethelm, CaputoHighPrecision, CaputoHighOrder, CaputoL1, CaputoL2
 
 # Grünwald Letnikov sense fractional derivative
 export GLDirect, GLMultiplicativeAdditive, GLLagrangeThreePointInterp, GLFiniteDifference, GLHighPrecision
 
 # Riemann Liouville sense fractional derivative
-export RLDiffL1, RLDiffMatrix, RLLinearSplineInterp, RLG1, RLD
+export RLDiffL1, RLDiffL2, RLDiffL2C, RLDiffMatrix, RLLinearSplineInterp, RLG1, RLD
 
 # Hadamard sense fractional derivative
 export HadamardLRect, HadamardRRect, HadamardTrap

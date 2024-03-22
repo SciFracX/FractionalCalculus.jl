@@ -1,11 +1,5 @@
 # FractionalCalculus.jl
 
-<p align="center">
-<img width="250px" src="https://raw.githubusercontent.com/SciFracX/FractionalCalculus.jl/master/docs/src/assets/logo.svg"/>
-</p>
-
-
-<p align="center">
   <a href="https://github.com/SciFracX/FractionalCalculus.jl/actions?query=workflow%3ACI">
     <img alt="building" src="https://github.com/SciFracX/FractionalCalculus.jl/workflows/CI/badge.svg">
   </a>
@@ -21,9 +15,6 @@
     <a href="https://zenodo.org/badge/latestdoi/420992306">
   	<img src="https://zenodo.org/badge/420992306.svg" alt="DOI">
   </a>
-</p>
-
-<p align="center">
   <a href="https://github.com/SciFracX/FractionalCalculus.jl/issues">
     <img alt="GitHub issues" src="https://img.shields.io/github/issues/SciFracX/FractionalCalculus.jl?style=flat-square">
   </a>
@@ -33,7 +24,6 @@
   <a href="https://github.com/SciFracX/FractionalCalculus.jl/network">
     <img alt="GitHub forks" src="https://img.shields.io/github/forks/SciFracX/FractionalCalculus.jl?style=flat-square">
   </a>
-</p>
 
 FractionalCalculus.jl provides support for fractional calculus computing.
 
@@ -79,6 +69,8 @@ Current Algorithms
 |   |   ├── CaputoTrap
 |   |   ├── CaputoDiethelm
 |   |   ├── CaputoHighPrecision
+|   |   ├── CaputoL1
+|   |   ├── CaputoL2
 |   |   └── CaputoHighOrder
 |   |
 │   ├── Grünwald Letnikov
@@ -89,6 +81,8 @@ Current Algorithms
 |   |
 |   ├── Riemann Liouville
 |   |    ├── RLDiffL1
+|   |    ├── RLDiffL2
+|   |    ├── RLDiffL2C
 |   |    ├── RLLinearSplineInterp
 |   |    ├── RLDiffMatrix
 |   |    ├── RLG1
@@ -135,7 +129,7 @@ Compute the semi-derivative of $f(x) = x$ in the interval $\left[0, 1\right]$:
 
 ![Plot](/docs/src/assets/semiderivativeplot.png)
 
-We can see the computing retains high precision⬆️.
+We can see that computing retains high precision⬆️.
 
 Compute different order derivative of $f(x) = x$:
 
