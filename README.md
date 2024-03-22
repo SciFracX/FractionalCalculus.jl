@@ -29,7 +29,7 @@ FractionalCalculus.jl provides support for fractional calculus computing.
 
 ## 🎇 Installation
 
-If you have already install Julia, you can install FractionalCalculus.jl in REPL using Julia package manager:
+If you have already installed Julia, you can install FractionalCalculus.jl in REPL using Julia package manager:
 
 ```julia
 pkg> add FractionalCalculus
