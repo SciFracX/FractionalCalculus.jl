@@ -1,8 +1,8 @@
 # Fractional derivative API
 
-FractionalCalculus.jl has a disciplinary type system, by specifying which type you want to use, you can use the relating algorithm to compute fractional differentiation and fractional integral. 
+FractionalCalculus.jl has a disciplinary type system, by specifying which type you want to use, you can use the related algorithm to compute fractional differentiation and fractional integral. 
 
-This page contains all of the existing API we can use for computing fractional derivative.
+This page contains all of the existing APIs we can use for computing fractional derivatives.
 
 ```@docs
 FractionalCalculus.fracdiff
@@ -30,10 +30,13 @@ FractionalCalculus.GLLagrangeThreePointInterp
 ## Riemann Liouville sense fractional derivative
 
 ```@docs
-FractionalCalculus.L1
+FractionalCalculus.RLDiffL1
 FractionalCalculus.RLDiffMatrix
+FractionalCalculus.RLLinearSplineInterp
 FractionalCalculus.RLG1
 FractionalCalculus.RLD
+FractionalCalculus.RLDiffL2
+FractionalCalculus.RLDiffL2C
 ```
 
 ## Hadamard sense fractional derivative

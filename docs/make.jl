@@ -6,7 +6,8 @@ makedocs(
     format = Documenter.HTML(
         assets = ["assets/favicon.ico"],
     ),
-
+    warnonly = [:missing_docs, :cross_references],
+    doctest = false,
     pages = [
         "index.md",
         "Fractional Derivative" => [

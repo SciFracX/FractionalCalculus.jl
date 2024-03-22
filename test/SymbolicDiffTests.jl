@@ -15,7 +15,7 @@ end
     @syms x
     @eqtest semidiff(x^2) == gamma(3)/gamma(2.5)*(x^1.5)
     @eqtest semidiff(log(x)) == log(4*x) / sqrt(π*x)
-    #@eqtest semidiff(sqrt(1+x)) == 1/sqrt(pi*x)+atan(sqrt(x))/sqrt(pi)
+    @eqtest semidiff(sqrt(1+x)) == 1/sqrt(pi*x)+atan(sqrt(x))/sqrt(pi)
     #@eqtest semidiff(sqrt(1-x)) == 1/sqrt(pi*x)-atanh(sqrt(x))/sqrt(pi)
     @eqtest semidiff(1/sqrt(1+x)) == 1/(sqrt(pi*x)*(1+x))
     #@eqtest semidiff(1/sqrt(1-x)) == 1/(sqrt(pi*x)*(1-x))

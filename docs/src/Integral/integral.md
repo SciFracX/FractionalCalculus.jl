@@ -15,7 +15,7 @@ In FractionalCalculus, you can compute the integral of a function with order $\a
 julia> fracint(x->x, 0.5, 0, 1, 0.0001, RLDirect())
 ```
 
-A tuple contains result and estimating error will be returned.
+A tuple contains the result and estimating error will be returned.
 
 ```julia
 julia> fracint(x->x, 0.5, 0, 1, 0.0001, RLDirect())
