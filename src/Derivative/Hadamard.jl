@@ -74,10 +74,10 @@ struct HadamardTrap <: HadamardDiff end
 Hadamard Left Rectangular computing algorithms
 =#
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::Real,
                   x₀,
                   x::Real,
-                  h::Float64,
+                  h::Real,
                   ::HadamardLRect)
     typeof(f) <: Number ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
     x == 0 ? (return 0) : nothing
@@ -90,7 +90,7 @@ function fracdiff(f::FunctionAndNumber,
 
     return 1/gamma(1-α)*result
 end
-function LRectCoeff(i::Int64, n::Int64, h::Float64, α::Float64, x₀)
+function LRectCoeff(i::P, n::P, h::T, α::T, x₀) where {P <: Integer, T <: Real}
     if 0 ≤ i ≤ n-2
         return ((log((x₀+n*h)/(x₀+i*h)))^(-α) - (log((x₀+n*h)/(x₀+(i+1)*h)))^(-α))
     elseif i == n-1
@@ -102,10 +102,10 @@ end
 Hadamard Right Rectangular computing algorithm
 =#
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::Real,
                   x₀::Real,
                   x::Real,
-                  h::Float64,
+                  h::Real,
                   ::HadamardRRect)
     typeof(f) <: Number ? (x == 0 ? 0 : f/sqrt(pi*x)) : nothing
     N = round(Int, (x-x₀)/h)
@@ -117,7 +117,7 @@ function fracdiff(f::FunctionAndNumber,
 
     return 1/gamma(1-α)*result
 end
-function RRectCoeff(i::Int64, n::Int64, h::Float64, α::Float64, x₀::Real)
+function RRectCoeff(i::P, n::P, h::Real, α::Real, x₀::Real) where {P <: Integer}
     if i == 0
         return 1/2*LRectCoeff(i, n, h, α, x₀)
     elseif 1 ≤ i ≤ n-1
@@ -131,10 +131,10 @@ end
 Hadamard trapezoidal computing algorithm
 =#
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::Real,
                   x₀::Real,
                   x::Real,
-                  h::Float64,
+                  h::Real,
                   ::HadamardTrap)
     typeof(f) <: Number ? (x == 0 ? 0 : f/sqrt(pi*x)) : nothing
     N = round(Int, (x-x₀)/h)

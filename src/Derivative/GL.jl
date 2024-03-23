@@ -97,7 +97,11 @@ The **p** here is the grade of precision.
 !!! note
     The value interval passing in the function should be a array!
 """
-struct GLHighPrecision <: GL end
+struct GLHighPrecision <: GL
+    p::Int
+end
+
+GLHighPrecision(; p::Int=2) = GLHighPrecision(p)
 
 
 ################################################################
@@ -109,10 +113,10 @@ struct GLHighPrecision <: GL end
 Grunwald Letnikov direct method
 =#
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::T,
                   start_point::Real,
                   end_point::Real,
-                  ::GLDirect)::Float64
+                  ::GLDirect) where {T <: Real}
     #checks(f, α, start_point, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -126,7 +130,7 @@ fracdiff(f::FunctionAndNumber, α::Float64, end_point, ::GLDirect) = fracdiff(f:
 
 #TODO: Use the improved alg!! This algorithm is not accurate
 #This algorithm is not so good, still more to do
-function fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::GLMultiplicativeAdditive)::Float64
+function fracdiff(f::FunctionAndNumber, α, end_point, h::Real, ::GLMultiplicativeAdditive)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     summation = zero(Float64)
     n = round(Int, end_point/h)
@@ -151,10 +155,10 @@ end
 #TODO: This algorithm is same with the above one, not accurate!!!
 #This algorithm is not so good, still more to do
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::Real,
                   end_point::Real,
-                  h::Float64,
-                  ::GLLagrangeThreePointInterp)::Float64
+                  h::Real,
+                  ::GLLagrangeThreePointInterp)
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     n = round(Int, end_point/h)
@@ -178,10 +182,10 @@ end
 =#
 
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::Real,
                   end_point::Real,
-                  h::Float64,
-                  ::GLFiniteDifference)::Float64
+                  h::Real,
+                  ::GLFiniteDifference)
     typeof(f) <: Number ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     n = round(Int, end_point/h)
     result = zero(Float64)
@@ -207,10 +211,10 @@ end
 
 
 function fracdiff(f::Union{Function, Number, Vector},
-                  α::Float64,
+                  α::T,
                   t,
-                  p::Int64,
-                  ::GLHighPrecision)
+                  alg::GLHighPrecision) where {T <: Real}
+    p = @unpack p = alg
     if isa(f, Function)
         y=f.(t)
     elseif isa(f, Vector)
