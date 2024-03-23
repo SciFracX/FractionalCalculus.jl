@@ -43,7 +43,7 @@ end
 @testset "Test Grunwald-Letnikov Fractional Derivative" begin
     @test isapprox(fracdiff(x->x, 0.5, 0, 0.5, GLDirect())[1], 0.7978845583186518; atol = 1e-5)
     @test isapprox(fracdiff(x->x^5, 0.5, 0, 3.2, GLDirect())[1], 4.300306216488329e2; atol = 1e-5)
-    @test isapprox(fracdiff(x->x, 0.5, collect(0:0.01:1), 2, GLHighPrecision())[end], 2/sqrt(pi); atol = 1e-4)
+    @test isapprox(fracdiff(x->x, 0.5, collect(0:0.01:1), GLHighPrecision())[end], 2/sqrt(pi); atol = 1e-4)
 end
 
 @testset "Test GL_Multiplicative_Additive()" begin

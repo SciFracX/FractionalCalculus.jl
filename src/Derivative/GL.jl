@@ -214,7 +214,7 @@ function fracdiff(f::Union{Function, Number, Vector},
                   α::T,
                   t,
                   alg::GLHighPrecision) where {T <: Real}
-    p = @unpack p = alg
+    @unpack p = alg
     if isa(f, Function)
         y=f.(t)
     elseif isa(f, Vector)
