@@ -7,6 +7,7 @@ using SpecialMatrices: Vandermonde
 using SymbolicUtils, SymbolicUtils.Rewriters
 using Symbolics
 using ForwardDiff
+using UnPack
 
 include("./Derivative/Derivative.jl")
 include("./Integral/Integral.jl")
