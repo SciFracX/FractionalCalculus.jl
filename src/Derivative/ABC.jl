@@ -21,9 +21,9 @@ Fractional Stochastic Differential Equations
 struct AtanganaSeda <: AtanganaBaleanu end
 
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::Real,
                   point::Real,
-                  h::Float64,
+                  h::Real,
                   ::AtanganaSeda)
     n::Int = round(Int, point/h)
     result = zero(Float64)

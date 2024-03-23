@@ -88,7 +88,7 @@ function JacobiGQ(α, β, N)
     return diag(x), w
 end
 
-function Jac_Frac_Diff(x, a, b,N, α, output_type)
+function Jac_Frac_Diff(x, a, b, N, α, output_type)
     if size(x, 2) !== 1
         x=x'
     end

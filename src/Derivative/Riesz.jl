@@ -40,9 +40,9 @@ struct RieszOrtigueira <: Riesz end
 
 
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::Real,
                   end_point::Real,
-                  h::Float64,
+                  h::Real,
                   ::RieszSymmetric)
     N=floor(Int, end_point/h)
 

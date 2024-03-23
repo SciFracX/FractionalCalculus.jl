@@ -248,7 +248,7 @@ function checks(f, α, start_point, end_point)
     end
 end
 
-function fracint(f::FunctionAndNumber, α, start_point, end_point::Real, h::Float64, ::RLDirect)
+function fracint(f::FunctionAndNumber, α, start_point, end_point::Real, h::Real, ::RLDirect)
     #checks(f, α, start_point, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
@@ -261,13 +261,13 @@ function fracint(f::FunctionAndNumber, α, start_point, end_point::Real, h::Floa
     return result
 end
 
-function fracint(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::RLPiecewise)::Float64
+function fracint(f::FunctionAndNumber, α::Real, end_point, h::Real, ::RLPiecewise)::Real
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
     #Initialize
     n = round(Int, end_point/h)
-    result = zero(Float64)
+    result = zero(Real)
 
     @fastmath @inbounds @simd for i ∈ 0:n
         result += W(i, n, α)*f(i*h)
@@ -287,19 +287,19 @@ function W(i, n, α)
 end
 
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLPiecewise)::Vector
+function fracint(f::Union{Number, Function}, α::Real, end_point::AbstractArray, h::Real, ::RLPiecewise)::Vector
     result = map(x->fracint(f, α, x, h, RLPiecewise()), end_point)
     return result
 end
 
 
-function fracint(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::RLIntApprox)::Float64
+function fracint(f::FunctionAndNumber, α::Real, end_point, h::Real, ::RLIntApprox)::Real
     #checks(f, α, 0, end_point)
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
     α = -α
     n = round(Int, end_point/h)
-    result = zero(Float64)
+    result = zero(Real)
 
     @fastmath @inbounds @simd for i ∈ 0:n-1
         result += (f(end_point-i*h) + f(end_point-(i+1)*h))*((i+1)^(-α) - i^(-α))
@@ -309,7 +309,7 @@ function fracint(f::FunctionAndNumber, α::Float64, end_point, h::Float64, ::RLI
     return result1
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLIntApprox)::Vector
+function fracint(f::Union{Number, Function}, α::Real, end_point::AbstractArray, h::Real, ::RLIntApprox)::Vector
     result = map(x->fracint(f, α, x, h, RLIntApprox()), end_point)
     return result
 end
@@ -317,13 +317,13 @@ end
 
 
 
-function fracint(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float64, ::RLLinearInterp)::Float64
+function fracint(f::FunctionAndNumber, α::Real, end_point::Number, h::Real, ::RLLinearInterp)::Real
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return 2*f*sqrt(end_point/pi))) : nothing
     end_point == 0 ? (return 0) : nothing
 
     α = -α
     n = round(Int, end_point/h)
-    result = zero(Float64)
+    result = zero(Real)
     
     @fastmath @inbounds @simd for i ∈ 0:n-1
         result += ((i+1)*f(end_point-i*h)-i*f(end_point-(i+1)*h))/(-α)*((i+1)^(-α) - i^(-α))+(f(end_point - (i+1)*h) - f(end_point-i*h))/(1-α)*((i+1)^(1-α) - i^(1-α))
@@ -333,14 +333,14 @@ function fracint(f::FunctionAndNumber, α::Float64, end_point::Number, h::Float6
     return result1
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLLinearInterp)::Vector
+function fracint(f::Union{Number, Function}, α::Real, end_point::AbstractArray, h::Real, ::RLLinearInterp)::Vector
     result = map(x->fracint(f, α, x, h, RLLinearInterp()), end_point)
     return result
 end
 
 
 
-function fracint(f, α::Number, end_point, h::Float64, ::RLIntMatrix)
+function fracint(f, α::Number, end_point, h::Real, ::RLIntMatrix)
     N = round(Int, end_point/h+1)
     tspan = collect(0:h:end_point)
     return J(N, α, h)*f.(tspan)
@@ -356,7 +356,7 @@ function omega(n, p)
     return omega
 end
 
-function J(N, p, h::Float64)
+function J(N, p, h::Real)
     result = zeros(N, N)
     temp = omega(N, -p)
 
@@ -371,7 +371,7 @@ end
 #=
 RLIntSimpson Algorithm
 =#
-function fracint(f, α, point, h::Float64, ::RLIntSimpson)
+function fracint(f, α, point, h::Real, ::RLIntSimpson)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 
@@ -403,7 +403,7 @@ function ĉₖₙ(k, n, α)
     return ((α+2)*((n+1-k)^(1+α)+(n-k)^(1+α))-2*((n+1-k)^(2+α)-(n-k)^(2+α)))
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLIntSimpson)::Vector
+function fracint(f::Union{Number, Function}, α::Real, end_point::AbstractArray, h::Real, ::RLIntSimpson)::Vector
     result = map(x->fracint(f, α, x, h, RLIntSimpson()), end_point)
     return result
 end
@@ -411,12 +411,12 @@ end
 #=
 RLIntTrapezoidal Algorithm
 =#
-function fracint(f::FunctionAndNumber, α, point, h::Float64, ::RLIntTrapezoidal)
+function fracint(f::FunctionAndNumber, α, point, h::Real, ::RLIntTrapezoidal)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 
     N = round(Int, point/h)
-    result = zero(Float64)
+    result = zero(Real)
 
     @fastmath @inbounds @simd for i ∈ 0:N
         result += aₖₙ(i, N, α)*f(i*h)
@@ -436,12 +436,12 @@ function aₖₙ(k, n, α)
 end
 
 
-function fracint(f::Union{Number, Function}, α, point, h::Float64, ::RLIntRectangular)
+function fracint(f::Union{Number, Function}, α, point, h::Real, ::RLIntRectangular)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
 
     N = round(Int, point/h)
-    result = zero(Float64)
+    result = zero(Real)
 
     @fastmath @inbounds @simd for i ∈ 0:N-1
         result += bₖ(N-i-1, α)*f(i*h)
@@ -454,7 +454,7 @@ function bₖ(k, α)
     return (k+1)^α-k^α
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLIntRectangular)::Vector
+function fracint(f::Union{Number, Function}, α::Real, end_point::AbstractArray, h::Real, ::RLIntRectangular)::Vector
     result = map(x->fracint(f, α, x, h, RLIntRectangular()), end_point)
     return result
 end
@@ -462,12 +462,12 @@ end
 #=
 RLIntCubicSplineInterp Algorithm, when h is 0.01 behave best
 =#
-function fracint(f, α, point, h::Float64, ::RLIntCubicSplineInterp)
+function fracint(f, α, point, h::Real, ::RLIntCubicSplineInterp)
     typeof(f) <: Number ? (point == 0 ? (return 0) : (return 2*f*sqrt(point/pi))) : nothing
     point == 0 ? (return 0) : nothing
     
     N = round(Int, point/h)
-    result = zero(Float64)
+    result = zero(Real)
 
     @fastmath @inbounds @simd for j ∈ 0:N
         result += eⱼₙ(j, N, α)*f(j*h) + h*êⱼₙ(j, N, α)*first_order(f, j*h, h)
@@ -495,7 +495,7 @@ function êⱼₙ(j, n, α)
     end
 end
 
-function fracint(f::Union{Number, Function}, α::Float64, end_point::AbstractArray, h::Float64, ::RLIntCubicSplineInterp)::Vector
+function fracint(f::Union{Number, Function}, α::Real, end_point::AbstractArray, h::Real, ::RLIntCubicSplineInterp)::Vector
     result = map(x->fracint(f, α, x, h, RLIntCubicSplineInterp()), end_point)
     return result
 end
