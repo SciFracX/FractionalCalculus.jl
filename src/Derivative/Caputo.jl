@@ -190,11 +190,11 @@ struct CaputoL2C <: Caputo end
 
 
 function fracdiff(f::Union{Function, Number},
-                  α::Float64,
+                  α::T,
                   start_point::Number,
                   end_point::Real,
-                  h::Float64,
-                  ::CaputoDirect) :: Float64
+                  h::T,
+                  ::CaputoDirect) where {T <: Real}
     #checks(f, α, start_point, end_point)
     isa(f, Real) ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     #Using complex step differentiation to calculate the first order differentiation
@@ -207,33 +207,33 @@ end
 fracdiff(f, α, end_point, h, ::CaputoDirect) = fracdiff(f, α, 0, end_point, h, CaputoDirect())
 
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::T,
                   start_point::Real,
                   end_point::AbstractArray,
-                  h::Float64,
-                  ::CaputoDirect)::Vector
+                  h::T,
+                  ::CaputoDirect)::Vector where {T <: Real}
     result = map(x->fracdiff(f, α, start_point, x, h, CaputoDirect())[1], end_point)
     return result
 end
 
 function fracdiff(f::Union{Function, Number},
-                  α::Float64,
+                  α::T,
                   end_point::Real,
-                  h::Float64,
-                  ::CaputoDirect)
+                  h::T,
+                  ::CaputoDirect) where {T <: Real}
     fracdiff(f, α, 0, end_point, h, CaputoDirect())
 end
 
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::T,
                   end_point::Real,
-                  h::Float64,
-                  ::CaputoTrap)
+                  h::T,
+                  ::CaputoTrap) where {T <: Real}
     isa(f, Number) ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
     m = floor(Int, α)+1
 
-    summation = zero(Float64)
+    summation = zero(T)
     n = floor(Int, end_point/h)
 
     @fastmath @inbounds @simd for i in 0:n
@@ -272,13 +272,13 @@ Caputo Diethelm algorithm
 =#
 function fracdiff(f::FunctionAndNumber,
                   α::T,
-                  end_point::T,
+                  end_point::P,
                   h::T,
-                  ::CaputoDiethelm) where {T <: Real}
+                  ::CaputoDiethelm) where {T <: Real, P <: Number}
     #checks(f, α, 0, end_point)
     isa(f, Real) ? (end_point == 0 ? 0 : f/sqrt(pi*end_point)) : nothing
     N = round(Int, end_point/h)
-    result = zero(Float64)
+    result = zero(T)
 
     @fastmath @inbounds @simd for i in 0:N
         result += quadweights(i, N, α)*(f(end_point-i*h) - f(0))
@@ -299,9 +299,9 @@ end
 
 function fracdiff(f::FunctionAndNumber,
                   α::T,
-                  end_point::AbstractArray{T},
+                  end_point::AbstractArray{P},
                   h::T,
-                  ::CaputoDiethelm) where {T <: Real}
+                  ::CaputoDiethelm) where {T <: Real, P <: Number}
     result = map(x->fracdiff(f, α, x, h, CaputoDiethelm()), end_point)
     return result
 end
@@ -342,7 +342,7 @@ function fracdiff(f::FunctionAndNumber,
                   h::Float64,
                   p::Integer,
                   ::CaputoHighOrder)
-    n::Int64 = round(Int, T/h)
+    n = round(Int, T/h)
     A = wj(n, p, α)
     B = fj(n, T, f)
     C = ones(1, n)
@@ -351,8 +351,8 @@ function fracdiff(f::FunctionAndNumber,
     return D[1]
 end
 
-function wj(n::Int64, r::Int64, α::Float64)
-    A = zeros(Float64, n, n+1)
+function wj(n::P, r::P, α::T) where {P <: Integer, T <: Real}
+    A = zeros(T, n, n+1)
     for iw=1:r-2
         for jw in 1:iw+1
             A[iw, jw]=w(iw+1-jw, iw+1, iw, n, α)
@@ -366,18 +366,18 @@ function wj(n::Int64, r::Int64, α::Float64)
     return A
 end
 
-function w(i::Int64, r, j, n, a)
+function w(i::P, r::P, j, n::P, a) where {P <: Integer}
     ar = ones(r-1)
     br = ones(r-1)
     for lj in 1:r-2
         jj = r-lj-1
         kj = r-2
         tj = i-1
-        aj = collect(Int64, 0:tj)
-        bj = collect(Int64, tj+2:kj+1)
+        aj = collect(Int, 0:tj)
+        bj = collect(Int, tj+2:kj+1)
         cj = [aj; bj]
-        dj = collect(Int64, -1:tj-1)
-        ej = collect(Int64, tj+1:kj)
+        dj = collect(Int, -1:tj-1)
+        ej = collect(Int, tj+1:kj)
         fj = [dj; ej]
         yj = binomial.(cj, jj)
         pj = binomial.(fj, jj)
@@ -404,7 +404,7 @@ function w(i::Int64, r, j, n, a)
     return s
 end
 
-function fj(n::Int64, T, fy)
+function fj(n::Integer, T, fy)
     B = zeros(n+1)
     for i2 = 1:n+1
         B[i2] = fy(T*(i2-1)/n)
@@ -413,10 +413,10 @@ function fj(n::Int64, T, fy)
 end
 
 function fracdiff(f::FunctionAndNumber,
-                  alpha::Float64,
+                  alpha::T,
                   end_point::Real,
-                  h::Float64,
-                  ::CaputoL1)
+                  h::T,
+                  ::CaputoL1) where {T <: Real}
     result = zero(Float64)
     n = floor(Int, end_point/h)
 
@@ -432,11 +432,11 @@ end
 
 
 function fracdiff(f::FunctionAndNumber,
-                  alpha::Float64,
+                  alpha::T,
                   end_point::Real,
-                  h::Float64,
-                  ::CaputoL2)
-    result = zero(Float64)
+                  h::T,
+                  ::CaputoL2) where {T <: Real}
+    result = zero(T)
     n = round(Int, end_point/h)
 
     for k=-1:n
@@ -445,7 +445,7 @@ function fracdiff(f::FunctionAndNumber,
     return h^(-alpha)/gamma(3-alpha)*result
 end
 
-function wkcoeff(k::Int64, n::Int64, alpha::Float64)
+function wkcoeff(k::P, n::P, alpha::T) where {P <: Integer, T <: Real}
     if k == -1
         return 1
     elseif k == 0

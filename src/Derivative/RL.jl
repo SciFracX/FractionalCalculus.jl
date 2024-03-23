@@ -111,15 +111,15 @@ struct RLDiffL2C <: RLDiff end
 
 # Riemann Liouville sense L1 method
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::T,
                   end_point::Real,
-                  h::Float64,
-                  ::RLDiffL1)
+                  h::T,
+                  ::RLDiffL1) where {T <: Real}
     #checks(f, α, 0, end_point)
     typeof(f) <: Real ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
 
-    summation = 0
+    summation = zero(T)
     n = floor(Int, end_point/h)
 
     @fastmath @inbounds @simd for i ∈ 0:n-1
@@ -130,7 +130,7 @@ function fracdiff(f::FunctionAndNumber,
     return result
 end
 
-function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::RLDiffL1)::Vector
+function fracdiff(f::FunctionAndNumber, α::T, end_point::AbstractArray, h::T, ::RLDiffL1)::Vector where {T <: Real}
     result = map(x->fracdiff(f, α, x, h, RLDiffL1()), end_point)
     return result
 end
@@ -139,10 +139,10 @@ end
 
 
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::T,
                   end_point::Real,
-                  h::Float64,
-                  ::RLDiffMatrix)
+                  h::T,
+                  ::RLDiffMatrix) where {T <: Real}
     N = round(Int, end_point/h+1)
     @views tspan = collect(0:h:end_point)
     return B(N, α, h)*f.(tspan)
@@ -165,7 +165,7 @@ function B(N, p)
     return result
 end
 # Multiple dispatch for assigning step size *h*.
-function B(N, p, h::Float64)
+function B(N, p, h::T) where {T <: Real}
     result = B(N, p)
 
     return h^(-p)*result
@@ -181,21 +181,21 @@ Page 57
 Linear Spline Interpolation
 =#
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::T,
                   x::Real,
-                  h::Float64,
-                  ::RLLinearSplineInterp)
+                  h::T,
+                  ::RLLinearSplineInterp) where {T <: Real}
     typeof(f) <: Real ? (x == 0 ? (return 0) : (return f/sqrt(pi*x))) : nothing
     x == 0 ? (return 0) : nothing
     N = round(Int, x/h)
-    result = 0
+    result = zero(T)
     @fastmath @inbounds @simd for k = 0:(N+1)
         result += z̄ₘₖ(N, k, α)*f(k*h)
     end
     return 1/(gamma(4-α)h^α)*result
 end
 
-function z̄ₘₖ(m, k, α)
+function z̄ₘₖ(m::P, k::P, α::T) where {P <: Integer, T <: Real}
     if k ≤ m-1
         return c̄ⱼₖ(m-1, k, α)-2*c̄ⱼₖ(m, k, α)+c̄ⱼₖ(m+1, k, α)
     elseif k == m
@@ -217,23 +217,23 @@ function c̄ⱼₖ(j, k, α)
     end
 end
 
-function fracdiff(f::FunctionAndNumber, α::Float64, end_point::AbstractArray, h::Float64, ::RLLinearSplineInterp)::Vector
+function fracdiff(f::FunctionAndNumber, α::T, end_point::AbstractArray, h::T, ::RLLinearSplineInterp)::Vector where {T <: Real}
     result = map(x->fracdiff(f, α, x, h, RLLinearSplineInterp()), end_point)
     return result
 end
 
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::T,
                   start_point::Real,
                   end_point::Real,
-                  h::Float64,
-                  ::RLG1)
+                  h::T,
+                  ::RLG1) where {T <: Real}
     typeof(f) <: Number ? (end_point == 0 ? (return 0) : (return f/sqrt(pi*end_point))) : nothing
     end_point == 0 ? (return 0) : nothing
 
     N = round(Int, (end_point-start_point)/h)
 
-    result = zero(Float64)
+    result = zero(T)
     @fastmath @inbounds @simd for j = 0:N-1
         result += gamma(j-α)/gamma(j+1)*f(end_point-j*h)
     end
@@ -241,19 +241,19 @@ function fracdiff(f::FunctionAndNumber,
     return h^(-α)/gamma(-α)*result
 end
 
-fracdiff(f::FunctionAndNumber, α, end_point, h::Float64, ::RLG1) = fracdiff(f::FunctionAndNumber, α, 0, end_point, h::Float64, RLG1())
+fracdiff(f::FunctionAndNumber, α, end_point, h::T, ::RLG1) where {T <: Real} = fracdiff(f::FunctionAndNumber, α, 0, end_point, h::Float64, RLG1())
 
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::T,
                   point::Real,
-                  h::Float64,
-                  ::RLD)
+                  h::T,
+                  ::RLD) where {T <: Real}
     typeof(f) <: Real ? (point == 0 ? (return 0) : (return f/sqrt(pi*point))) : nothing
     point == 0 ? (return 0) : nothing
 
     N = round(Int, point/h)
 
-    result = zero(Float64)
+    result = zero(T)
     @fastmath @inbounds @simd for k = 0:N
         result += ωₖₙ(N, k, α)*f(point-k*h)
     end
@@ -262,7 +262,7 @@ function fracdiff(f::FunctionAndNumber,
 
 end
 
-function ωₖₙ(n, k, α)
+function ωₖₙ(n::P, k::P, α) where {P <: Integer}
     temp = 0
     if k == 0
         temp = -1
@@ -275,18 +275,18 @@ function ωₖₙ(n, k, α)
 end
 
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::T,
                   point::Real,
-                  h::Float64,
-                  ::RLDiffL2C)
+                  h::T,
+                  ::RLDiffL2C) where {T <: Real}
     N = round(Int, point/h)
-    temp = zero(Float64)
+    temp = zero(T)
     for k=-1:N+1
         temp += Ŵ(k, α, N)*f((N-k)*h)
     end
 end
 
-function Ŵ(k::Int64, α::Float64, N::Int64)
+function Ŵ(k::P, α::T, N::P) where {P <: Integer, T <: Real}
     expo = 2-α
     if k == -1
         return 1
@@ -312,13 +312,13 @@ end
 
 
 function fracdiff(f::FunctionAndNumber,
-                  alpha::Float64,
+                  alpha::T,
                   point::Real,
-                  h::Float64,
-                  ::RLDiffL2)
+                  h::T,
+                  ::RLDiffL2) where {T <: Real}
 
-    n = round(Int64, point/h)
-    result = zero(Float64)
+    n = round(Int, point/h)
+    result = zero(T)
     for k=-1:n
         result += WK(k, alpha, n)*f((n-k)*h)
     end
@@ -326,7 +326,7 @@ function fracdiff(f::FunctionAndNumber,
     return f(0)*point^(-alpha)/gamma(1-alpha) + derivative(f, 0)*point^(1-alpha)/gamma(2-alpha) + h^(-alpha)/gamma(3-alpha)*result
 end
 
-function WK(k::Int64, alpha::Float64, n::Int64)
+function WK(k::P, alpha::T, n::P) where {P <: Integer, T <: Real}
     if k == -1
         return 1
     elseif k == 0
