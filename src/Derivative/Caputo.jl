@@ -306,10 +306,6 @@ function fracdiff(f::FunctionAndNumber,
     return result
 end
 
-
-#=
-Caputo sense high precision algorithm
-=#
 function fracdiff(y::FunctionAndNumber, α, t, p::Integer, ::CaputoHighPrecision)
     h = t[2]-t[1]
     t = t[:]
