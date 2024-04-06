@@ -6,9 +6,9 @@ const SUITE = BenchmarkGroup()
 
 testf(x) = x^2
 
-SUITE["Caputo"]["CaputoDiethelm"] = @benchmarkable fracdiff(testf, 0.5, 0.01, CaputoDiethelm())
-SUITE["Caputo"]["CaputoTrap"] = @benchmarkable fracdiff(testf, 0.5, 0.01, CaputoTrap())
-SUITE["Caputo"]["CaputoL1"] = @benchmarkable fracdiff(testf, 0.5, 0.01, CaputoL1())
+SUITE["Caputo"]["CaputoDiethelm"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, CaputoDiethelm())
+SUITE["Caputo"]["CaputoTrap"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, CaputoTrap())
+SUITE["Caputo"]["CaputoL1"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, CaputoL1())
 
 BenchmarkTools.tune!(SUITE)
 results = BenchmarkTools.run(SUITE; verbose=true)
