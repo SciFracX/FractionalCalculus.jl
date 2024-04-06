@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1712415758809,
+  "lastUpdate": 1712422643027,
   "repoUrl": "https://github.com/SciFracX/FractionalCalculus.jl",
   "entries": {
     "Benchmark Results": [
@@ -40,6 +40,48 @@ window.BENCHMARK_DATA = {
           {
             "name": "Caputo/CaputoDiethelm",
             "value": 9178,
+            "unit": "ns",
+            "extra": "gctime=0\nmemory=0\nallocs=0\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":1,\"gcsample\":false,\"seconds\":5,\"overhead\":0,\"memory_tolerance\":0.01}"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "52615090+ErikQQY@users.noreply.github.com",
+            "name": "Qingyu Qu",
+            "username": "ErikQQY"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "34a9ac6804311e538daa316ffe370fd0e945634b",
+          "message": "Trigger benchmarks (#22)\n\nSigned-off-by: ErikQQY <2283984853@qq.com>",
+          "timestamp": "2024-04-07T00:54:50+08:00",
+          "tree_id": "f26023dcaaa1d5065d7ae1afe3c909f3537c28ef",
+          "url": "https://github.com/SciFracX/FractionalCalculus.jl/commit/34a9ac6804311e538daa316ffe370fd0e945634b"
+        },
+        "date": 1712422642368,
+        "tool": "julia",
+        "benches": [
+          {
+            "name": "Caputo/CaputoL1",
+            "value": 4286.428571428572,
+            "unit": "ns",
+            "extra": "gctime=0\nmemory=0\nallocs=0\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":7,\"gcsample\":false,\"seconds\":5,\"overhead\":0,\"memory_tolerance\":0.01}"
+          },
+          {
+            "name": "Caputo/CaputoTrap",
+            "value": 7481.5,
+            "unit": "ns",
+            "extra": "gctime=0\nmemory=0\nallocs=0\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":4,\"gcsample\":false,\"seconds\":5,\"overhead\":0,\"memory_tolerance\":0.01}"
+          },
+          {
+            "name": "Caputo/CaputoDiethelm",
+            "value": 9167,
             "unit": "ns",
             "extra": "gctime=0\nmemory=0\nallocs=0\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":1,\"gcsample\":false,\"seconds\":5,\"overhead\":0,\"memory_tolerance\":0.01}"
           }
