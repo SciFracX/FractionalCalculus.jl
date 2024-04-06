@@ -337,9 +337,9 @@ function fracdiff(y::FunctionAndNumber, α, t, p::Integer, ::CaputoHighPrecision
 end
 
 function fracdiff(f::FunctionAndNumber,
-                  α::Float64,
+                  α::Real,
                   T::Number,
-                  h::Float64,
+                  h::Real,
                   p::Integer,
                   ::CaputoHighOrder)
     n = round(Int, T/h)
@@ -413,10 +413,10 @@ function fj(n::Integer, T, fy)
 end
 
 function fracdiff(f::FunctionAndNumber,
-                  alpha::T,
+                  alpha::Real,
                   end_point::Real,
-                  h::T,
-                  ::CaputoL1) where {T <: Real}
+                  h::Real,
+                  ::CaputoL1)
     result = zero(Float64)
     n = floor(Int, end_point/h)
 
