@@ -5,15 +5,16 @@ using Statistics: median
 const SUITE = BenchmarkGroup()
 
 testf(x) = x^2
+for h in (0.01, 0.001)
+    SUITE["Caputo"]["CaputoDiethelm"] = @benchmarkable fracdiff(testf, 0.5, 1, h, CaputoDiethelm())
+    SUITE["Caputo"]["CaputoTrap"] = @benchmarkable fracdiff(testf, 0.5, 1, h, CaputoTrap())
+    SUITE["Caputo"]["CaputoL1"] = @benchmarkable fracdiff(testf, 0.5, 1, h, CaputoL1())
 
-SUITE["Caputo"]["CaputoDiethelm"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, CaputoDiethelm())
-SUITE["Caputo"]["CaputoTrap"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, CaputoTrap())
-SUITE["Caputo"]["CaputoL1"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, CaputoL1())
+    SUITE["RiemannLiouville"]["RLDiffL1"] = @benchmarkable fracdiff(testf, 0.5, 1, h, RLDiffL1())
+    SUITE["RiemannLiouville"]["RLD"] = @benchmarkable fracdiff(testf, 0.5, 1, h, RLD())
 
-SUITE["RiemannLiouville"]["RLDiffL1"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, RLDiffL1())
-SUITE["RiemannLiouville"]["RLD"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, RLD())
-
-SUITE["GrunwaldLetnikov"]["GLFiniteDifference"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, GLFiniteDifference())
+    SUITE["GrunwaldLetnikov"]["GLFiniteDifference"] = @benchmarkable fracdiff(testf, 0.5, 1, h, GLFiniteDifference())
+end
 
 BenchmarkTools.tune!(SUITE)
 results = BenchmarkTools.run(SUITE; verbose=true)
