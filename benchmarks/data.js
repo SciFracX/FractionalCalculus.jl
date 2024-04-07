@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1712457166192,
+  "lastUpdate": 1712499771992,
   "repoUrl": "https://github.com/SciFracX/FractionalCalculus.jl",
   "entries": {
     "Benchmark Results": [
@@ -142,6 +142,54 @@ window.BENCHMARK_DATA = {
           {
             "name": "GrunwaldLetnikov/GLFiniteDifference",
             "value": 16651,
+            "unit": "ns",
+            "extra": "gctime=0\nmemory=0\nallocs=0\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":1,\"gcsample\":false,\"seconds\":5,\"overhead\":0,\"memory_tolerance\":0.01}"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "2283984853@qq.com",
+            "name": "ErikQQY",
+            "username": "ErikQQY"
+          },
+          "committer": {
+            "email": "2283984853@qq.com",
+            "name": "ErikQQY",
+            "username": "ErikQQY"
+          },
+          "distinct": true,
+          "id": "0744025ce60f6d0172ac2b5af1b5fc0451dbd72e",
+          "message": "More benchmarks\n\nSigned-off-by: ErikQQY <2283984853@qq.com>",
+          "timestamp": "2024-04-07T22:19:49+08:00",
+          "tree_id": "fcbf2581735a611626ec5310b736aabb78456b06",
+          "url": "https://github.com/SciFracX/FractionalCalculus.jl/commit/0744025ce60f6d0172ac2b5af1b5fc0451dbd72e"
+        },
+        "date": 1712499770368,
+        "tool": "julia",
+        "benches": [
+          {
+            "name": "fracdiff/cpu/Caputo/CaputoL1",
+            "value": 43481,
+            "unit": "ns",
+            "extra": "gctime=0\nmemory=0\nallocs=0\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":1,\"gcsample\":false,\"seconds\":5,\"overhead\":0,\"memory_tolerance\":0.01}"
+          },
+          {
+            "name": "fracdiff/cpu/Caputo/CaputoDiethelm",
+            "value": 43492,
+            "unit": "ns",
+            "extra": "gctime=0\nmemory=0\nallocs=0\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":1,\"gcsample\":false,\"seconds\":5,\"overhead\":0,\"memory_tolerance\":0.01}"
+          },
+          {
+            "name": "fracdiff/cpu/RiemannLiouville/RLDiffL1",
+            "value": 44744,
+            "unit": "ns",
+            "extra": "gctime=0\nmemory=0\nallocs=0\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":1,\"gcsample\":false,\"seconds\":5,\"overhead\":0,\"memory_tolerance\":0.01}"
+          },
+          {
+            "name": "fracdiff/cpu/RiemannLiouville/RLD",
+            "value": 44723,
             "unit": "ns",
             "extra": "gctime=0\nmemory=0\nallocs=0\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":1,\"gcsample\":false,\"seconds\":5,\"overhead\":0,\"memory_tolerance\":0.01}"
           }
