@@ -4,16 +4,13 @@ using Statistics: median
 
 const SUITE = BenchmarkGroup()
 
-testf(x) = x^2
-for h in (0.01, 0.001)
-    SUITE["Caputo"]["CaputoDiethelm"] = @benchmarkable fracdiff(testf, 0.5, 1, h, CaputoDiethelm())
-    SUITE["Caputo"]["CaputoTrap"] = @benchmarkable fracdiff(testf, 0.5, 1, h, CaputoTrap())
-    SUITE["Caputo"]["CaputoL1"] = @benchmarkable fracdiff(testf, 0.5, 1, h, CaputoL1())
+include("derivative.jl")
 
-    SUITE["RiemannLiouville"]["RLDiffL1"] = @benchmarkable fracdiff(testf, 0.5, 1, h, RLDiffL1())
-    SUITE["RiemannLiouville"]["RLD"] = @benchmarkable fracdiff(testf, 0.5, 1, h, RLD())
-
-    SUITE["GrunwaldLetnikov"]["GLFiniteDifference"] = @benchmarkable fracdiff(testf, 0.5, 1, h, GLFiniteDifference())
+for step_size in (0.1, 0.01, 0.001)
+    benchmark_caputo("Caputo", "CaputoDiethelm", step_size)
+    benchmark_caputo("Caputo", "CaputoL1", step_size)
+    benchmark_RL("RiemannLiouville", "RLD", step_size)
+    benchmark_RL("RiemannLiouville", "RLDiffL1", step_size)
 end
 
 BenchmarkTools.tune!(SUITE)
