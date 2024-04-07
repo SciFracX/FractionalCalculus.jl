@@ -10,6 +10,13 @@ SUITE["Caputo"]["CaputoDiethelm"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01,
 SUITE["Caputo"]["CaputoTrap"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, CaputoTrap())
 SUITE["Caputo"]["CaputoL1"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, CaputoL1())
 
+SUITE["RiemannLiouville"]["RLDiffL1"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, RLDiffL1())
+SUITE["RiemannLiouville"]["RLD"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, RLD())
+SUITE["RiemannLiouville"]["RLG1"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, RLG1())
+
+SUITE["GrunwaldLetnikov"]["GLDirect"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, GLDirect())
+SUITE["GrunwaldLetnikov"]["GLFiniteDifference"] = @benchmarkable fracdiff(testf, 0.5, 1, 0.01, GLFiniteDifference())
+
 BenchmarkTools.tune!(SUITE)
 results = BenchmarkTools.run(SUITE; verbose=true)
 
