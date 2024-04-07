@@ -298,10 +298,10 @@ function quadweights(n::T, N::T, α::P) where {T <: Integer, P <: Real}
 end
 
 function fracdiff(f::FunctionAndNumber,
-                  α::T,
+                  α::Real,
                   end_point::AbstractArray{P},
-                  h::T,
-                  ::CaputoDiethelm) where {T <: Real, P <: Number}
+                  h::Real,
+                  ::CaputoDiethelm) where {P <: Number}
     result = map(x->fracdiff(f, α, x, h, CaputoDiethelm()), end_point)
     return result
 end
