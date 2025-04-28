@@ -7,8 +7,6 @@ abstract type FracIntAlg end
 include("RL.jl")
 include("Hadamard.jl")
 
-include("SymbolicInt.jl")
-
 """
     fracint(f, α, point, h, FracIntAlg())
 

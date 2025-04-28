@@ -1,11 +1,10 @@
 module FractionalCalculus
 
 using QuadGK
+using SpecialFunctions
 using SpecialFunctions: gamma
 using LinearAlgebra, InvertedIndices
 using SpecialMatrices: Vandermonde
-using SymbolicUtils, SymbolicUtils.Rewriters
-using Symbolics
 using ForwardDiff
 using UnPack
 
@@ -17,12 +16,13 @@ export FracDiffAlg, FracIntAlg
 export fracdiff, fracint
 
 # Export symbolics computing APIs
+function semidiff end
+function semiint end
+
 export semidiff, semiint
-export SEMIDIFFRULES, SEMIINTRULES
-export Incomplete_beta, AuxiliaryFresnelSin, AuxiliaryFresnelCos, Struve, MStruve, Legendre, SinIntegral, HyperSinIntegral, Hypergeometric1F1
 
 # Export fractional derivative releating API
-export Caputo, GL, RLDiff, Hadamard
+export Caputo, GL, RLDiff
 
 # Caputo sense fractional derivative
 export CaputoDirect, CaputoTrap, CaputoDiethelm, CaputoHighPrecision, CaputoHighOrder, CaputoL1, CaputoL2
