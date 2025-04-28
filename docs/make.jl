@@ -1,7 +1,7 @@
-using Documenter, FractionalCalculus
+using Documenter, FractionalCalculus, SymbolicUtils, Symbolics
 
 makedocs(
-    modules = [FractionalCalculus],
+    modules = [FractionalCalculus, SymbolicUtils, Symbolics],
     sitename = "FractionalCalculus.jl",
     format = Documenter.HTML(
         assets = ["assets/favicon.ico"],
