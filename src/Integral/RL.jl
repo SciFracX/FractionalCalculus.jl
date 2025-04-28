@@ -346,7 +346,7 @@ function fracint(f, α::Number, end_point, h::Real, ::RLIntMatrix)
     return J(N, α, h)*f.(tspan)
 end
 
-function omega(n, p)
+function ω(n, p)
     omega = zeros(n+1)
     omega[1]=1
     @fastmath @inbounds @simd for i ∈ 1:n
@@ -358,7 +358,7 @@ end
 
 function J(N, p, h::Real)
     result = zeros(N, N)
-    temp = omega(N, -p)
+    temp = ω(N, -p)
 
     @fastmath @inbounds @simd for i ∈ 1:N
         result[i, 1:i] = reverse(temp[1:i])

@@ -1,4 +1,6 @@
 [deps]
+Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+Symbolics = "0c5d862f-8b57-4792-8d23-62f2024744c7"
 SymbolicUtils = "d1185830-fcd6-423d-90d6-eec64667417b"
 SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"

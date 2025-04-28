@@ -1,11 +1,10 @@
 module FractionalCalculus
 
 using QuadGK
+using SpecialFunctions
 using SpecialFunctions: gamma
 using LinearAlgebra, InvertedIndices
 using SpecialMatrices: Vandermonde
-using SymbolicUtils, SymbolicUtils.Rewriters
-using Symbolics
 using ForwardDiff
 using UnPack
 
@@ -17,12 +16,46 @@ export FracDiffAlg, FracIntAlg
 export fracdiff, fracint
 
 # Export symbolics computing APIs
+"""
+# Symbolic fractional differentiation
+
+    semidiff(fun)
+
+```semidiff``` uses SymbolicUtils.jl and Symbolics.jl to compute symbolic fractional differentiation.
+
+### Example
+
+```julia-repl
+julia> using SymbolicUtils
+julia> @syms x
+julia> semidiff(log(x))
+log(4x) / sqrt(πx)
+```
+"""
+function semidiff end
+
+"""
+# Symbolic fractional integral
+
+    semiint(fun)
+
+```semiint``` uses SymbolicUtils.jl and Symbolics.jl to compute symbolic fractional integral.
+
+### Example
+
+```julia-repl
+julia> using SymbolicUtils
+julia> @syms x
+julia> semiint(x^4)
+0.45851597901024005(x^4.5)
+```
+"""
+function semiint end
+
 export semidiff, semiint
-export SEMIDIFFRULES, SEMIINTRULES
-export Incomplete_beta, AuxiliaryFresnelSin, AuxiliaryFresnelCos, Struve, MStruve, Legendre, SinIntegral, HyperSinIntegral, Hypergeometric1F1
 
 # Export fractional derivative releating API
-export Caputo, GL, RLDiff, Hadamard
+export Caputo, GL, RLDiff
 
 # Caputo sense fractional derivative
 export CaputoDirect, CaputoTrap, CaputoDiethelm, CaputoHighPrecision, CaputoHighOrder, CaputoL1, CaputoL2
@@ -61,7 +94,7 @@ export HadamardMat
 export @fracint, @semifracint
 
 # Auxiliary functions
-export RieszMatrix, omega, B, genfun, first_order
+export RieszMatrix, B, genfun
 
 export mittleff
 

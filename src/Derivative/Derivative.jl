@@ -13,7 +13,6 @@ include("RL.jl")
 include("CaputoFabrizio.jl")
 include("ABC.jl")
 
-include("SymbolicDiff.jl")
 
 """
     fracdiff(f, α, point, h, FracDiffAlg())

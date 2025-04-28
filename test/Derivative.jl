@@ -125,11 +125,8 @@ end
 
 @testset "Test auxiliary functions" begin
     @test isapprox(RieszMatrix(0.5, 2, 0.1), [-1.58114 1.3835; 1.3835 -1.58114]; atol=1e-3)
-    @test isapprox(omega(3, 2), [1, -2, 1, 0]; atol=1e-3)
     @test isapprox(B(2, 2), [1.0 0.0; -2.0 1.0]; atol=1e-3)
     @test isapprox(genfun(2), [1.5 -2 0.5]; atol=1e-3)
-    @test isapprox(first_order(exp, 2, 1e-6), exp(2); atol=1e-5)
-    @test isapprox(first_order(sin, 2, 1e-6), cos(2); atol=1e-5)
 end
 
 @testset "Test Mittag Leffler function" begin

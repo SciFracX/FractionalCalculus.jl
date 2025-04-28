@@ -253,9 +253,6 @@ function W₅(i, n, m, α)
         return (n-i-1)^(m-α+1) + (n-i+1)^(m-α+1) - 2*(n-i)^(m-α+1)
     end
 end
-# Deploy Complex Step Differentiation to compute the first order derivative.
-first_order(f, point, h::Float64) = imag(f(point + im*h))/h
-
 
 function fracdiff(f::FunctionAndNumber,
                   α::Float64,
@@ -266,6 +263,8 @@ function fracdiff(f::FunctionAndNumber,
     return result
 end
 
+# Deploy Complex Step Differentiation to compute the first order derivative.
+first_order(f, point, h::Float64) = imag(f(point + im*h))/h
 
 #=
 Caputo Diethelm algorithm

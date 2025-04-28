@@ -1,5 +1,6 @@
 using FractionalCalculus
 using SymbolicUtils
+using Symbolics
 using Test
 
 macro eqtest(expr)

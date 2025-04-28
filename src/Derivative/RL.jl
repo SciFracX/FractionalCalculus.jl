@@ -156,7 +156,7 @@ end
 
 function B(N, p)
     result = zeros(N, N)
-    temp = omega(N, p)
+    temp = ω(N, p)
 
     @inbounds @simd for i ∈ 1:N
         @views result[i, 1:i]=reverse(temp[1:i])
