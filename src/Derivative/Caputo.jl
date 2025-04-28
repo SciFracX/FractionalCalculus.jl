@@ -263,6 +263,8 @@ function fracdiff(f::FunctionAndNumber,
     return result
 end
 
+# Deploy Complex Step Differentiation to compute the first order derivative.
+first_order(f, point, h::Float64) = imag(f(point + im*h))/h
 
 #=
 Caputo Diethelm algorithm
