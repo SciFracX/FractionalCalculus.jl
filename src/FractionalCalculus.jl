@@ -94,7 +94,7 @@ export HadamardMat
 export @fracint, @semifracint
 
 # Auxiliary functions
-export RieszMatrix, omega, B, genfun, first_order
+export RieszMatrix, B, genfun
 
 export mittleff
 
