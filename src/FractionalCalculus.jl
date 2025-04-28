@@ -16,7 +16,40 @@ export FracDiffAlg, FracIntAlg
 export fracdiff, fracint
 
 # Export symbolics computing APIs
+"""
+# Symbolic fractional differentiation
+
+    semidiff(fun)
+
+```semidiff``` uses SymbolicUtils.jl and Symbolics.jl to compute symbolic fractional differentiation.
+
+### Example
+
+```julia-repl
+julia> using SymbolicUtils
+julia> @syms x
+julia> semidiff(log(x))
+log(4x) / sqrt(πx)
+```
+"""
 function semidiff end
+
+"""
+# Symbolic fractional integral
+
+    semiint(fun)
+
+```semiint``` uses SymbolicUtils.jl and Symbolics.jl to compute symbolic fractional integral.
+
+### Example
+
+```julia-repl
+julia> using SymbolicUtils
+julia> @syms x
+julia> semiint(x^4)
+0.45851597901024005(x^4.5)
+```
+"""
 function semiint end
 
 export semidiff, semiint

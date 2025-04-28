@@ -118,22 +118,6 @@ SEMIDIFFRULES = [
 
 DIFFRULES = Chain(SEMIDIFFRULES)
 
-"""
-# Symbolic fractional differentiation
-
-    semidiff(fun)
-
-```semidiff``` uses SymbolicUtils.jl and Symbolics.jl to compute symbolic fractional differentiation.
-
-### Example
-
-```julia-repl
-julia> using SymbolicUtils
-julia> @syms x
-julia> semidiff(log(x))
-log(4x) / sqrt(πx)
-```
-"""
 FractionalCalculus.semidiff(x) = DIFFRULES(x)
 
 
@@ -233,22 +217,6 @@ SEMIINTRULES = [
 
 INTRULES = Chain(SEMIINTRULES)
 
-"""
-# Symbolic fractional integral
-
-    semiint(fun)
-
-```semiint``` uses SymbolicUtils.jl and Symbolics.jl to compute symbolic fractional integral.
-
-### Example
-
-```julia-repl
-julia> using SymbolicUtils
-julia> @syms x
-julia> semiint(x^4)
-0.45851597901024005(x^4.5)
-```
-"""
 FractionalCalculus.semiint(x) = INTRULES(x)
 
 
