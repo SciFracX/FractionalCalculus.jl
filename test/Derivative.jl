@@ -117,6 +117,21 @@ end
     @test isapprox(fracdiff(x->x, 0.5, 1, 0.00001, AtanganaSeda()), -0.8696378200415389; atol=1e-3)
 end
 
+@testset "Test Chebyshev sense fractional derivative" begin
+    let f(x) = x^7, α = 0.4, n = 10
+        @test_broken isapprox(fracdiff(f, 0.3, α, n, ChebyshevSeries()), 0.00509416; atol=1e-5)
+        @test_broken isapprox(fracdiff(f, 0.5, α, n, ChebyshevSeries()), 0.01236690; atol=1e-5)
+        @test_broken isapprox(fracdiff(f, 0.7, α, n, ChebyshevSeries()), 0.03689920; atol=1e-5)
+    end
+
+    let f(x) = x^7, α = 0.4, β = 0.7, n = 10
+        @test_broken isapprox(fracdiff(f, 0.3, α, n, ChebyshevSeries()), 0.02895030; atol=1e-5)
+        @test_broken isapprox(fracdiff(f, 0.5, α, n, ChebyshevSeries()), 0.06579140; atol=1e-5)
+        @test_broken isapprox(fracdiff(f, 0.5, β, n, ChebyshevSeries()), 0.81628300; atol=1e-5)
+        @test_broken isapprox(fracdiff(f, 0.7, α, n, ChebyshevSeries()), 0.18334300; atol=1e-5)
+    end
+end
+
 @testset "Test macros" begin
     @test isapprox(@fracdiff(x->x, 0.5, 1), 1.1283791670955126; atol=1e-4)
     @test isapprox(@fracdiff(x->x^5, 0.5, 3.2), 4.300306216488329e2; atol=1e-2)

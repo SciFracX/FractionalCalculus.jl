@@ -12,6 +12,7 @@ include("Riesz.jl")
 include("RL.jl")
 include("CaputoFabrizio.jl")
 include("ABC.jl")
+include("Chebyshev.jl")
 
 
 """

@@ -72,7 +72,11 @@ export HadamardLRect, HadamardRRect, HadamardTrap
 # Riesz sense fractional derivative
 export RieszSymmetric, RieszOrtigueira
 
+# Atangana-Baleanu Caputo sense fractional derivative
 export AtanganaBaleanu, AtanganaSeda
+
+# Chebyshev sense fractional derivative
+export ChebyshevSeries, ChebyshevSeriesUnit
 
 # Caputo-Fabrizio sense fractional derivative
 export CaputoFabrizio, CaputoFabrizioAS
